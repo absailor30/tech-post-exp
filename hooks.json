@@ -1,0 +1,17 @@
+[
+  {"name": "curiosity_gap", "formula": "The X that Y — without saying which X", "example": "The CLI tool that replaced 4 apps for me"},
+  {"name": "mistake", "formula": "You're doing X wrong / Stop doing X", "example": "You're using Ctrl+F wrong. There's a faster way"},
+  {"name": "contrarian", "formula": "Everything you know about X is outdated", "example": "Print debugging isn't lazy. Bad print debugging is"},
+  {"name": "number_outcome", "formula": "N things that get you OUTCOME", "example": "4 terminal tricks that save me an hour every week"},
+  {"name": "insider_secret", "formula": "What nobody tells beginners about X", "example": "What senior devs actually do when code breaks"},
+  {"name": "before_after", "formula": "I used to X. Now I Y", "example": "I used to click through folders for minutes. Now it takes 2 keystrokes"},
+  {"name": "speed_promise", "formula": "Learn X in N seconds/swipes", "example": "Master git stash in 6 swipes"},
+  {"name": "loss_aversion", "formula": "You're losing X by not knowing Y", "example": "Every day without shortcuts costs you 30 minutes"},
+  {"name": "specific_result", "formula": "Exact number + unexpected method", "example": "My Python installs got 10x faster. One word changed: uv"},
+  {"name": "forbidden", "formula": "The X they don't teach in courses", "example": "The debugging skill no bootcamp teaches"},
+  {"name": "identity_call", "formula": "If you X, this is for you", "example": "If your terminal looks like 2010, swipe"},
+  {"name": "challenge", "formula": "Bet you can't X / Most devs fail this", "example": "90% of devs can't explain what jq does"},
+  {"name": "one_thing", "formula": "The ONE X that matters most", "example": "The one keyboard shortcut that pays rent"},
+  {"name": "story_open", "formula": "Mid-action story start", "example": "3am. Production down. One command saved us"},
+  {"name": "question_hook", "formula": "Question the reader must answer", "example": "Why is your laptop slower than your phone?"}
+]
