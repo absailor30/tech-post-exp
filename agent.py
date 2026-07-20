@@ -53,18 +53,26 @@ def save_queue(q):
     QUEUE.write_text(json.dumps(q, indent=2), encoding="utf-8")
 
 
-def call_llm(prompt, max_tokens=900):
-    r = client.chat.completions.create(
-        model=MODEL,
-        messages=[{"role": "system", "content": SYSTEM},
-                  {"role": "user", "content": prompt}],
-        max_tokens=max_tokens,
-        temperature=0.4,
-    )
-    u = r.usage
-    log("llm_call", model=MODEL, prompt=prompt[:200],
-        input_tokens=u.prompt_tokens, output_tokens=u.completion_tokens)
-    return r.choices[0].message.content
+def call_llm(prompt, max_tokens=900, tries=3):
+    import time as _time
+    last = None
+    for attempt in range(tries):
+        try:
+            r = client.chat.completions.create(
+                model=MODEL,
+                messages=[{"role": "system", "content": SYSTEM},
+                          {"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+                temperature=0.4,
+            )
+            u = r.usage
+            log("llm_call", model=MODEL, prompt=prompt[:200],
+                input_tokens=u.prompt_tokens, output_tokens=u.completion_tokens)
+            return r.choices[0].message.content
+        except Exception as e:                     # timeout / 5xx / rate limit
+            last = e
+            _time.sleep(20 * (attempt + 1))
+    raise last
 
 
 def cmd_propose(task):

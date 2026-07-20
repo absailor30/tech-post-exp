@@ -1,7 +1,9 @@
 name: daily-post
 on:
   schedule:
-    - cron: "0 15 * * *"        # 15:00 UTC = 20:30 IST
+    - cron: "0 15 * * *"        # 15:00 UTC = 20:30 IST (primary)
+    - cron: "45 15 * * *"       # backup slot — no-ops if already posted
+    - cron: "0 17 * * *"        # last-resort slot
   workflow_dispatch: {}
 
 permissions:

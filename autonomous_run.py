@@ -149,7 +149,20 @@ def publish_carousel(urls, caption):
                    {"creation_id": carousel["id"], "access_token": ig_token()})
 
 
+def already_posted_today():
+    logf = BASE / "log.jsonl"
+    if not logf.exists():
+        return False
+    today = datetime.date.today().isoformat()
+    return any(json.loads(l).get("ts", "").startswith(today)
+               for l in logf.read_text(encoding="utf-8").splitlines()
+               if '"autonomous_post"' in l)
+
+
 def main(dry=False):
+    if not dry and already_posted_today():
+        print("already posted today — nothing to do")
+        return
     p = plan()
     stamp = datetime.datetime.now().strftime("%Y%m%d")
     slug = re.sub(r"[^a-z0-9]+", "-", p["topic"].lower())[:40].strip("-")
