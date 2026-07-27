@@ -24,11 +24,18 @@ load_dotenv(BASE / ".env")
 QUEUE = BASE / "proposals.json"
 LOG = BASE / "log.jsonl"
 
-MODEL = os.environ.get("NIM_MODEL", "deepseek-ai/deepseek-v4-flash")
+# NIM retires models without warning (qwen3-next EOL'd 2026-07-27 mid-service)
+# and free-tier endpoints intermittently hang. Try in order, fail fast, move on.
+MODEL = os.environ.get("NIM_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
+FALLBACKS = [
+    "nvidia/nemotron-3-super-120b-a12b",
+    "deepseek-ai/deepseek-v4-pro",
+    "nvidia/nemotron-3-nano-30b-a3b",
+]
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
     api_key=os.environ["NIM_API_KEY"],
-    timeout=120.0,
+    timeout=180.0,
 )
 
 SYSTEM = (
@@ -53,25 +60,30 @@ def save_queue(q):
     QUEUE.write_text(json.dumps(q, indent=2), encoding="utf-8")
 
 
-def call_llm(prompt, max_tokens=900, tries=3):
+def call_llm(prompt, max_tokens=900, tries=2):
+    """Try each model in turn, twice each. One hung or retired model can never
+    cost a whole day's post."""
     import time as _time
     last = None
-    for attempt in range(tries):
-        try:
-            r = client.chat.completions.create(
-                model=MODEL,
-                messages=[{"role": "system", "content": SYSTEM},
-                          {"role": "user", "content": prompt}],
-                max_tokens=max_tokens,
-                temperature=0.4,
-            )
-            u = r.usage
-            log("llm_call", model=MODEL, prompt=prompt[:200],
-                input_tokens=u.prompt_tokens, output_tokens=u.completion_tokens)
-            return r.choices[0].message.content
-        except Exception as e:                     # timeout / 5xx / rate limit
-            last = e
-            _time.sleep(20 * (attempt + 1))
+    for model in [MODEL, *FALLBACKS]:
+        for attempt in range(tries):
+            try:
+                r = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "system", "content": SYSTEM},
+                              {"role": "user", "content": prompt}],
+                    max_tokens=max_tokens,
+                    temperature=0.4,
+                )
+                u = r.usage
+                log("llm_call", model=model, prompt=prompt[:200],
+                    input_tokens=u.prompt_tokens, output_tokens=u.completion_tokens)
+                return r.choices[0].message.content
+            except Exception as e:                 # timeout / 410 EOL / 5xx
+                last = e
+                if "410" in str(e):                # retired: skip retry
+                    break
+                _time.sleep(10)
     raise last
 
 

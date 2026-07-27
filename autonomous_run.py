@@ -97,14 +97,38 @@ def plan():
     picked = random.sample(hooks, 4)
     hooks_txt = "\n".join(f"- {h['name']}: {h['formula']} (e.g. \"{h['example']}\")"
                           for h in picked)
+    # Reasoning models (nemotron ultra) spend most of the budget thinking before
+    # emitting the JSON — give them room or the plan comes back truncated.
     raw = call_llm(PLAN_PROMPT.format(recent=recent_topics(), hooks=hooks_txt,
-                                      performance=collect()), max_tokens=1200)
-    m = re.search(r"\{.*\}", raw, re.DOTALL)
-    if not m:
-        sys.exit(f"no JSON in plan:\n{raw}")
-    p = json.loads(m.group())
-    assert p["slides"] and p["caption"] and p["hook"] and p["cta"], "plan missing fields"
+                                      performance=collect()), max_tokens=6000)
+    p = extract_plan(raw)
+    if not p:
+        sys.exit(f"no usable JSON in plan:\n{raw[-1500:]}")
     return p
+
+
+def extract_plan(raw):
+    """Pull the plan object out of a reply that may contain reasoning prose.
+
+    Scans every '{' and takes the first candidate that parses AND has the
+    fields we need — a greedy regex would span braces in the reasoning text.
+    """
+    for start in (i for i, ch in enumerate(raw) if ch == "{"):
+        depth = 0
+        for end in range(start, len(raw)):
+            if raw[end] == "{":
+                depth += 1
+            elif raw[end] == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        p = json.loads(raw[start:end + 1])
+                    except json.JSONDecodeError:
+                        break
+                    if all(p.get(k) for k in ("topic", "slides", "caption", "hook", "cta")):
+                        return p
+                    break
+    return None
 
 
 def git(*args):
