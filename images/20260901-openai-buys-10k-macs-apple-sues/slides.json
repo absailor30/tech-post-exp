@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "hook",
+    "headline": "3 reasons OpenAI's Mac buying spree matters to you",
+    "kicker": "AI Hardware Shift"
+  },
+  {
+    "kind": "content",
+    "headline": "OpenAI bought 10,000+ Macs",
+    "body": "Mac Studios and Mac Pros, delivered in batches this year, now train and run ChatGPT.",
+    "idx": 2,
+    "total": 7
+  },
+  {
+    "kind": "content",
+    "headline": "Apple chips power the biggest AI",
+    "body": "M-series processors handle AI workloads faster per watt than most server chips.",
+    "idx": 3,
+    "total": 7
+  },
+  {
+    "kind": "content",
+    "headline": "Apple is suing OpenAI",
+    "body": "A former Apple engineer allegedly stole trade secrets for OpenAI; Apple added new claims this week.",
+    "idx": 4,
+    "total": 7
+  },
+  {
+    "kind": "content",
+    "headline": "Your device runs the same silicon",
+    "body": "The MacBook Air on your desk uses the same chip family now running ChatGPT at scale.",
+    "idx": 5,
+    "total": 7
+  },
+  {
+    "kind": "content",
+    "headline": "Tension: hardware vs. software control",
+    "body": "Apple wants AI on-device; OpenAI wants cloud scale. Both need each other's turf.",
+    "idx": 6,
+    "total": 7
+  },
+  {
+    "kind": "cta",
+    "headline": "AI news that affects your phone",
+    "body": "Follow for plain-English breakdowns of every major AI move."
+  }
+]
