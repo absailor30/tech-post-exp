@@ -1,47 +1,54 @@
 [
   {
     "kind": "hook",
-    "headline": "3 reasons OpenAI's Mac buying spree matters to you",
+    "headline": "The hardware powering OpenAI \u2014 not Nvidia",
     "kicker": "AI Hardware Shift"
   },
   {
     "kind": "content",
     "headline": "OpenAI bought 10,000+ Macs",
-    "body": "Mac Studios and Mac Pros, delivered in batches this year, now train and run ChatGPT.",
+    "body": "Reported August 31. Tens of thousands of Apple Silicon machines now train and run ChatGPT.",
     "idx": 2,
-    "total": 7
+    "total": 8
   },
   {
     "kind": "content",
-    "headline": "Apple chips power the biggest AI",
-    "body": "M-series processors handle AI workloads faster per watt than most server chips.",
+    "headline": "Apple becomes AI infrastructure",
+    "body": "Wall Street now treats Apple like Nvidia \u2014 essential hardware for the biggest AI company.",
     "idx": 3,
-    "total": 7
+    "total": 8
   },
   {
     "kind": "content",
-    "headline": "Apple is suing OpenAI",
-    "body": "A former Apple engineer allegedly stole trade secrets for OpenAI; Apple added new claims this week.",
+    "headline": "Apple sues over stolen secrets",
+    "body": "Apple alleges a former engineer took chip designs to OpenAI. Lawsuit expanded this week.",
     "idx": 4,
-    "total": 7
+    "total": 8
   },
   {
     "kind": "content",
-    "headline": "Your device runs the same silicon",
-    "body": "The MacBook Air on your desk uses the same chip family now running ChatGPT at scale.",
+    "headline": "Your Mac runs the same chips",
+    "body": "M-series chips in your laptop share architecture with OpenAI's new server farm.",
     "idx": 5,
-    "total": 7
+    "total": 8
   },
   {
     "kind": "content",
-    "headline": "Tension: hardware vs. software control",
-    "body": "Apple wants AI on-device; OpenAI wants cloud scale. Both need each other's turf.",
+    "headline": "But Apple keeps control tight",
+    "body": "You can't rent Mac compute like AWS. Apple decides who gets access.",
     "idx": 6,
-    "total": 7
+    "total": 8
+  },
+  {
+    "kind": "content",
+    "headline": "Honest take: stock wins, users wait",
+    "body": "Great for Apple shareholders. For everyone else, local AI on Mac improves \u2014 but cloud options stay limited.",
+    "idx": 7,
+    "total": 8
   },
   {
     "kind": "cta",
-    "headline": "AI news that affects your phone",
-    "body": "Follow for plain-English breakdowns of every major AI move."
+    "headline": "AI news that affects your wallet",
+    "body": "Follow for plain-English breakdowns of every major AI money move."
   }
 ]
