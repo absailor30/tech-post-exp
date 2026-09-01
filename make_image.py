@@ -194,7 +194,7 @@ if __name__ == "__main__":
 # 85% skip rate.
 
 _BASE_CACHE = None
-REVEAL = 0.55        # fraction of a slide's time spent revealing letters
+REVEAL = 0.55        # default reveal fraction; reel_maker overrides per slide
 CHAR_WINDOW = 0.30   # each letter's own fade, as a fraction of the reveal
 
 
@@ -207,11 +207,11 @@ def base_cached():
     return _BASE_CACHE.copy()
 
 
-def _char_alpha(i, n, progress):
+def _char_alpha(i, n, progress, reveal=REVEAL):
     """Alpha and vertical offset for character i at this point in the reveal."""
     if n <= 0:
         return 1.0, 0.0
-    p = min(1.0, max(0.0, progress / REVEAL)) if REVEAL else 1.0
+    p = min(1.0, max(0.0, progress / reveal)) if reveal else 1.0
     start = (i / n) * (1.0 - CHAR_WINDOW)
     a = (p - start) / CHAR_WINDOW if CHAR_WINDOW else 1.0
     a = min(1.0, max(0.0, a))
@@ -220,7 +220,7 @@ def _char_alpha(i, n, progress):
 
 
 def draw_letters(img, lines, f, x, y, fill, line_h, progress,
-                 offset=0, total=None):
+                 offset=0, total=None, reveal=REVEAL):
     """Draw pre-wrapped text one character at a time onto an RGBA overlay.
 
     Returns (next_y, characters_drawn) so several blocks can share one
@@ -233,7 +233,7 @@ def draw_letters(img, lines, f, x, y, fill, line_h, progress,
     for line in lines:
         cx = x
         for ch in line:
-            a, dy = _char_alpha(idx, n, progress)
+            a, dy = _char_alpha(idx, n, progress, reveal)
             if a > 0.01 and ch != " ":
                 d.text((cx, y + dy), ch, font=f, fill=(*fill, int(255 * a)))
             cx += f.getlength(ch)
@@ -243,15 +243,17 @@ def draw_letters(img, lines, f, x, y, fill, line_h, progress,
     return y, idx - offset
 
 
-def frame_hook(headline, kicker, progress):
+def frame_hook(headline, kicker, progress, reveal=REVEAL):
     img = base_cached().convert("RGBA")
     d = ImageDraw.Draw(img)
     if kicker:
         d.text((72, 300), kicker.upper(), font=font(34, "mono"), fill=ACCENT)
     f, lines = fit(headline, 104, "black", max_lines=4)
-    draw_letters(img, lines, f, MARGIN, 380, FG, int(f.size * 1.19), progress)
-    if progress > 0.75:                      # swipe cue only once the hook lands
-        a = min(1.0, (progress - 0.75) / 0.2)
+    draw_letters(img, lines, f, MARGIN, 380, FG, int(f.size * 1.19), progress,
+                 reveal=reveal)
+    cue_at = min(0.9, reveal + 0.12)
+    if progress > cue_at:                      # swipe cue only once the hook lands
+        a = min(1.0, (progress - cue_at) / 0.15)
         cue = Image.new("RGBA", img.size, (0, 0, 0, 0))
         cd = ImageDraw.Draw(cue)
         cd.text((72, H - 250), "swipe", font=font(40, "semibold"),
@@ -262,7 +264,7 @@ def frame_hook(headline, kicker, progress):
     return img.convert("RGB")
 
 
-def frame_content(headline, body, idx, total, progress):
+def frame_content(headline, body, idx, total, progress, reveal=REVEAL):
     img = base_cached().convert("RGBA")
     d = ImageDraw.Draw(img)
     d.text((72, 240), f"{idx:02d}", font=font(140, "black"), fill=(34, 44, 62))
@@ -271,23 +273,24 @@ def frame_content(headline, body, idx, total, progress):
     body_f, blines = fit(body, 44, "regular", max_lines=6, min_size=32)
     n = sum(len(l) for l in hlines) + sum(len(l) for l in blines)
     y, drawn = draw_letters(img, hlines, head_f, MARGIN, 430, FG,
-                            int(head_f.size * 1.24), progress, 0, n)
+                            int(head_f.size * 1.24), progress, 0, n, reveal)
     draw_letters(img, blines, body_f, MARGIN, y + 36, MUTED,
-                 int(body_f.size * 1.41), progress, drawn, n)
+                 int(body_f.size * 1.41), progress, drawn, n, reveal)
     return img.convert("RGB")
 
 
-def frame_cta(headline, body, progress):
+def frame_cta(headline, body, progress, reveal=REVEAL):
     img = base_cached().convert("RGBA")
     head_f, hlines = fit(headline, 88, "black", max_lines=3)
     body_f, blines = fit(body, 44, "regular", max_lines=5, min_size=32)
     n = sum(len(l) for l in hlines) + sum(len(l) for l in blines)
     y, drawn = draw_letters(img, hlines, head_f, MARGIN, 420, FG,
-                            int(head_f.size * 1.20), progress, 0, n)
+                            int(head_f.size * 1.20), progress, 0, n, reveal)
     y, _ = draw_letters(img, blines, body_f, MARGIN, y + 36, MUTED,
-                        int(body_f.size * 1.41), progress, drawn, n)
-    if progress > 0.7:
-        a = min(1.0, (progress - 0.7) / 0.25)
+                        int(body_f.size * 1.41), progress, drawn, n, reveal)
+    btn_at = min(0.85, reveal + 0.08)
+    if progress > btn_at:
+        a = min(1.0, (progress - btn_at) / 0.15)
         btn = Image.new("RGBA", img.size, (0, 0, 0, 0))
         bd = ImageDraw.Draw(btn)
         label, bf = f"Follow {HANDLE}", font(42, "bold")
@@ -300,7 +303,7 @@ def frame_cta(headline, body, progress):
     return img.convert("RGB")
 
 
-def render_slide_frames(spec, outdir, n_frames, start_index):
+def render_slide_frames(spec, outdir, n_frames, start_index, reveal=REVEAL):
     """Write n_frames PNGs for one slide. Once every letter has landed the
     image stops changing, so later frames are byte-copies of the first
     settled one instead of being re-rendered."""
@@ -317,14 +320,15 @@ def render_slide_frames(spec, outdir, n_frames, start_index):
             continue
         kind = spec["kind"]
         if kind == "hook":
-            img = frame_hook(spec["headline"], spec.get("kicker", ""), progress)
+            img = frame_hook(spec["headline"], spec.get("kicker", ""),
+                             progress, reveal)
         elif kind == "cta":
-            img = frame_cta(spec["headline"], spec["body"], progress)
+            img = frame_cta(spec["headline"], spec["body"], progress, reveal)
         else:
             img = frame_content(spec["headline"], spec["body"], spec["idx"],
-                                spec["total"], progress)
+                                spec["total"], progress, reveal)
         img.save(path)
         written += 1
-        if progress >= 0.96:
+        if progress >= min(0.99, reveal + 0.10):
             settled = path.read_bytes()
     return written

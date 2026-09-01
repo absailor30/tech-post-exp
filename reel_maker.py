@@ -22,8 +22,32 @@ from pathlib import Path
 
 from imageio_ffmpeg import get_ffmpeg_exe
 
-SECS = 3.0          # per slide
+# Slide duration follows the text instead of being fixed.
+#
+# The first published reel gave every slide a flat 3.0s, of which 1.65s was
+# spent animating the letters in — leaving 1.35s to read up to 20 words. That
+# is roughly four times too fast, and an unreadable slide is a skipped slide.
+#
+# Now: letters land in a fixed ~1.2s regardless of length, then the slide HOLDS
+# still while the viewer reads, at a measured reading speed.
 FPS = 24            # 24 is plenty for text motion and keeps render time sane
+SECS = 3.0          # fallback only (still slideshow path)
+
+REVEAL_SECS = 1.2   # wall-clock time for the letters to finish landing
+WPS = 3.2           # words per second a viewer reads on a phone
+BUFFER = 1.0        # thinking time after the last word
+MIN_SECS = 3.5      # even a 3-word slide needs a beat
+MAX_SECS = 7.5      # cap so one dense slide can't stall the reel
+
+# Text is readable as it lands, so the reveal is only about half dead time.
+READ_DURING_REVEAL = 0.5
+
+
+def slide_seconds(spec):
+    """How long this slide stays on screen, from its own word count."""
+    words = len(f"{spec.get('headline', '')} {spec.get('body', '')}".split())
+    secs = REVEAL_SECS * READ_DURING_REVEAL + words / WPS + BUFFER
+    return max(MIN_SECS, min(MAX_SECS, secs))
 W, H = 1080, 1920
 SLIDE_W, SLIDE_H = 1080, 1350
 BG = "0x0E1117"
@@ -56,10 +80,15 @@ def build_animated(specs, out="reel.mp4", workdir=None):
 
     tmp = Path(workdir) if workdir else Path(tempfile.mkdtemp(prefix="reelframes"))
     tmp.mkdir(parents=True, exist_ok=True)
-    per_slide = int(SECS * FPS)
     idx = 0
     for spec in specs:
-        idx += render_slide_frames(spec, tmp, per_slide, idx)
+        secs = slide_seconds(spec)
+        n = int(secs * FPS)
+        # Letters always land in REVEAL_SECS, so a longer slide simply holds
+        # still for longer rather than animating more slowly.
+        idx += render_slide_frames(spec, tmp, n, idx, reveal=REVEAL_SECS / secs)
+        print(f"  slide {spec['kind']:7} {secs:4.1f}s "
+              f"(read {secs - REVEAL_SECS:.1f}s)")
     print(f"rendered {idx} animated frames ({len(specs)} slides, {idx / FPS:.1f}s)")
     try:
         _encode(tmp, idx, out)
