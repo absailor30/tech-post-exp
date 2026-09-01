@@ -315,9 +315,19 @@ def research():
         "degraded": len(ok) < WANT_SOURCES,
         "researched_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }
+    return result
+
+
+def record(result):
+    """Append a story to the cache ONCE IT HAS ACTUALLY BEEN PUBLISHED.
+
+    research() used to write here itself, and the duplicate check then read
+    the cache straight back — so every story matched itself and every run
+    fell through to a runner-up. The cache must only ever describe posts
+    that went out.
+    """
     with CACHE.open("a", encoding="utf-8") as f:
         f.write(json.dumps(result) + "\n")
-    return result
 
 
 def recent_story_keys(n=60):

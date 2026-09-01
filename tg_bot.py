@@ -92,7 +92,7 @@ def parse_json(raw):
                 depth -= 1
                 if depth == 0:
                     try:
-                        d = json.loads(raw[start:end + 1])
+                        d = json.loads(raw[start:end + 1], strict=False)
                     except json.JSONDecodeError:
                         break
                     if d.get("type"):

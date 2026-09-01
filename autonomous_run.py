@@ -31,7 +31,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from agent import BASE, IG_API, call_llm, ig_token, log
 from make_image import render_content, render_cta, render_hook
-from research import keywords, recent_story_keys, research
+from research import keywords, recent_story_keys, record, research
 
 import os
 # Locally we clone into ./repo; on GitHub Actions REPO_DIR=$GITHUB_WORKSPACE
@@ -257,7 +257,11 @@ def extract_plan(raw):
                 depth -= 1
                 if depth == 0:
                     try:
-                        p = json.loads(raw[start:end + 1])
+                        # strict=False: the model writes multi-line captions
+                        # with real newlines inside the JSON string, which is
+                        # invalid JSON but perfectly readable intent. Rejecting
+                        # it threw away an otherwise complete plan.
+                        p = json.loads(raw[start:end + 1], strict=False)
                     except json.JSONDecodeError:
                         break
                     if all(p.get(k) for k in ("topic", "slides", "caption", "hook", "cta")):
@@ -393,6 +397,7 @@ def main(dry=False):
         story_headline=story.get("headline", ""), story_url=story.get("url", ""),
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))
+    record(story)          # only now is the story genuinely "covered"
     print(f"published {kind}, media id {result['id']}")
 
     if datetime.date.today().weekday() == 6:   # Sunday: weekly digest
