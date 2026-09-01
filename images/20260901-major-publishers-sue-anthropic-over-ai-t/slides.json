@@ -1,0 +1,40 @@
+[
+  {
+    "kind": "hook",
+    "headline": "The one lawsuit that decides if AI can use your favorite songs",
+    "kicker": "One Lawsuit"
+  },
+  {
+    "kind": "content",
+    "headline": "Sony and Warner sue Anthropic",
+    "body": "Two biggest music publishers claim Claude AI trained on copyrighted lyrics without permission or payment",
+    "idx": 2,
+    "total": 6
+  },
+  {
+    "kind": "content",
+    "headline": "AI learned from protected songs",
+    "body": "Anthropic's model can reproduce lyrics and mimic artists because it studied millions of copyrighted tracks",
+    "idx": 3,
+    "total": 6
+  },
+  {
+    "kind": "content",
+    "headline": "Courts may force AI to pay",
+    "body": "If publishers win, AI companies must license music like streaming services do \u2014 billions in new costs",
+    "idx": 4,
+    "total": 6
+  },
+  {
+    "kind": "content",
+    "headline": "Your AI music tools could shrink",
+    "body": "Fewer training songs means worse AI covers, fewer style mimics, and pricier music generation apps",
+    "idx": 5,
+    "total": 6
+  },
+  {
+    "kind": "cta",
+    "headline": "AI is rewriting copyright",
+    "body": "Follow for the rulings that shape what you can create and listen to"
+  }
+]
