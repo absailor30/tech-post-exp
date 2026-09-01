@@ -14,13 +14,63 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H = 1080, 1350
-BG_TOP = (10, 13, 20)
-BG_BOT = (16, 22, 34)
-ACCENT = (0, 229, 160)
-FG = (240, 243, 248)
-MUTED = (148, 158, 175)
+# Two themes, one brand. Gold carries across both so the account still reads
+# as one account; only the paper changes. Every value below was checked for
+# contrast against its own background — see THEMES notes.
+#
+# Two golds are needed on light: bright gold is 1.7:1 on cream, illegible as
+# text but fine as a filled shape. So ACCENT is the colour of gold LETTERS and
+# ACCENT_FILL the colour of gold SHAPES, which carry dark text on top. On dark,
+# bright gold is 10.2:1 and does both jobs.
+THEMES = {
+    "light": {                       # warm paper — launches, tools, explainers
+        "BG_TOP": (253, 250, 244),
+        "BG_BOT": (245, 238, 224),
+        "ACCENT": (146, 104, 12),    # gold text      4.63:1
+        "ACCENT_FILL": (245, 183, 49),
+        "ON_ACCENT": (28, 26, 22),   # text on gold   9.68:1
+        "FG": (28, 26, 22),          # body text     16.12:1
+        "MUTED": (108, 99, 86),      # secondary      5.48:1
+        "GRID": (233, 224, 205),
+        "GHOST": (236, 227, 208),
+        "GLOW": (255, 234, 186),
+        "LETTERBOX": "0xF5EEE0",
+    },
+    "dark": {                        # warm near-black — lawsuits, risk, warnings
+        "BG_TOP": (18, 16, 13),
+        "BG_BOT": (28, 24, 18),
+        "ACCENT": (245, 183, 49),    # gold text     10.23:1
+        "ACCENT_FILL": (245, 183, 49),
+        "ON_ACCENT": (28, 26, 22),   # text on gold   9.68:1
+        "FG": (245, 241, 232),       # body text     16.29:1
+        "MUTED": (170, 160, 144),    # secondary      7.12:1
+        "GRID": (48, 42, 32),
+        "GHOST": (56, 48, 36),
+        "GLOW": (92, 66, 16),
+        "LETTERBOX": "0x1C1812",
+    },
+}
+
+_BASE_CACHE = None
+THEME = "light"
+BG_TOP = BG_BOT = ACCENT = ACCENT_FILL = ON_ACCENT = FG = MUTED = GRID = GHOST = GLOW = None
+
+
+def set_theme(name):
+    """Switch palette. Resets the cached background, which is theme-specific."""
+    global THEME, _BASE_CACHE
+    if name not in THEMES:
+        name = "light"
+    THEME = name
+    globals().update(THEMES[name])
+    _BASE_CACHE = None
+    return name
+
+
 HANDLE = "@thealgorithmzedge"
 BRAND = "THE ALGORITHMZ EDGE"
+
+set_theme("light")
 
 
 DEJAVU = "/usr/share/fonts/truetype/dejavu"
@@ -49,14 +99,15 @@ def base():
             int(a + (b - a) * t) for a, b in zip(BG_TOP, BG_BOT)))
     for gx in range(60, W, 120):            # subtle dot grid
         for gy in range(60, H, 120):
-            d.ellipse([gx - 2, gy - 2, gx + 2, gy + 2], fill=(28, 34, 48))
-    glow = Image.new("RGB", (W, H), (0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    gd.ellipse([W - 420, -260, W + 260, 420], fill=(0, 60, 42))
-    img = Image.blend(img, Image.composite(glow, img, Image.new("L", (W, H), 255)).filter(
-        ImageFilter.GaussianBlur(160)), 0.55)
+            d.ellipse([gx - 2, gy - 2, gx + 2, gy + 2], fill=GRID)
+    # Warm corner bloom. Built from a copy of the page rather than from black,
+    # so blurring and blending only tints the corner instead of darkening the
+    # whole canvas and flattening the gradient.
+    glow = img.copy()
+    ImageDraw.Draw(glow).ellipse([W - 420, -260, W + 260, 420], fill=GLOW)
+    img = Image.blend(img, glow.filter(ImageFilter.GaussianBlur(160)), 0.55)
     d = ImageDraw.Draw(img)
-    d.rectangle([(0, 0), (W, 10)], fill=ACCENT)
+    d.rectangle([(0, 0), (W, 10)], fill=ACCENT_FILL)
     d.text((72, 58), BRAND, font=font(30, "mono"), fill=ACCENT)
     d.text((72, H - 96), HANDLE, font=font(32, "semibold"), fill=MUTED)
     return img, d
@@ -134,7 +185,7 @@ def render_hook(headline, kicker="", out="slide.png"):
 
 def render_content(headline, body, idx, total, out="slide.png"):
     img, d = base()
-    d.text((72, 240), f"{idx:02d}", font=font(140, "black"), fill=(34, 44, 62))
+    d.text((72, 240), f"{idx:02d}", font=font(140, "black"), fill=GHOST)
     d.text((W - 190, 64), f"{idx}/{total}", font=font(34, "mono"), fill=MUTED)
     hf, hlines = fit(headline, 76, "bold", max_lines=3)
     y = 430
@@ -165,8 +216,8 @@ def render_cta(headline, body, out="slide.png"):
     label, bf = f"Follow {HANDLE}", font(42, "bold")
     bw = bf.getlength(label)
     d.rounded_rectangle([MARGIN, y + 70, MARGIN + bw + 76, y + 190],
-                        radius=24, fill=ACCENT)
-    d.text((MARGIN + 38, y + 100), label, font=bf, fill=(8, 12, 18))
+                        radius=24, fill=ACCENT_FILL)
+    d.text((MARGIN + 38, y + 100), label, font=bf, fill=ON_ACCENT)
     img.save(out)
 
 
@@ -193,7 +244,6 @@ if __name__ == "__main__":
 # the first second is what stops the thumb; a still slide is what produced the
 # 85% skip rate.
 
-_BASE_CACHE = None
 REVEAL = 0.55        # default reveal fraction; reel_maker overrides per slide
 CHAR_WINDOW = 0.30   # each letter's own fade, as a fraction of the reveal
 
@@ -267,7 +317,7 @@ def frame_hook(headline, kicker, progress, reveal=REVEAL):
 def frame_content(headline, body, idx, total, progress, reveal=REVEAL):
     img = base_cached().convert("RGBA")
     d = ImageDraw.Draw(img)
-    d.text((72, 240), f"{idx:02d}", font=font(140, "black"), fill=(34, 44, 62))
+    d.text((72, 240), f"{idx:02d}", font=font(140, "black"), fill=GHOST)
     d.text((W - 190, 64), f"{idx}/{total}", font=font(34, "mono"), fill=MUTED)
     head_f, hlines = fit(headline, 76, "bold", max_lines=3)
     body_f, blines = fit(body, 44, "regular", max_lines=6, min_size=32)
@@ -296,9 +346,9 @@ def frame_cta(headline, body, progress, reveal=REVEAL):
         label, bf = f"Follow {HANDLE}", font(42, "bold")
         bw = bf.getlength(label)
         bd.rounded_rectangle([MARGIN, y + 70, MARGIN + bw + 76, y + 190],
-                             radius=24, fill=(*ACCENT, int(255 * a)))
+                             radius=24, fill=(*ACCENT_FILL, int(255 * a)))
         bd.text((MARGIN + 38, y + 100), label, font=bf,
-                fill=(8, 12, 18, int(255 * a)))
+                fill=(*ON_ACCENT, int(255 * a)))
         img.alpha_composite(btn)
     return img.convert("RGB")
 

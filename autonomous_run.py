@@ -30,7 +30,7 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from agent import BASE, IG_API, call_llm, ig_token, log
-from make_image import render_content, render_cta, render_hook
+from make_image import render_content, render_cta, render_hook, set_theme
 from research import forget, keywords, recent_story_keys, record, research
 
 import os
@@ -53,6 +53,22 @@ CDN_SHA_BASE = "https://cdn.jsdelivr.net/gh/absailor30/tech-post-exp@"
 # this lands the reel near 40s; more slides pushed it past 50s, which is
 # long for Reels retention.
 CONTENT_SLIDES = 4
+
+# If the model omits or invents a theme, decide from the story itself rather
+# than defaulting blindly — a lawsuit on cream paper reads wrong.
+DARK_CUES = ("sue", "sued", "lawsuit", "court", "legal", "ban", "banned",
+             "breach", "leak", "hack", "scam", "fraud", "fake", "deepfake",
+             "layoff", "job cuts", "fired", "warn", "warning", "risk",
+             "danger", "harm", "privacy", "surveillance", "steal", "stolen",
+             "theft", "investigation", "probe", "fine", "penalty", "shut down")
+
+
+def pick_theme(plan, story):
+    choice = str(plan.get("theme", "")).strip().lower()
+    if choice in ("light", "dark"):
+        return choice
+    blob = f"{plan.get('topic', '')} {story.get('headline', '')}".lower()
+    return "dark" if any(c in blob for c in DARK_CUES) else "light"
 
 STRATEGY_F = BASE / "strategy.json"
 
@@ -120,6 +136,7 @@ Reply with ONLY this JSON:
   "hook": {{"kicker": "2-4 word category label", "headline": "hook following the chosen pattern, max 10 words — open a curiosity gap, don't close it"}},
   "slides": [{{"headline": "one point, max 7 words", "body": "max 20 words, concrete and specific"}}, ...],
   "cta": {{"headline": "max 6 words", "body": "why follow, max 15 words"}},
+  "theme": "light or dark — dark for serious stories (lawsuits, privacy, layoffs, scams, security, warnings, anything with a victim); light for launches, new tools, reviews, explainers and anything useful or upbeat",
   "caption": "hook first line, then what happened, then why it matters to a normal person, then a question that invites a reply, then 8-12 hashtags mixing AI news and general tech"}}
 "slides" must contain EXACTLY 4 content slides (hook and cta are separate,
 making 6 in total). Not 3, not 5 — exactly 4. Pick the four points that
@@ -279,6 +296,7 @@ def plan():
     if hit:
         sys.exit(f"plan violates mandate (banned: {', '.join(hit)}): {p['topic']}")
 
+    p["theme"] = pick_theme(p, story)
     p["_story"] = story
     return p
 
@@ -427,6 +445,8 @@ def main(dry=False, force=False):
         outdir = REPO_DIR / "images" / f"{stamp}-{slug}-{n}"
         n += 1
     outdir.mkdir(parents=True, exist_ok=True)
+    theme = set_theme(p.get("theme", "light"))
+    print(f"theme: {theme}")
     total = len(p["slides"]) + 2
     files = [outdir / f"slide{i}.png" for i in range(1, total + 1)]
     render_hook(p["hook"]["headline"], p["hook"].get("kicker", ""), str(files[0]))
@@ -443,12 +463,13 @@ def main(dry=False, force=False):
                "idx": i + 1, "total": total} for i, s in enumerate(p["slides"], 1)]
     specs.append({"kind": "cta", "headline": p["cta"]["headline"],
                   "body": p["cta"]["body"]})
-    (outdir / "slides.json").write_text(json.dumps(specs, indent=2), encoding="utf-8")
+    (outdir / "slides.json").write_text(
+        json.dumps({"theme": theme, "slides": specs}, indent=2), encoding="utf-8")
 
     print(f"topic: {p['topic']}\nslides: {len(files)}\ncaption:\n{p['caption']}\n")
     if dry:
         from reel_maker import build_animated
-        build_animated(specs, outdir / "reel.mp4")
+        build_animated(specs, outdir / "reel.mp4", theme=theme)
         print(f"[dry run] rendered to {outdir}, nothing pushed or published")
         return
 
@@ -456,7 +477,7 @@ def main(dry=False, force=False):
     # and earned zero saves and zero shares — Instagram had stopped
     # distributing them entirely, so there is nothing to salvage there.
     from reel_maker import build_animated
-    build_animated(specs, outdir / "reel.mp4")
+    build_animated(specs, outdir / "reel.mp4", theme=theme)
     rel_paths.append((outdir / "reel.mp4").relative_to(REPO_DIR).as_posix())
 
     git("add", "images")
@@ -475,7 +496,7 @@ def main(dry=False, force=False):
     kind = "reel"
     story = p.get("_story", {})
     log("autonomous_post", media_id=result["id"], topic=p["topic"], format=kind,
-        slides=len(p["slides"]) + 2, caption=p["caption"][:200],
+        slides=len(p["slides"]) + 2, caption=p["caption"][:200], theme=theme,
         story_headline=story.get("headline", ""), story_url=story.get("url", ""),
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))

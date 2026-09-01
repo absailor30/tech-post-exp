@@ -50,15 +50,15 @@ def slide_seconds(spec):
     return max(MIN_SECS, min(MAX_SECS, secs))
 W, H = 1080, 1920
 SLIDE_W, SLIDE_H = 1080, 1350
-BG = "0x0E1117"
+BG = "0xF5EEE0"   # fallback; the real value comes from the active theme
 
 
-def _encode(frames_dir, n_frames, out):
+def _encode(frames_dir, n_frames, out, bg=BG):
     """Frame sequence -> H.264 Reel, letterboxed onto a 1080x1920 canvas."""
     from music_maker import pick_track
     track = pick_track()
     dur = n_frames / FPS
-    fc = (f"[0:v]pad={W}:{H}:0:(oh-ih)/2:color={BG},setsar=1[v];"
+    fc = (f"[0:v]pad={W}:{H}:0:(oh-ih)/2:color={bg},setsar=1[v];"
           f"[1:a]aloop=loop=-1:size=2e9,atrim=0:{dur},"
           f"afade=t=out:st={max(0.1, dur - 1.2)}:d=1.2,volume=0.9[aud]")
     cmd = [get_ffmpeg_exe(), "-y",
@@ -74,9 +74,13 @@ def _encode(frames_dir, n_frames, out):
     return out
 
 
-def build_animated(specs, out="reel.mp4", workdir=None):
+def build_animated(specs, out="reel.mp4", workdir=None, theme=None):
     """specs: list of slide dicts (kind/headline/body/idx/total) in order."""
-    from make_image import render_slide_frames
+    from make_image import THEMES, render_slide_frames, set_theme
+    if theme:
+        set_theme(theme)
+    # Letterbox bars must match the page or the reel gets visible edges.
+    bg = THEMES[__import__("make_image").THEME]["LETTERBOX"]
 
     tmp = Path(workdir) if workdir else Path(tempfile.mkdtemp(prefix="reelframes"))
     tmp.mkdir(parents=True, exist_ok=True)
@@ -91,7 +95,7 @@ def build_animated(specs, out="reel.mp4", workdir=None):
               f"(read {secs - REVEAL_SECS:.1f}s)")
     print(f"rendered {idx} animated frames ({len(specs)} slides, {idx / FPS:.1f}s)")
     try:
-        _encode(tmp, idx, out)
+        _encode(tmp, idx, out, bg)
     finally:
         if workdir is None:
             shutil.rmtree(tmp, ignore_errors=True)
@@ -108,7 +112,10 @@ def build(slides_dir, out="reel.mp4"):
     slides_dir = Path(slides_dir)
     meta = slides_dir / "slides.json"
     if meta.exists():
-        return build_animated(json.loads(meta.read_text(encoding="utf-8")), out)
+        data = json.loads(meta.read_text(encoding="utf-8"))
+        if isinstance(data, dict):          # newer form carries the theme
+            return build_animated(data["slides"], out, theme=data.get("theme"))
+        return build_animated(data, out)
     return _still_slideshow(slides_dir, out)
 
 
