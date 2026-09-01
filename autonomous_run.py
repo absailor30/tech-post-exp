@@ -46,6 +46,11 @@ RAW_BASE = "https://raw.githubusercontent.com/absailor30/tech-post-exp/main"
 # jsDelivr fronts the same repo with proper video/mp4.
 CDN_BASE = "https://cdn.jsdelivr.net/gh/absailor30/tech-post-exp@main"
 
+# 6 slides total: hook + CONTENT_SLIDES + cta. At ~7.5s per content slide
+# this lands the reel near 40s; more slides pushed it past 50s, which is
+# long for Reels retention.
+CONTENT_SLIDES = 4
+
 STRATEGY_F = BASE / "strategy.json"
 
 
@@ -106,13 +111,16 @@ WRITING RULES:
 - Give an honest verdict, including what is bad or overhyped about it.
 - Short sentences. No jargon, no hype words, no emoji in the slide text.
 
-Plan a 6-8 slide vertical Reel. Reply with ONLY this JSON:
+Plan a vertical Reel of EXACTLY 6 slides: 1 hook + 4 content + 1 CTA.
+Reply with ONLY this JSON:
 {{"topic": "the story in under 12 words",
   "hook": {{"kicker": "2-4 word category label", "headline": "hook following the chosen pattern, max 10 words — open a curiosity gap, don't close it"}},
   "slides": [{{"headline": "one point, max 7 words", "body": "max 20 words, concrete and specific"}}, ...],
   "cta": {{"headline": "max 6 words", "body": "why follow, max 15 words"}},
   "caption": "hook first line, then what happened, then why it matters to a normal person, then a question that invites a reply, then 8-12 hashtags mixing AI news and general tech"}}
-"slides" is the 4-6 middle content slides only (hook and cta are separate)."""
+"slides" must contain EXACTLY 4 content slides (hook and cta are separate,
+making 6 in total). Not 3, not 5 — exactly 4. Pick the four points that
+matter most and cut the rest."""
 
 
 def ig_call(url, params, method="POST"):
@@ -227,7 +235,7 @@ def plan():
                            for h in picked)
     # Reasoning models (nemotron ultra) spend most of the budget thinking before
     # emitting the JSON — give them room or the plan comes back truncated.
-    raw = call_llm(PLAN_PROMPT.format(
+    prompt = PLAN_PROMPT.format(
         mandate=st.get("mandate", ""), audience=st.get("audience", ""),
         banned=", ".join(st.get("banned_topics", [])) or "none",
         directives="\n".join(f"- {d}" for d in st.get("directives", [])) or "none",
@@ -237,10 +245,30 @@ def plan():
         coverage_lines="\n".join(f"    {h}" for h in story["all_headlines"]),
         summary=story.get("summary", "") or "none",
         recent=recent_topics(), performance=collect(), lesson=last_lesson(),
-        hooks=hooks_txt), max_tokens=6000)
-    p = extract_plan(raw)
+        hooks=hooks_txt)
+
+    # One retry if the model returns too few content slides — cheaper than
+    # losing the day, and it usually complies on the second ask.
+    p = None
+    for attempt in range(2):
+        raw = call_llm(prompt, max_tokens=6000)
+        p = extract_plan(raw)
+        if not p:
+            if attempt:
+                sys.exit(f"no usable JSON in plan:\n{raw[-1500:]}")
+            continue
+        if len(p["slides"]) >= CONTENT_SLIDES:
+            break
+        print(f"[plan] got {len(p['slides'])} content slides, want "
+              f"{CONTENT_SLIDES} — retrying")
     if not p:
-        sys.exit(f"no usable JSON in plan:\n{raw[-1500:]}")
+        sys.exit("no usable plan after retry")
+
+    if len(p["slides"]) > CONTENT_SLIDES:
+        print(f"[plan] trimming {len(p['slides'])} content slides to {CONTENT_SLIDES}")
+        p["slides"] = p["slides"][:CONTENT_SLIDES]
+    elif len(p["slides"]) < CONTENT_SLIDES:
+        print(f"[plan] WARNING only {len(p['slides'])} content slides; posting anyway")
 
     banned = [b.lower() for b in st.get("banned_topics", [])]
     blob = f"{p['topic']} {p['hook'].get('headline','')}".lower()
