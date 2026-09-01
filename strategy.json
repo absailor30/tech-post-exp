@@ -1,0 +1,20 @@
+{
+  "mandate": "AI only. Every post covers AI news, AI model releases, AI product launches, AI tool reviews, or what an AI development means for ordinary people. Never post about terminal tools, CLI utilities, Python syntax, git, or general developer tooling.",
+  "audience": "Curious non-developers. A 15-year-old, a designer, a small-business owner, a student. Assume the reader has never written code and never will. If a sentence only makes sense to a programmer, it is wrong for this account.",
+  "format": "reel",
+  "letter_animation": true,
+  "banned_topics": [
+    "CLI tools", "terminal", "shell", "git", "lazygit", "fzf", "ripgrep",
+    "zoxide", "atuin", "jq", "bat", "eza", "fd", "tldr", "tmux", "starship",
+    "uv", "ruff", "pipx", "direnv", "mise", "Python syntax", "Python tips",
+    "virtualenv", "pathlib", "__slots__", "developer productivity tooling"
+  ],
+  "directives": [
+    "Lead with the news. The first line names what happened and when.",
+    "Explain what it changes for a normal person, not what the technology is.",
+    "Never use an unexplained technical word. Explain it in the same sentence in everyday language.",
+    "Give an honest take, including the downside. Reviews must say what is bad, not only what is good."
+  ],
+  "updated": "2026-09-01",
+  "updated_by": "setup"
+}
