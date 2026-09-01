@@ -57,7 +57,10 @@ def topic_for(media_id):
     return ""
 
 
-def collect(limit=8):
+def collect(limit=25):
+    """25, not 8. With an 8-post window every row read "reach 2, saves 0" and
+    the planner had no contrast to learn anything from — the feedback loop
+    was present but carried no signal."""
     media = get(f"{IG_API}/me/media",
                 {"fields": "id,media_type,timestamp", "limit": str(limit),
                  "access_token": ig_token()})
@@ -74,6 +77,10 @@ def collect(limit=8):
     with HIST.open("a", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
+    # Best first, so the planner reads what worked before what didn't.
+    rows.sort(key=lambda r: (r.get("saved", 0) * 3 + r.get("shares", 0) * 5
+                             + r.get("comments", 0) * 2 + r.get("likes", 0)),
+              reverse=True)
     lines = []
     for r in rows:
         lines.append(f"- {r['type']} \"{r['topic'] or '?'}\": reach {r.get('reach', 0)}, "

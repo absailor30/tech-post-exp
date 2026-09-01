@@ -1,8 +1,15 @@
-"""Telegram query bot: answers owner questions about the agent's activity.
+"""Telegram bot: answers owner questions AND applies owner instructions.
 
 Polled by a cron workflow. Reads new messages via getUpdates, answers from
 log.jsonl / metrics.jsonl / reports/ using the NIM model, replies in chat.
 Only the owner's chat id is served. Offset state in tg_offset.json.
+
+Crucially it now WRITES. Until today this bot could only talk: on 2026-08-06
+the owner said "lets push the focus to only ai... nothing else", got a
+friendly reply, and the account posted about terminal tools for another
+25 days because nothing could change the planner's instructions. Directives
+are now classified and persisted to strategy.json, which autonomous_run.py
+re-reads on every run — so a steer takes effect on the very next post.
 """
 
 import datetime
@@ -13,7 +20,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from agent import BASE, call_llm
+from agent import BASE, call_llm, log
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -27,6 +34,89 @@ def tg(method, **params):
     data = urllib.parse.urlencode(params).encode()
     with urllib.request.urlopen(urllib.request.Request(f"{API}/{method}", data=data)) as r:
         return json.loads(r.read())
+
+
+STRATEGY_F = BASE / "strategy.json"
+
+CLASSIFY = """The owner of an automated Instagram account sent this message:
+"{text}"
+
+Is it (a) a QUESTION about how the account is doing, or (b) an INSTRUCTION
+that should permanently change what the account posts?
+
+If INSTRUCTION, express it as a change to this strategy file:
+{current}
+
+Reply with ONLY JSON:
+{{"type": "question"}}
+or
+{{"type": "instruction",
+  "changes": {{"mandate": "...", "audience": "...", "format": "reel",
+               "add_banned": ["..."], "add_directives": ["..."]}},
+  "confirm": "one plain sentence telling the owner what will change"}}
+Include only the keys that actually change. Never invent an instruction from
+a question."""
+
+
+def load_strategy():
+    if STRATEGY_F.exists():
+        return json.loads(STRATEGY_F.read_text(encoding="utf-8"))
+    return {"mandate": "", "audience": "", "format": "reel",
+            "banned_topics": [], "directives": []}
+
+
+def apply_changes(changes):
+    """Persist an owner instruction. Lists are added to, not replaced, so an
+    earlier steer is never silently dropped by a later one."""
+    st = load_strategy()
+    for key in ("mandate", "audience", "format"):
+        if changes.get(key):
+            st[key] = changes[key]
+    for src, dst in (("add_banned", "banned_topics"), ("add_directives", "directives")):
+        for v in changes.get(src) or []:
+            if v and v not in st.setdefault(dst, []):
+                st[dst].append(v)
+    st["updated"] = datetime.datetime.now().date().isoformat()
+    st["updated_by"] = "telegram"
+    STRATEGY_F.write_text(json.dumps(st, indent=2), encoding="utf-8")
+    return st
+
+
+def parse_json(raw):
+    for start in (i for i, ch in enumerate(raw) if ch == "{"):
+        depth = 0
+        for end in range(start, len(raw)):
+            if raw[end] == "{":
+                depth += 1
+            elif raw[end] == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        d = json.loads(raw[start:end + 1])
+                    except json.JSONDecodeError:
+                        break
+                    if d.get("type"):
+                        return d
+                    break
+    return None
+
+
+def handle_instruction(text):
+    """Returns a reply string if this was an instruction, else None."""
+    st = load_strategy()
+    verdict = parse_json(call_llm(
+        CLASSIFY.format(text=text, current=json.dumps(st, indent=2)),
+        max_tokens=800))
+    if not verdict or verdict.get("type") != "instruction":
+        return None
+    changes = verdict.get("changes") or {}
+    if not changes:
+        return None
+    apply_changes(changes)
+    log("strategy_updated", instruction=text[:200], changes=changes)
+    return ("Applied to strategy.json — this takes effect on the next post.\n\n"
+            + (verdict.get("confirm") or "")
+            + "\n\nchanged: " + ", ".join(sorted(changes)))
 
 
 def context_blob():
@@ -57,6 +147,12 @@ def main():
         msg = u.get("message", {})
         text = msg.get("text", "")
         if str(msg.get("chat", {}).get("id")) != str(CHAT) or not text or text == "/start":
+            continue
+        instruction_reply = handle_instruction(text)
+        if instruction_reply:
+            tg("sendMessage", chat_id=CHAT, text=instruction_reply[:4000],
+               disable_web_page_preview="true")
+            print(f"applied instruction: {text[:60]}")
             continue
         answer = call_llm(
             "You are the reporting interface of an autonomous Instagram agent "

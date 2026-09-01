@@ -1,11 +1,19 @@
-"""Autonomous daily run: plan -> render -> host -> publish -> log.
+"""Autonomous daily run: research -> plan -> render -> host -> publish -> log.
 
-Designed for a scheduled task (no human in the loop for content).
+Nothing is written until research.py has found the day's biggest AI story
+across 10+ independent sources. The model may only write about what the
+research returned — it is never allowed to pick a topic from memory, which
+is how this account spent two months recycling the same terminal tools.
+
+Standing strategy (mandate, audience, banned topics) lives in strategy.json
+and is editable by the owner over Telegram, so a steer actually changes what
+gets posted instead of being answered and forgotten.
+
 Money/ads still require human approval — this script never spends.
 
 Usage:
   python autonomous_run.py           # full run (publishes!)
-  python autonomous_run.py --dry     # plan + render only, no push/publish
+  python autonomous_run.py --dry     # research + plan + render only
 """
 
 import datetime
@@ -23,6 +31,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from agent import BASE, IG_API, call_llm, ig_token, log
 from make_image import render_content, render_cta, render_hook
+from research import keywords, recent_story_keys, research
 
 import os
 # Locally we clone into ./repo; on GitHub Actions REPO_DIR=$GITHUB_WORKSPACE
@@ -37,37 +46,73 @@ RAW_BASE = "https://raw.githubusercontent.com/absailor30/tech-post-exp/main"
 # jsDelivr fronts the same repo with proper video/mp4.
 CDN_BASE = "https://cdn.jsdelivr.net/gh/absailor30/tech-post-exp@main"
 
-PLAN_PROMPT = """You run the Instagram account @thealgorithmzedge (tech/dev niche, small account).
-Algorithm facts: DM-shares rank highest; carousels drive saves; original, specific,
-practical content wins; hooks decide everything.
+STRATEGY_F = BASE / "strategy.json"
 
-Pillars (rotate, don't repeat recent topics): CLI tools, AI dev tools, Python tips,
-dev productivity.
 
-WRITING RULES: plain language a curious 15-year-old gets. No unexplained jargon —
-if a technical word is unavoidable, explain it in the same sentence in everyday
-words ("fuzzy finder — type a few letters, it finds the file"). Short sentences.
-Talk about what the reader gains, not what the tech is.
+def strategy():
+    """Owner-set standing orders. Read fresh every run so a Telegram steer
+    takes effect on the very next post."""
+    if STRATEGY_F.exists():
+        return json.loads(STRATEGY_F.read_text(encoding="utf-8"))
+    return {"mandate": "AI only.", "audience": "Curious non-developers.",
+            "format": "reel", "banned_topics": [], "directives": []}
 
-Recent topics to avoid repeating: {recent}
 
-PERFORMANCE of recent posts (saves and shares matter most — study what worked
-and lean into those topics/styles; drop what flopped):
+PLAN_PROMPT = """You write for the Instagram account @thealgorithmzedge.
+
+MANDATE (non-negotiable, set by the owner):
+{mandate}
+
+AUDIENCE:
+{audience}
+
+BANNED — if the post drifts toward any of these, you have failed:
+{banned}
+
+OWNER DIRECTIVES:
+{directives}
+
+TODAY'S STORY. You did not choose this. It was found by scanning {source_count}
+independent sources and picking the story the most outlets are covering right
+now. Write about THIS and nothing else:
+
+  HEADLINE: {headline}
+  LINK: {url}
+  COVERED BY {coverage} OUTLETS: {covering}
+  HOW EACH OUTLET FRAMED IT:
+{coverage_lines}
+  EXTRA CONTEXT: {summary}
+
+Already covered — do not repeat any of these stories:
+{recent}
+
+WHAT PERFORMED (saves and shares are the only numbers that matter; reach
+without saves means people watched and felt nothing):
 {performance}
 
-HOOK PATTERNS for today (pick the ONE that fits the topic best; follow its
-formula — hooks decide 80% of a post's fate):
+LAST WEEK'S LESSON:
+{lesson}
+
+HOOK PATTERNS (pick the ONE that fits this story; the hook decides everything):
 {hooks}
 
-Plan today's carousel post (6-8 slides total). Reply with ONLY this JSON:
-{{"topic": "...",
+WRITING RULES:
+- The reader is not a programmer. Never assume they know what a model, a
+  token, an API, or a repo is. If you must use such a word, define it in the
+  same sentence in plain speech.
+- Lead with what happened, then what it means for the reader's own life —
+  their job, their money, their phone, their kids, their privacy.
+- Be specific: names, numbers, dates. No "AI is changing everything".
+- Give an honest verdict, including what is bad or overhyped about it.
+- Short sentences. No jargon, no hype words, no emoji in the slide text.
+
+Plan a 6-8 slide vertical Reel. Reply with ONLY this JSON:
+{{"topic": "the story in under 12 words",
   "hook": {{"kicker": "2-4 word category label", "headline": "hook following the chosen pattern, max 10 words — open a curiosity gap, don't close it"}},
   "slides": [{{"headline": "one point, max 7 words", "body": "max 20 words, concrete and specific"}}, ...],
   "cta": {{"headline": "max 6 words", "body": "why follow, max 15 words"}},
-  "caption": "hook first line, then value summary, then CTA to save/share, then 8-12 niche hashtags"}}
-"slides" is the 4-6 middle content slides only (hook and cta are separate).
-If a free guide link is on offer, end the caption with: Comment "EDGE" and I'll DM
-you the full guide free."""
+  "caption": "hook first line, then what happened, then why it matters to a normal person, then a question that invites a reply, then 8-12 hashtags mixing AI news and general tech"}}
+"slides" is the 4-6 middle content slides only (hook and cta are separate)."""
 
 
 def ig_call(url, params, method="POST"):
@@ -81,29 +126,119 @@ def ig_call(url, params, method="POST"):
         sys.exit(f"API error {e.code}: {e.read().decode()}")
 
 
-def recent_topics(n=14):
+def recent_topics(n=None):
+    """EVERY topic ever posted, not a 14-item window.
+
+    The old 14-post window was the direct cause of the fortnight repeat
+    cycle: on day 15 a tool the account had already covered looked new
+    again. Full history means a story can only ever be posted once.
+    """
     logf = BASE / "log.jsonl"
     if not logf.exists():
         return "none yet"
     topics = [json.loads(l).get("topic", "") for l in logf.read_text(encoding="utf-8").splitlines()
               if '"autonomous_post"' in l]
-    return "; ".join(t for t in topics[-n:] if t) or "none yet"
+    if n:
+        topics = topics[-n:]
+    return "; ".join(t for t in topics if t) or "none yet"
+
+
+def posted_story_keys():
+    """Keyword sets for every topic ever posted.
+
+    research.jsonl only starts today, so on its own it would happily let the
+    account re-post a story it already covered before the rewrite. The real
+    history lives in log.jsonl and has to be checked too.
+    """
+    logf = BASE / "log.jsonl"
+    if not logf.exists():
+        return []
+    out = []
+    for line in logf.read_text(encoding="utf-8").splitlines():
+        if '"autonomous_post"' not in line:
+            continue
+        try:
+            d = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        for field in ("topic", "story_headline"):
+            if d.get(field):
+                out.append(keywords(d[field]))
+    return out
+
+
+def already_covered(headline):
+    """True if this story is a rerun of one we already posted."""
+    kw = keywords(headline)
+    if len(kw) < 2:
+        return False
+    for prev in recent_story_keys() + posted_story_keys():
+        shared = kw & prev
+        if len(shared) >= 3 or (shared and len(shared) / max(1, min(len(kw), len(prev))) > 0.6):
+            return True
+    return False
+
+
+def last_lesson():
+    """Feed the newest weekly report back into planning. It used to be
+    written, filed, and never read by anything."""
+    reps = sorted((BASE / "reports").glob("week-*.md")) if (BASE / "reports").exists() else []
+    if not reps:
+        return "none yet"
+    return reps[-1].read_text(encoding="utf-8").strip()[-1200:]
 
 
 def plan():
     import random
     from metrics import collect
+
+    story = research()
+    print(f"[research] {story['source_count']} sources responded "
+          f"-> {story['coverage_count']} outlets on: {story['headline']}")
+    if story["degraded"]:
+        print(f"[research] WARNING degraded: {', '.join(story['sources_failed'])}")
+    if already_covered(story["headline"]):
+        for alt in story["runners_up"]:
+            if not already_covered(alt["headline"]):
+                print(f"[research] top story already covered, using: {alt['headline']}")
+                story["headline"] = alt["headline"]
+                story["all_headlines"] = [alt["headline"]]
+                story["sources_covering"] = alt["sources"]
+                story["coverage_count"] = len(alt["sources"])
+                break
+        else:
+            sys.exit("every candidate story already covered — skipping today "
+                     "rather than posting a repeat")
+
+    st = strategy()
     hooks = json.loads((BASE / "hooks.json").read_text(encoding="utf-8"))
     picked = random.sample(hooks, 4)
     hooks_txt = "\n".join(f"- {h['name']}: {h['formula']} (e.g. \"{h['example']}\")"
-                          for h in picked)
+                           for h in picked)
     # Reasoning models (nemotron ultra) spend most of the budget thinking before
     # emitting the JSON — give them room or the plan comes back truncated.
-    raw = call_llm(PLAN_PROMPT.format(recent=recent_topics(), hooks=hooks_txt,
-                                      performance=collect()), max_tokens=6000)
+    raw = call_llm(PLAN_PROMPT.format(
+        mandate=st.get("mandate", ""), audience=st.get("audience", ""),
+        banned=", ".join(st.get("banned_topics", [])) or "none",
+        directives="\n".join(f"- {d}" for d in st.get("directives", [])) or "none",
+        source_count=story["source_count"], headline=story["headline"],
+        url=story.get("url", ""), coverage=story["coverage_count"],
+        covering=", ".join(story["sources_covering"]),
+        coverage_lines="\n".join(f"    {h}" for h in story["all_headlines"]),
+        summary=story.get("summary", "") or "none",
+        recent=recent_topics(), performance=collect(), lesson=last_lesson(),
+        hooks=hooks_txt), max_tokens=6000)
     p = extract_plan(raw)
     if not p:
         sys.exit(f"no usable JSON in plan:\n{raw[-1500:]}")
+
+    banned = [b.lower() for b in st.get("banned_topics", [])]
+    blob = f"{p['topic']} {p['hook'].get('headline','')}".lower()
+    hit = [b for b in banned if b in blob]
+    if hit:
+        sys.exit(f"plan violates mandate (banned: {', '.join(hit)}): {p['topic']}")
+
+    p["_story"] = story
     return p
 
 
@@ -129,6 +264,21 @@ def extract_plan(raw):
                         return p
                     break
     return None
+
+
+def strip_reasoning(text):
+    """Reasoning models narrate before answering, and week-35.md shipped as
+    raw scratchpad ("Let me analyze... Wait, the data has..."). Drop any
+    leading thinking and keep the report itself."""
+    text = re.sub(r"(?is)<think>.*?</think>", "", text).strip()
+    lines = text.splitlines()
+    for i, ln in enumerate(lines):
+        if ln.lstrip().startswith("#") or re.match(r"^\*\*[A-Z]", ln.strip()):
+            return "\n".join(lines[i:]).strip()
+    tell = re.compile(r"^\s*(let me|okay|ok,|first,? i|i need to|i should|wait|"
+                      r"looking at|the user (wants|asked)|analyzing)", re.I)
+    kept = [ln for ln in lines if not tell.match(ln)]
+    return "\n".join(kept).strip() or text
 
 
 def git(*args):
@@ -207,30 +357,42 @@ def main(dry=False):
     render_cta(p["cta"]["headline"], p["cta"]["body"], str(files[-1]))
     rel_paths = [f.relative_to(REPO_DIR).as_posix() for f in files]
 
+    # Slide text is kept beside the PNGs so the Reel can animate it letter by
+    # letter, and so a reel can be rebuilt later without re-asking the model.
+    specs = [{"kind": "hook", "headline": p["hook"]["headline"],
+              "kicker": p["hook"].get("kicker", "")}]
+    specs += [{"kind": "content", "headline": s["headline"], "body": s["body"],
+               "idx": i + 1, "total": total} for i, s in enumerate(p["slides"], 1)]
+    specs.append({"kind": "cta", "headline": p["cta"]["headline"],
+                  "body": p["cta"]["body"]})
+    (outdir / "slides.json").write_text(json.dumps(specs, indent=2), encoding="utf-8")
+
     print(f"topic: {p['topic']}\nslides: {len(files)}\ncaption:\n{p['caption']}\n")
     if dry:
+        from reel_maker import build_animated
+        build_animated(specs, outdir / "reel.mp4")
         print(f"[dry run] rendered to {outdir}, nothing pushed or published")
         return
 
-    as_reel = datetime.date.today().day % 2 == 0   # even days: Reel, odd: carousel
-    if as_reel:
-        from reel_maker import build
-        build(outdir, outdir / "reel.mp4")
-        rel_paths.append((outdir / "reel.mp4").relative_to(REPO_DIR).as_posix())
+    # Reels only. Carousels reached 1-3 accounts each for the whole of August
+    # and earned zero saves and zero shares — Instagram had stopped
+    # distributing them entirely, so there is nothing to salvage there.
+    from reel_maker import build_animated
+    build_animated(specs, outdir / "reel.mp4")
+    rel_paths.append((outdir / "reel.mp4").relative_to(REPO_DIR).as_posix())
 
     git("add", "images")
     git("commit", "-m", f"post {stamp}: {p['topic'][:60]}")
     git("push", "-q", "origin", "HEAD:main")
 
-    if as_reel:
-        result = publish_reel(f"{CDN_BASE}/{rel_paths[-1]}", p["caption"])
-        kind = "reel"
-    else:
-        urls = [f"{RAW_BASE}/{rp}" for rp in rel_paths]
-        result = publish_carousel(urls, p["caption"])
-        kind = "carousel"
+    result = publish_reel(f"{CDN_BASE}/{rel_paths[-1]}", p["caption"])
+    kind = "reel"
+    story = p.get("_story", {})
     log("autonomous_post", media_id=result["id"], topic=p["topic"], format=kind,
-        slides=len(p["slides"]) + 2, caption=p["caption"][:200])
+        slides=len(p["slides"]) + 2, caption=p["caption"][:200],
+        story_headline=story.get("headline", ""), story_url=story.get("url", ""),
+        sources_covering=story.get("sources_covering", []),
+        source_count=story.get("source_count", 0))
     print(f"published {kind}, media id {result['id']}")
 
     if datetime.date.today().weekday() == 6:   # Sunday: weekly digest
@@ -241,7 +403,11 @@ def main(dry=False):
             "Instagram experiment. Data (JSON lines, newest snapshots last):\n"
             f"{recent}\n\nCover: what performed best and why (saves/shares first), "
             "what flopped, follower trajectory if inferable, and 2-3 concrete "
-            "changes you will make next week. Under 250 words.", max_tokens=800)
+            "changes you will make next week. Under 250 words.\n\n"
+            "Output the finished report ONLY. Do not show your working, do not "
+            "narrate your analysis, do not write 'Let me' or 'Wait'. Start "
+            "directly with the report's first heading.", max_tokens=800)
+        digest = strip_reasoning(digest)
         rep = BASE / "reports"
         rep.mkdir(exist_ok=True)
         f = rep / f"week-{datetime.date.today().isocalendar()[1]}.md"

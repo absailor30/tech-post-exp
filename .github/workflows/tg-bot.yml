@@ -27,11 +27,19 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python tg_bot.py
-      - name: persist offset
+      # strategy.json is written here when the owner sends an instruction, so
+      # it MUST be committed — otherwise the steer dies with the runner and
+      # the next daily-post run reads the old strategy.
+      - name: persist offset and strategy
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --cached --quiet || git commit -m "state: tg offset"
+          if git diff --cached --name-only | grep -q strategy.json; then
+            MSG="strategy: owner instruction applied via telegram"
+          else
+            MSG="state: tg offset"
+          fi
+          git diff --cached --quiet || git commit -m "$MSG"
           git pull --rebase && git push
