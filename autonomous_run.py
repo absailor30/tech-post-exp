@@ -31,7 +31,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from agent import BASE, IG_API, call_llm, ig_token, log
 from make_image import render_content, render_cta, render_hook
-from research import keywords, recent_story_keys, record, research
+from research import forget, keywords, recent_story_keys, record, research
 
 import os
 # Locally we clone into ./repo; on GitHub Actions REPO_DIR=$GITHUB_WORKSPACE
@@ -153,13 +153,23 @@ def posted_story_keys():
     logf = BASE / "log.jsonl"
     if not logf.exists():
         return []
+    lines = logf.read_text(encoding="utf-8").splitlines()
+    gone = set()
+    for line in lines:
+        if '"post_deleted"' in line:
+            try:
+                gone.add(json.loads(line).get("media_id"))
+            except json.JSONDecodeError:
+                pass
     out = []
-    for line in logf.read_text(encoding="utf-8").splitlines():
+    for line in lines:
         if '"autonomous_post"' not in line:
             continue
         try:
             d = json.loads(line)
         except json.JSONDecodeError:
+            continue
+        if d.get("media_id") in gone:
             continue
         for field in ("topic", "story_headline"):
             if d.get(field):
@@ -337,8 +347,29 @@ def already_posted_today():
                if '"autonomous_post"' in l)
 
 
-def main(dry=False):
-    if not dry and already_posted_today():
+def cmd_forget(media_id):
+    """Record that a published post was deleted from the account, so its
+    story stops counting as covered."""
+    headline = ""
+    logf = BASE / "log.jsonl"
+    if logf.exists():
+        for line in logf.read_text(encoding="utf-8").splitlines():
+            if '"autonomous_post"' not in line:
+                continue
+            try:
+                d = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if d.get("media_id") == media_id:
+                headline = d.get("story_headline") or d.get("topic") or ""
+    log("post_deleted", media_id=media_id, story_headline=headline)
+    dropped = forget(media_id, headline)
+    print(f"forgot {media_id} ({dropped} cache entr{'y' if dropped == 1 else 'ies'} "
+          f"dropped); its story can be picked again")
+
+
+def main(dry=False, force=False):
+    if not dry and not force and already_posted_today():
         print("already posted today — nothing to do")
         return
     p = plan()
@@ -397,6 +428,7 @@ def main(dry=False):
         story_headline=story.get("headline", ""), story_url=story.get("url", ""),
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))
+    story["media_id"] = result["id"]
     record(story)          # only now is the story genuinely "covered"
     print(f"published {kind}, media id {result['id']}")
 
@@ -422,7 +454,10 @@ def main(dry=False):
 
 if __name__ == "__main__":
     try:
-        main(dry="--dry" in sys.argv)
+        if "--forget" in sys.argv:
+            cmd_forget(sys.argv[sys.argv.index("--forget") + 1])
+        else:
+            main(dry="--dry" in sys.argv, force="--force" in sys.argv)
     except Exception:
         import traceback
         with (BASE / "runlog.txt").open("a", encoding="utf-8") as f:

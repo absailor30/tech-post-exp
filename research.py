@@ -318,6 +318,32 @@ def research():
     return result
 
 
+def forget(media_id, headline=None):
+    """Drop a story from the cache because its post no longer exists.
+
+    The cache means "stories currently live on the account". If a post is
+    deleted, the story was never really covered, and leaving it here would
+    block the account from ever posting that story again.
+
+    Matches on media_id, falling back to the headline — entries written
+    before record() started storing media_id have no id to match on.
+    """
+    if not CACHE.exists():
+        return 0
+    kept, dropped = [], 0
+    for line in CACHE.read_text(encoding="utf-8").splitlines():
+        try:
+            d = json.loads(line)
+            if d.get("media_id") == media_id or (headline and d.get("headline") == headline):
+                dropped += 1
+                continue
+        except json.JSONDecodeError:
+            pass
+        kept.append(line)
+    CACHE.write_text("\n".join(kept) + ("\n" if kept else ""), encoding="utf-8")
+    return dropped
+
+
 def record(result):
     """Append a story to the cache ONCE IT HAS ACTUALLY BEEN PUBLISHED.
 

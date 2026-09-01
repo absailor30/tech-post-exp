@@ -4,7 +4,12 @@ on:
     - cron: "0 15 * * *"        # 15:00 UTC = 20:30 IST (primary)
     - cron: "45 15 * * *"       # backup slot — no-ops if already posted
     - cron: "0 17 * * *"        # last-resort slot
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Post even if something already went out today"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -31,7 +36,7 @@ jobs:
           REPO_DIR: ${{ github.workspace }}
           GIT_NAME: github-actions[bot]
           GIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-        run: python autonomous_run.py
+        run: python autonomous_run.py ${{ inputs.force && '--force' || '' }}
       - name: persist state
         if: always()
         run: |
