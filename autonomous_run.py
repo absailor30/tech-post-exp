@@ -45,6 +45,9 @@ RAW_BASE = "https://raw.githubusercontent.com/absailor30/tech-post-exp/main"
 # Meta rejects raw.githubusercontent for video (octet-stream + nosniff);
 # jsDelivr fronts the same repo with proper video/mp4.
 CDN_BASE = "https://cdn.jsdelivr.net/gh/absailor30/tech-post-exp@main"
+# Commit-pinned form: jsDelivr treats @<sha> as immutable, so every publish
+# gets a URL it has never served before and cannot answer from cache.
+CDN_SHA_BASE = "https://cdn.jsdelivr.net/gh/absailor30/tech-post-exp@"
 
 # 6 slides total: hook + CONTENT_SLIDES + cta. At ~7.5s per content slide
 # this lands the reel near 40s; more slides pushed it past 50s, which is
@@ -323,6 +326,11 @@ def strip_reasoning(text):
     return "\n".join(kept).strip() or text
 
 
+def git_out(*args):
+    return subprocess.run(["git", "-C", str(REPO_DIR), *args],
+                          check=True, capture_output=True).stdout.decode().strip()
+
+
 def git(*args):
     subprocess.run(["git", "-C", str(REPO_DIR), "-c", f"user.name={GIT_NAME}",
                     "-c", f"user.email={GIT_EMAIL}", *args],
@@ -410,7 +418,14 @@ def main(dry=False, force=False):
         else:
             git("pull", "-q", "--rebase")
 
+    # Never reuse a directory. Two runs on the same story and day produced the
+    # same slug, so the second silently overwrote the first's slides — and,
+    # worse, republished the same CDN path (see below).
     outdir = REPO_DIR / "images" / f"{stamp}-{slug}"
+    n = 2
+    while outdir.exists():
+        outdir = REPO_DIR / "images" / f"{stamp}-{slug}-{n}"
+        n += 1
     outdir.mkdir(parents=True, exist_ok=True)
     total = len(p["slides"]) + 2
     files = [outdir / f"slide{i}.png" for i in range(1, total + 1)]
@@ -448,7 +463,15 @@ def main(dry=False, force=False):
     git("commit", "-m", f"post {stamp}: {p['topic'][:60]}")
     git("push", "-q", "origin", "HEAD:main")
 
-    result = publish_reel(f"{CDN_BASE}/{rel_paths[-1]}", p["caption"])
+    # Pin the video URL to the commit we just pushed. jsDelivr caches @main
+    # for hours, so re-publishing a path it has already served hands Instagram
+    # the OLD video — which is exactly how a re-paced reel went out still
+    # carrying the previous 21s cut. A commit URL is immutable and unique, so
+    # it can never be answered from a stale cache entry.
+    sha = git_out("rev-parse", "HEAD")
+    video_url = f"{CDN_SHA_BASE}{sha}/{rel_paths[-1]}"
+    print(f"publishing {video_url}")
+    result = publish_reel(video_url, p["caption"])
     kind = "reel"
     story = p.get("_story", {})
     log("autonomous_post", media_id=result["id"], topic=p["topic"], format=kind,
