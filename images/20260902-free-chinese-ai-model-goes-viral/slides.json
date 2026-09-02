@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why pay for AI when this runs free?",
+      "kicker": "AI COSTS"
+    },
+    {
+      "kind": "content",
+      "headline": "Qwen 3.8 hits 5 million downloads",
+      "body": "Alibaba's new 27-billion-parameter model tops Hugging Face charts this week.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Runs on your laptop, no cloud needed",
+      "body": "Download once, use forever offline. No subscription, no data leaves your device.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Three flavors for different needs",
+      "body": "Flash for speed, GGUF for low memory, uncensored for no guardrails.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "The catch: Chinese origin, mixed safety",
+      "body": "Some versions skip safety filters. Needs 16 GB RAM for smooth use.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want free AI that respects privacy?",
+      "body": "Follow for AI tools that save money and keep your data yours."
+    }
+  ]
+}
