@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The model OpenAI calls too risky",
+      "kicker": "AI Launch"
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI launched Astra this week",
+      "body": "A new AI model that writes code and solves complex problems",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "It outperforms GPT-4 on key tests",
+      "body": "Beats previous best on math, coding, and logic benchmarks",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Safety experts warn of misuse risks",
+      "body": "Can help create biological weapons and craft convincing scams",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "You cannot use it yet",
+      "body": "Only select companies get access; public release date unknown",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Stay informed on AI",
+      "body": "We explain what each breakthrough means for your daily life"
+    }
+  ]
+}
