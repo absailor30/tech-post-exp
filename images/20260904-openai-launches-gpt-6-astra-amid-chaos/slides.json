@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The smartest AI just had the messiest launch",
+      "kicker": "AI Launch"
+    },
+    {
+      "kind": "content",
+      "headline": "GPT-6 Astra went live September 3",
+      "body": "OpenAI released its newest model, claiming it's the most intelligent and aligned AI yet",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Paying users locked out for hours",
+      "body": "People paying $20 a month couldn't access it \u2014 Sam Altman publicly apologized for the messy rollout",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI hints this starts the AGI era",
+      "body": "The company says Astra may be the first step toward artificial general intelligence \u2014 AI that matches human thinking",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Better answers coming, but trust shaken",
+      "body": "When it works, you'll get smarter help with writing, research, and decisions \u2014 if OpenAI fixes access",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want AI news that matters?",
+      "body": "Follow for plain-English updates on every major AI shift"
+    }
+  ]
+}
