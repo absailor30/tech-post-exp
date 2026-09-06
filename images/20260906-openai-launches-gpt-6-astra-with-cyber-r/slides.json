@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI that could hack your bank",
+      "kicker": "Security Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI released GPT-6 Astra September 3",
+      "body": "New model writes code that finds and exploits security holes automatically",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "It can break into websites and apps",
+      "body": "Researchers showed it bypassing login screens and stealing test data in minutes",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your accounts are the real target",
+      "body": "Criminals can now automate attacks on banking, email, and phone apps at scale",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No safety rules exist yet",
+      "body": "OpenAI admits guardrails are incomplete; experts say misuse is inevitable",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Stay ahead of AI threats",
+      "body": "We translate AI security news into plain English for your daily life"
+    }
+  ]
+}
