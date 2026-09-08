@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "One of 7 impossible math problems. AI says it's solved.",
+      "kicker": "AI BREAKTHROUGH"
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI claims major math win",
+      "body": "The company says its new model solved a Millennium Problem \u2014 one of seven puzzles with a $1 million prize each.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Why these problems matter",
+      "body": "They underpin modern encryption. A solution could break the codes protecting your bank login, messages, and medical records.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No proof shared yet",
+      "body": "OpenAI has not published the solution for mathematicians to check. Until peers verify it, the claim remains unproven.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "What happens if it's true",
+      "body": "Banks, governments, and apps would need new security fast. The transition could take years and cost billions.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "AI news that affects you",
+      "body": "We explain breakthroughs and risks in plain language. Follow to stay informed."
+    }
+  ]
+}
