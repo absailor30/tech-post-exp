@@ -31,7 +31,8 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from agent import BASE, IG_API, call_llm, ig_token, log
 from make_image import render_content, render_cta, render_hook, set_theme
-from research import forget, keywords, recent_story_keys, record, research
+from research import (content_tokens, forget, keywords, recent_story_keys,
+                      record, research, significance, similarity)
 
 import os
 # Locally we clone into ./repo; on GitHub Actions REPO_DIR=$GITHUB_WORKSPACE
@@ -205,14 +206,60 @@ def posted_story_keys():
     return out
 
 
-def already_covered(headline):
-    """True if this story is a rerun of one we already posted."""
+# Weighted-overlap score above which two headlines are the same story.
+# Tuned against the real repeats this account shipped: the two GPT-6 Astra
+# reruns and the two German-wiki reruns must be caught, while genuinely
+# different lawsuits against different companies must not be.
+SAME_STORY = 0.42     # weighted overlap, checked against the whole history
+RECENT_WINDOW = 16    # stories back over which ANY shared subject is a repeat
+
+
+def same_story(a, b, weight, recent):
+    """Compare two keyword sets. Returns (is_same, reason)."""
+    score = similarity(a, b, weight)
+    if score >= SAME_STORY:
+        return True, f"overlap {score:.2f} on {sorted(a & b)}"
+    if recent:
+        shared = content_tokens(a) & content_tokens(b)
+        if shared:
+            return True, f"recent subject {sorted(shared)}"
+    return False, ""
+
+
+def already_covered(headline, explain=False):
+    """True if this story is a rerun of one we already posted.
+
+    Two rules, because one is not enough:
+
+    1. Weighted overlap across the entire history, for headlines that are
+       obviously the same wording.
+    2. A recent-subject guard. Weighting by rarity alone is self-defeating
+       here: the account posted "Astra" three times, which made "astra"
+       look COMMON and downweighted the one word identifying the story. So
+       within the last RECENT_WINDOW stories, sharing any subject word at
+       all — anything outside the boilerplate in research.COMMON — counts as
+       a repeat. Restricting it to a window means a genuinely new Mistral
+       story months later is still allowed through.
+    """
     kw = keywords(headline)
     if len(kw) < 2:
         return False
-    for prev in recent_story_keys() + posted_story_keys():
-        shared = kw & prev
-        if len(shared) >= 3 or (shared and len(shared) / max(1, min(len(kw), len(prev))) > 0.6):
+    history = posted_story_keys() + recent_story_keys()
+    weight = significance(history)
+    subject = content_tokens(kw)
+
+    for prev in history:
+        hit, reason = same_story(kw, prev, weight, recent=False)
+        if hit:
+            if explain:
+                print(f"  repeat ({reason})")
+            return True
+
+    for prev in history[-RECENT_WINDOW:]:
+        hit, reason = same_story(kw, prev, weight, recent=True)
+        if hit:
+            if explain:
+                print(f"  repeat ({reason})")
             return True
     return False
 

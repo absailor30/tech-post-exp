@@ -26,6 +26,7 @@ import concurrent.futures as futures
 import datetime
 import html
 import json
+import math
 import re
 import sys
 import urllib.parse
@@ -38,7 +39,17 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 BASE = Path(__file__).parent
 CACHE = BASE / "research.jsonl"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; algorithmzedge-research/1.0)"}
+# A browser-shaped UA. Several publishers (and Reddit in particular) reject
+# self-identifying bot agents outright, which is one reason a third of the
+# feeds returned errors on every single run.
+UA = {
+    "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) "
+                   "Chrome/126.0.0.0 Safari/537.36"),
+    "Accept": ("application/rss+xml, application/atom+xml, application/xml, "
+               "application/json;q=0.9, text/xml;q=0.8, */*;q=0.5"),
+    "Accept-Language": "en-US,en;q=0.9",
+}
 TIMEOUT = 25
 
 # A story must clear this many DISTINCT sources fetched successfully or we do
@@ -46,30 +57,73 @@ TIMEOUT = 25
 WANT_SOURCES = 10
 MIN_SOURCES = 5
 
-RSS = {
-    "TechCrunch":       "https://techcrunch.com/category/artificial-intelligence/feed/",
-    "The Verge":        "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-    "Ars Technica":     "https://arstechnica.com/ai/feed/",
-    "VentureBeat":      "https://venturebeat.com/category/ai/feed/",
-    "MIT Tech Review":  "https://www.technologyreview.com/topic/artificial-intelligence/feed",
-    "Wired":            "https://www.wired.com/feed/tag/ai/latest/rss",
-    "ZDNet":            "https://www.zdnet.com/topic/artificial-intelligence/rss.xml",
-    "Engadget":         "https://www.engadget.com/rss.xml",
-    "AI News":          "https://www.artificialintelligence-news.com/feed/",
-    "Google News":      ("https://news.google.com/rss/search?q=artificial+intelligence+OR"
-                         "+%22AI+model%22+when:2d&hl=en-US&gl=US&ceid=US:en"),
-}
+# Each source lists candidate URLs tried in order, so a publisher moving its
+# feed degrades to the next candidate instead of killing the source. Every
+# source that died on all seven runs is either replaced or given a fallback.
+SOURCES = [
+    # --- mainstream tech press -------------------------------------------
+    ("TechCrunch", "rss", [
+        "https://techcrunch.com/category/artificial-intelligence/feed/",
+        "https://techcrunch.com/feed/"]),
+    ("The Verge", "rss", [
+        "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+        "https://www.theverge.com/rss/index.xml"]),
+    ("Ars Technica", "rss", [
+        "https://arstechnica.com/ai/feed/",
+        "https://feeds.arstechnica.com/arstechnica/index"]),
+    ("VentureBeat", "rss", [                      # 403'd 5/7 runs on the AI path
+        "https://venturebeat.com/category/ai/feed/",
+        "https://venturebeat.com/feed/"]),
+    ("MIT Tech Review", "rss", [
+        "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+        "https://www.technologyreview.com/feed/"]),
+    ("Wired", "rss", [
+        "https://www.wired.com/feed/tag/ai/latest/rss",
+        "https://www.wired.com/feed/rss"]),
+    ("Engadget", "rss", ["https://www.engadget.com/rss.xml"]),
+    ("ZDNet", "rss", [                            # old topic feed 404s
+        "https://www.zdnet.com/topic/artificial-intelligence/rss.xml",
+        "https://www.zdnet.com/news/rss.xml"]),
+    ("AI News", "rss", [                          # HTML error page -> ParseError
+        "https://www.artificialintelligence-news.com/feed/",
+        "https://www.artificialintelligence-news.com/rss"]),
 
-REDDIT = {
-    "r/artificial":     "https://www.reddit.com/r/artificial/top.json?t=day&limit=25",
-    "r/LocalLLaMA":     "https://www.reddit.com/r/LocalLLaMA/top.json?t=day&limit=25",
-    "r/MachineLearning": "https://www.reddit.com/r/MachineLearning/top.json?t=day&limit=25",
-}
+    # --- added: reliable, high-signal, and not dependent on one publisher --
+    ("Techmeme", "rss", ["https://www.techmeme.com/feed.xml"]),
+    ("The Decoder", "rss", ["https://the-decoder.com/feed/"]),
+    ("The Register", "rss", [
+        "https://www.theregister.com/software/ai_ml/headlines.atom"]),
+    ("Guardian Tech", "rss", [
+        "https://www.theguardian.com/technology/artificialintelligenceai/rss",
+        "https://www.theguardian.com/technology/rss"]),
+    ("BBC Tech", "rss", ["https://feeds.bbci.co.uk/news/technology/rss.xml"]),
+    ("NYT Tech", "rss", [
+        "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"]),
 
-HN = ("https://hn.algolia.com/api/v1/search_by_date?query=AI&tags=story"
-      "&numericFilters=points%3E30&hitsPerPage=40")
+    # --- neutral aggregator ------------------------------------------------
+    ("Google News", "rss", [
+        "https://news.google.com/rss/search?q=artificial+intelligence+OR"
+        "+%22AI+model%22+when:2d&hl=en-US&gl=US&ceid=US:en"]),
 
-HF = "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20"
+    # --- popularity signal -------------------------------------------------
+    ("Hacker News", "hn", [
+        "https://hn.algolia.com/api/v1/search_by_date?query=AI&tags=story"
+        "&numericFilters=points%3E30&hitsPerPage=40"]),
+    ("Lobsters", "rss", ["https://lobste.rs/t/ai.rss"]),
+    # Reddit blocks cloud IPs on the plain .json path; old.reddit is usually
+    # more permissive. Kept because when it works it is the best signal there
+    # is, but the account no longer depends on it.
+    ("r/artificial", "reddit", [
+        "https://old.reddit.com/r/artificial/top.json?t=day&limit=25",
+        "https://www.reddit.com/r/artificial/top.json?t=day&limit=25"]),
+    ("r/LocalLLaMA", "reddit", [
+        "https://old.reddit.com/r/LocalLLaMA/top.json?t=day&limit=25",
+        "https://www.reddit.com/r/LocalLLaMA/top.json?t=day&limit=25"]),
+
+    # --- model releases ----------------------------------------------------
+    ("Hugging Face", "hf", [
+        "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20"]),
+]
 
 # Words that make an item AI-relevant. An item must hit at least one.
 AI_TERMS = {
@@ -107,6 +161,39 @@ def fetch(url):
     req = urllib.request.Request(url, headers=UA)
     with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
         return r.read().decode("utf-8", "replace")
+
+
+def why(e):
+    """A failure reason you can actually act on.
+
+    Failures used to be recorded as bare "HTTPError", which is why seven runs
+    of logs could not distinguish a moved feed (404) from a blocked one (403).
+    """
+    if isinstance(e, urllib.error.HTTPError):
+        return f"HTTP {e.code}"
+    if isinstance(e, urllib.error.URLError):
+        return f"URL {getattr(e, 'reason', '')}"[:40]
+    if isinstance(e, ET.ParseError):
+        return "not valid XML"
+    return type(e).__name__
+
+
+PARSERS = {}
+
+
+def fetch_source(name, kind, urls):
+    """Try each candidate URL in order; first one that parses wins."""
+    errors = []
+    for url in urls:
+        try:
+            items = PARSERS[kind](name, url)
+        except Exception as e:
+            errors.append(f"{why(e)}")
+            continue
+        if items:
+            return items, None
+        errors.append("empty")
+    return [], "; ".join(errors)
 
 
 def clean(text):
@@ -205,27 +292,28 @@ def from_hf(name, url):
     return out
 
 
+PARSERS.update({"rss": from_rss, "reddit": from_reddit,
+                "hn": from_hn, "hf": from_hf})
+
+
 def gather():
     """Fetch every source in parallel. One dead feed never blocks the run."""
-    jobs = ([(n, u, from_rss) for n, u in RSS.items()]
-            + [(n, u, from_reddit) for n, u in REDDIT.items()]
-            + [("Hacker News", HN, from_hn), ("Hugging Face", HF, from_hf)])
     items, ok, failed = [], [], []
-    with futures.ThreadPoolExecutor(max_workers=len(jobs)) as ex:
-        running = {ex.submit(fn, n, u): n for n, u, fn in jobs}
+    with futures.ThreadPoolExecutor(max_workers=len(SOURCES)) as ex:
+        running = {ex.submit(fetch_source, n, k, u): n for n, k, u in SOURCES}
         for fut in futures.as_completed(running):
             name = running[fut]
             try:
-                got = fut.result()
-            except Exception as e:
-                failed.append(f"{name}: {type(e).__name__}")
+                got, err = fut.result()
+            except Exception as e:                  # pragma: no cover
+                failed.append(f"{name}: {why(e)}")
                 continue
             got = [i for i in got if i["title"]]
             if got:
                 ok.append(name)
                 items += got
             else:
-                failed.append(f"{name}: empty")
+                failed.append(f"{name}: {err or 'empty'}")
     return items, sorted(ok), sorted(failed)
 
 
@@ -237,6 +325,58 @@ def is_ai(item):
         return False
     words = set(re.findall(r"[a-z0-9.\-]+", blob))
     return bool(words & AI_TERMS) or any(t in blob for t in AI_TERMS if " " in t)
+
+
+def significance(history):
+    """Weight each word by how rare it is across what we've already posted.
+
+    Plain keyword counting could not see that "OpenAI launches Astra" and
+    "OpenAI begins rolling out GPT-6 Astra" are the same story: they share
+    only {openai, astra}, under a 3-word threshold. But "openai" appears in
+    nearly every headline this account touches and carries almost no
+    information, while "astra" is rare and therefore decisive. Weighting by
+    inverse document frequency makes the rare shared word count for far more
+    than the common one.
+    """
+    n = max(1, len(history))
+    df = {}
+    for kws in history:
+        for t in kws:
+            df[t] = df.get(t, 0) + 1
+    return lambda t: math.log(1 + n / (1 + df.get(t, 0)))
+
+
+def similarity(a, b, weight):
+    """Weighted overlap of two keyword sets, 0..1."""
+    shared = a & b
+    if not shared:
+        return 0.0
+    sw = sum(weight(t) for t in shared)
+    return sw / max(1e-9, min(sum(weight(t) for t in a), sum(weight(t) for t in b)))
+
+
+# Tokens that carry almost no identifying information for THIS account:
+# the companies it writes about constantly, and generic news verbs. Two
+# headlines sharing only these are not the same story; two sharing anything
+# outside this set probably are.
+COMMON = {
+    "openai", "anthropic", "google", "deepmind", "meta", "microsoft", "apple",
+    "nvidia", "amazon", "mistral", "chatgpt", "claude", "gemini", "copilot",
+    "ai", "artificial", "intelligence", "model", "models", "llm", "llms",
+    "chatbot", "tool", "tools", "tech", "technology", "startup", "company",
+    "companies", "users", "people", "world", "report", "reports", "study",
+    "launch", "launches", "launched", "release", "releases", "released",
+    "announce", "announces", "announced", "unveil", "unveils", "reveal",
+    "reveals", "says", "said", "claims", "adds", "brings", "gets", "sets",
+    "update", "updates", "version", "new", "latest", "big", "top", "best",
+    "sue", "sues", "sued", "lawsuit", "court", "legal", "case",
+    "million", "billion", "percent", "year", "years", "week", "day", "today",
+}
+
+
+def content_tokens(kws):
+    """Keywords minus the words that describe every story this account posts."""
+    return {t for t in kws if t not in COMMON and len(t) > 2}
 
 
 def keywords(title):
@@ -369,7 +509,30 @@ def recent_story_keys(n=60):
     return out
 
 
+def check():
+    """Report per-source health. Run this in CI to see what is actually up."""
+    print(f"probing {len(SOURCES)} sources\n")
+    ok = 0
+    with futures.ThreadPoolExecutor(max_workers=len(SOURCES)) as ex:
+        running = {ex.submit(fetch_source, n, k, u): (n, u) for n, k, u in SOURCES}
+        for fut in futures.as_completed(running):
+            name, urls = running[fut]
+            items, err = fut.result()
+            if items:
+                ok += 1
+                ai = sum(1 for i in items if is_ai(i))
+                print(f"  OK   {name:16} {len(items):3} items, {ai:3} AI-relevant")
+            else:
+                print(f"  DEAD {name:16} {err}")
+                for u in urls:
+                    print(f"         tried {u}")
+    print(f"\n{ok}/{len(SOURCES)} sources up (need {MIN_SOURCES}, want {WANT_SOURCES})")
+    return ok
+
+
 if __name__ == "__main__":
+    if "--check" in sys.argv:
+        sys.exit(0 if check() >= MIN_SOURCES else 1)
     r = research()
     if "--json" in sys.argv:
         print(json.dumps(r, indent=2))
