@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI warning that made a top researcher quit",
+      "kicker": "Insider Warning"
+    },
+    {
+      "kind": "content",
+      "headline": "Researcher leaves Anthropic this week",
+      "body": "Jacob Coxon helped build safety systems, now says they may not stop disaster",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "He puts risk above 10 percent",
+      "body": "That means one in ten chance AI could kill everyone within a decade",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Self-improving AI is the fear",
+      "body": "Systems that rewrite their own code without human approval could escape control",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Other experts call the number high",
+      "body": "But even a one percent chance of extinction should change how we regulate AI",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI reality checks",
+      "body": "We translate insider alarms into what they mean for your life"
+    }
+  ]
+}
