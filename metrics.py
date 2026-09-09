@@ -18,7 +18,17 @@ from agent import BASE, IG_API, ig_token
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 HIST = BASE / "metrics.jsonl"
-METRICS = "reach,likes,comments,saved,shares"
+# Reach is an OUTPUT, not a lever. For Reels the lever is watch time: how
+# long people stay and whether they replay. The account has been optimising
+# blind — we could see that reach was ~40 but not why, and "85% skip rate"
+# was something the owner had to read off the app by hand.
+METRICS = "reach,likes,comments,saved,shares,views,total_interactions"
+REEL_METRICS = ("reach,likes,comments,saved,shares,views,total_interactions,"
+                "ig_reels_avg_watch_time,ig_reels_video_view_total_time")
+# Progressively simpler fallbacks: the API rejects the whole call if any one
+# metric is unsupported for that media type or API version.
+FALLBACKS = (REEL_METRICS, METRICS, "reach,likes,comments,saved,shares",
+             "reach,likes,comments")
 
 
 def get(url, params):
@@ -31,11 +41,11 @@ def get(url, params):
 
 
 def insights(media_id):
-    r = get(f"{IG_API}/{media_id}/insights",
-            {"metric": METRICS, "access_token": ig_token()})
-    if "error" in r:   # some metrics unsupported on some media types
+    for metrics in FALLBACKS:
         r = get(f"{IG_API}/{media_id}/insights",
-                {"metric": "reach,likes,comments", "access_token": ig_token()})
+                {"metric": metrics, "access_token": ig_token()})
+        if "error" not in r:
+            break
     out = {}
     for m in r.get("data", []):
         v = m.get("total_value", {}).get("value")
@@ -57,6 +67,27 @@ def topic_for(media_id):
     return ""
 
 
+def account():
+    """Account-level snapshot. Without follower_count there is no way to tell
+    a distribution problem from simply having few followers — 40 reach is a
+    disaster for 5,000 followers and unremarkable for 60."""
+    out = {}
+    prof = get(f"{IG_API}/me",
+               {"fields": "followers_count,media_count,username",
+                "access_token": ig_token()})
+    if "error" not in prof:
+        out.update({k: prof.get(k) for k in
+                    ("followers_count", "media_count", "username")})
+    ins = get(f"{IG_API}/me/insights",
+              {"metric": "reach,profile_views", "period": "day",
+               "access_token": ig_token()})
+    for m in ins.get("data", []):
+        vals = m.get("values") or []
+        if vals:
+            out[f"account_{m['name']}"] = vals[-1].get("value")
+    return out
+
+
 def collect(limit=25):
     """25, not 8. With an 8-post window every row read "reach 2, saves 0" and
     the planner had no contrast to learn anything from — the feedback loop
@@ -67,6 +98,14 @@ def collect(limit=25):
     if "error" in media:
         return "no metrics available"
     import datetime
+    snap = account()
+    if snap:
+        snap.update(kind="account_snapshot",
+                    snapshot=datetime.datetime.now().isoformat())
+        with HIST.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(snap) + "\n")
+        print(f"account: {snap.get('followers_count')} followers, "
+              f"{snap.get('media_count')} posts")
     rows = []
     for m in media.get("data", []):
         ins = insights(m["id"])
@@ -83,9 +122,12 @@ def collect(limit=25):
               reverse=True)
     lines = []
     for r in rows:
+        watch = r.get("ig_reels_avg_watch_time")
+        tail = f", avg watch {watch / 1000:.1f}s" if watch else ""
         lines.append(f"- {r['type']} \"{r['topic'] or '?'}\": reach {r.get('reach', 0)}, "
-                     f"likes {r.get('likes', 0)}, comments {r.get('comments', 0)}, "
-                     f"saves {r.get('saved', 0)}, shares {r.get('shares', 0)}")
+                     f"views {r.get('views', 0)}, likes {r.get('likes', 0)}, "
+                     f"comments {r.get('comments', 0)}, saves {r.get('saved', 0)}, "
+                     f"shares {r.get('shares', 0)}{tail}")
     return "\n".join(lines) or "no posts yet"
 
 
