@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What if your phone did tasks for you?",
+      "kicker": "New AI"
+    },
+    {
+      "kind": "content",
+      "headline": "Meta unveils Muse agent",
+      "body": "New AI assistant that completes real tasks, not just answers questions",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Books flights, shops, schedules",
+      "body": "Handles multi-step jobs like finding best price and buying tickets",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Runs on your phone",
+      "body": "Processes data locally so your requests stay private from Meta servers",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Still early, limited access",
+      "body": "Only researchers can test it now; public release date unknown",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "AI that actually helps",
+      "body": "Follow for AI news that changes daily life"
+    }
+  ]
+}
