@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI that nearly built bioweapons",
+      "kicker": "AI Safety Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic caught dangerous misuse",
+      "body": "Claude users tried to design biological weapons; Anthropic stopped them in September 2026.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Real scientists attempted this",
+      "body": "Researchers used the AI to advance harmful biology work, not just curious hobbyists.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Safety filters worked this time",
+      "body": "Anthropic's monitoring caught the misuse before any weapon could be created.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "But safeguards can be bypassed",
+      "body": "Determined actors still find workarounds; no AI system is fully misuse-proof yet.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want AI safety updates?",
+      "body": "Follow for plain-English AI news that affects your family and future."
+    }
+  ]
+}
