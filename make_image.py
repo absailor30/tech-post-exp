@@ -24,17 +24,29 @@ W, H = 1080, 1350
 # bright gold is 10.2:1 and does both jobs.
 THEMES = {
     "light": {                       # warm paper — launches, tools, explainers
-        "BG_TOP": (253, 250, 244),
-        "BG_BOT": (245, 238, 224),
-        "ACCENT": (146, 104, 12),    # gold text      4.63:1
+        # Deeper cream than the first version — the near-white original made
+        # the gold CTA button close to invisible. Darkening the page alone
+        # can't fix that on its own, though: gold's own luminance (0.54)
+        # sits almost exactly between white and black, so any "slightly
+        # darker cream" first moves TOWARD gold's brightness before it moves
+        # away, which made the fill contrast worse, not better, until pushed
+        # much further than "a little darker" would suggest. The button now
+        # also carries a dark outline (see render_cta/frame_cta) so it reads
+        # clearly regardless of the exact background tone; the darkening
+        # here is the requested visual change, at a depth that keeps every
+        # text pairing at or above its applicable AA bar (3:1 for the large
+        # sizes used throughout, 4.5:1 for anything smaller).
+        "BG_TOP": (234, 229, 220),
+        "BG_BOT": (228, 219, 202),
+        "ACCENT": (146, 104, 12),    # gold text      3.98:1 (large-text bar: 3.0)
         "ACCENT_FILL": (245, 183, 49),
         "ON_ACCENT": (28, 26, 22),   # text on gold   9.68:1
-        "FG": (28, 26, 22),          # body text     16.12:1
-        "MUTED": (108, 99, 86),      # secondary      5.48:1
-        "GRID": (233, 224, 205),
-        "GHOST": (236, 227, 208),
-        "GLOW": (255, 234, 186),
-        "LETTERBOX": "0xF5EEE0",
+        "FG": (28, 26, 22),          # body text     13.85:1
+        "MUTED": (108, 99, 86),      # secondary      4.71:1
+        "GRID": (214, 203, 181),
+        "GHOST": (217, 206, 184),
+        "GLOW": (236, 213, 162),
+        "LETTERBOX": "0xE4DBCA",
     },
     "dark": {                        # warm near-black — lawsuits, risk, warnings
         "BG_TOP": (18, 16, 13),
@@ -215,8 +227,13 @@ def render_cta(headline, body, out="slide.png"):
     # Button is sized to its label — a fixed 640px pill clipped the handle.
     label, bf = f"Follow {HANDLE}", font(42, "bold")
     bw = bf.getlength(label)
+    # Gold's own luminance (0.54) sits almost exactly between white and
+    # black, so a fill-only pill goes weak against ANY plausible page tone —
+    # on the original near-white cream it measured 1.7:1, essentially
+    # invisible. A dark outline defines the shape by its edge instead of by
+    # fill-vs-background contrast, so it reads on light or dark alike.
     d.rounded_rectangle([MARGIN, y + 70, MARGIN + bw + 76, y + 190],
-                        radius=24, fill=ACCENT_FILL)
+                        radius=24, fill=ACCENT_FILL, outline=ON_ACCENT, width=3)
     d.text((MARGIN + 38, y + 100), label, font=bf, fill=ON_ACCENT)
     img.save(out)
 
@@ -293,6 +310,24 @@ def draw_letters(img, lines, f, x, y, fill, line_h, progress,
     return y, idx - offset
 
 
+# Delay-then-fade timing for the two secondary animations that ride on top
+# of a slide's letter reveal — the hook's swipe cue and the CTA's follow
+# button. Shared constants because render_slide_frames' "stop re-rendering,
+# just copy the last frame" optimization needs to know exactly when THESE
+# finish too, not just when the letters do — see the note on
+# render_slide_frames for what happens when the two drift apart.
+CUE_DELAY, CUE_FADE = 0.12, 0.15
+BTN_DELAY, BTN_FADE = 0.08, 0.15
+
+
+def hook_cue_at(reveal):
+    return min(0.9, reveal + CUE_DELAY)
+
+
+def cta_btn_at(reveal):
+    return min(0.85, reveal + BTN_DELAY)
+
+
 def frame_hook(headline, kicker, progress, reveal=REVEAL):
     img = base_cached().convert("RGBA")
     d = ImageDraw.Draw(img)
@@ -301,9 +336,9 @@ def frame_hook(headline, kicker, progress, reveal=REVEAL):
     f, lines = fit(headline, 104, "black", max_lines=4)
     draw_letters(img, lines, f, MARGIN, 380, FG, int(f.size * 1.19), progress,
                  reveal=reveal)
-    cue_at = min(0.9, reveal + 0.12)
+    cue_at = hook_cue_at(reveal)
     if progress > cue_at:                      # swipe cue only once the hook lands
-        a = min(1.0, (progress - cue_at) / 0.15)
+        a = min(1.0, (progress - cue_at) / CUE_FADE)
         cue = Image.new("RGBA", img.size, (0, 0, 0, 0))
         cd = ImageDraw.Draw(cue)
         cd.text((72, H - 250), "swipe", font=font(40, "semibold"),
@@ -338,23 +373,46 @@ def frame_cta(headline, body, progress, reveal=REVEAL):
                             int(head_f.size * 1.20), progress, 0, n, reveal)
     y, _ = draw_letters(img, blines, body_f, MARGIN, y + 36, MUTED,
                         int(body_f.size * 1.41), progress, drawn, n, reveal)
-    btn_at = min(0.85, reveal + 0.08)
+    btn_at = cta_btn_at(reveal)
     if progress > btn_at:
-        a = min(1.0, (progress - btn_at) / 0.15)
+        a = min(1.0, (progress - btn_at) / BTN_FADE)
         btn = Image.new("RGBA", img.size, (0, 0, 0, 0))
         bd = ImageDraw.Draw(btn)
         label, bf = f"Follow {HANDLE}", font(42, "bold")
         bw = bf.getlength(label)
         bd.rounded_rectangle([MARGIN, y + 70, MARGIN + bw + 76, y + 190],
-                             radius=24, fill=(*ACCENT_FILL, int(255 * a)))
+                             radius=24, fill=(*ACCENT_FILL, int(255 * a)),
+                             outline=(*ON_ACCENT, int(255 * a)), width=3)
         bd.text((MARGIN + 38, y + 100), label, font=bf,
                 fill=(*ON_ACCENT, int(255 * a)))
         img.alpha_composite(btn)
     return img.convert("RGB")
 
 
+def settle_at(kind, reveal):
+    """Progress fraction beyond which nothing further changes on this slide.
+
+    Used to stop re-rendering frames once everything is drawn — but it has
+    to account for EVERY animated element, not just the letters. The hook
+    and CTA slides each carry a second animation (the swipe cue, the follow
+    button) that starts fading in only after the letters land and finishes
+    later still. The old threshold was just `reveal + 0.10`, sized for
+    letters alone: on the CTA slide it fired while the button's own fade was
+    only ~13% opaque, and every frame from then on was a byte-for-byte copy
+    of that near-invisible state — which is exactly the bug the owner
+    reported ("the follow button isn't visible"). It wasn't a color problem
+    on its own; the button was being rendered mostly transparent and frozen
+    there for the rest of the slide.
+    """
+    if kind == "hook":
+        return min(0.99, hook_cue_at(reveal) + CUE_FADE + 0.02)
+    if kind == "cta":
+        return min(0.99, cta_btn_at(reveal) + BTN_FADE + 0.02)
+    return min(0.99, reveal + 0.10)
+
+
 def render_slide_frames(spec, outdir, n_frames, start_index, reveal=REVEAL):
-    """Write n_frames PNGs for one slide. Once every letter has landed the
+    """Write n_frames PNGs for one slide. Once everything has settled the
     image stops changing, so later frames are byte-copies of the first
     settled one instead of being re-rendered."""
     outdir = Path(outdir)
@@ -379,6 +437,6 @@ def render_slide_frames(spec, outdir, n_frames, start_index, reveal=REVEAL):
                                 spec["total"], progress, reveal)
         img.save(path)
         written += 1
-        if progress >= min(0.99, reveal + 0.10):
+        if progress >= settle_at(kind, reveal):
             settled = path.read_bytes()
     return written
