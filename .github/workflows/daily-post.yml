@@ -1,13 +1,21 @@
 name: daily-post
 on:
   schedule:
-    - cron: "0 15 * * *"        # 15:00 UTC = 20:30 IST (primary)
-    - cron: "45 15 * * *"       # backup slot — no-ops if already posted
-    - cron: "0 17 * * *"        # last-resort slot
+    # Two posts a day. Each slot is a UTC hour window in autonomous_run.py
+    # (morning 05:00-13:00, evening 13:00-23:00) wide enough to cover its own
+    # primary + backup + last-resort — already_posted_in_slot() no-ops any
+    # extra firing within the same window, and a slot's retries never touch
+    # the other slot's post.
+    - cron: "0 7 * * *"         # 07:00 UTC = 12:30 IST (morning primary)
+    - cron: "45 7 * * *"        # morning backup — no-ops if already posted
+    - cron: "0 9 * * *"         # morning last-resort
+    - cron: "0 15 * * *"        # 15:00 UTC = 20:30 IST (evening primary)
+    - cron: "45 15 * * *"       # evening backup — no-ops if already posted
+    - cron: "0 17 * * *"        # evening last-resort
   workflow_dispatch:
     inputs:
       force:
-        description: "Post even if something already went out today"
+        description: "Post even if this slot already posted today"
         type: boolean
         default: false
 

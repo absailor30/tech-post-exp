@@ -438,14 +438,47 @@ def publish_carousel(urls, caption):
                    {"creation_id": carousel["id"], "access_token": ig_token()})
 
 
-def already_posted_today():
+# Two posts a day: a late-morning IST slot and the original evening one.
+# Each slot is a UTC hour window [start, end) wide enough to cover its
+# primary cron time plus its own backup/last-resort retries, so a failed
+# primary still gets a same-slot second try without also unlocking the
+# other slot's post. Slots are derived from wall-clock time rather than
+# passed in from the workflow, so a manual/backfill run just works from
+# whatever time it actually runs at, and adding a third slot later is a
+# one-line change here with no workflow plumbing required.
+SLOTS = (("morning", 5, 13), ("evening", 13, 23))
+
+
+def current_slot():
+    hour = datetime.datetime.utcnow().hour
+    for name, start, end in SLOTS:
+        if start <= hour < end:
+            return name
+    return "off-hours"   # 23:00-05:00 UTC — no cron fires here; a manual
+                          # run in this window always posts (never "already
+                          # posted off-hours today", since nothing else can
+                          # collide with it)
+
+
+def already_posted_in_slot(slot):
+    """True if a post already went out THIS slot today — not just today."""
+    if slot == "off-hours":
+        return False
     logf = BASE / "log.jsonl"
     if not logf.exists():
         return False
     today = datetime.date.today().isoformat()
-    return any(json.loads(l).get("ts", "").startswith(today)
-               for l in logf.read_text(encoding="utf-8").splitlines()
-               if '"autonomous_post"' in l)
+    for line in logf.read_text(encoding="utf-8").splitlines():
+        if '"autonomous_post"' not in line:
+            continue
+        d = json.loads(line)
+        ts = d.get("ts", "")
+        if not ts.startswith(today):
+            continue
+        hour = int(ts[11:13])
+        if any(name == slot and start <= hour < end for name, start, end in SLOTS):
+            return True
+    return False
 
 
 def cmd_forget(media_id):
@@ -470,9 +503,11 @@ def cmd_forget(media_id):
 
 
 def main(dry=False, force=False):
-    if not dry and not force and already_posted_today():
-        print("already posted today — nothing to do")
+    slot = current_slot()
+    if not dry and not force and already_posted_in_slot(slot):
+        print(f"already posted in the {slot} slot today — nothing to do")
         return
+    print(f"slot: {slot}")
     p = plan()
     stamp = datetime.datetime.now().strftime("%Y%m%d")
     slug = re.sub(r"[^a-z0-9]+", "-", p["topic"].lower())[:40].strip("-")
