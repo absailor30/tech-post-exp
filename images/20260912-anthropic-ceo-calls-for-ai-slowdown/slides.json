@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why the AI boss wants to pump the brakes",
+      "kicker": "AI Safety Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic CEO says slow down now",
+      "body": "Dario Amodei went public this week urging a pause on frontier AI development.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "His three-step plan to curb risk",
+      "body": "Mandatory safety tests, government oversight boards, and global standards before bigger models launch.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Researchers warn of extinction risk",
+      "body": "Multiple Anthropic staff quit, saying unchecked AI could threaten humanity within years.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "But Anthropic still ships powerful AI",
+      "body": "Claude models keep improving while the CEO asks for rules \u2014 critics call it talking both ways.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want AI news that affects you?",
+      "body": "Follow for plain-English updates on what AI means for your job, money, and privacy."
+    }
+  ]
+}
