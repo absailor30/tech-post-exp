@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI may have already learned from your public posts",
+      "kicker": "Your Work at Risk"
+    },
+    {
+      "kind": "content",
+      "headline": "Mathematicians ask OpenAI for proof",
+      "body": "Top math group formally requested evidence their published papers weren't used to train ChatGPT",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Same risk for every creator",
+      "body": "If you've posted writing, art, code, or research online, it could be in AI training data right now",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No way to check or opt out",
+      "body": "OpenAI and others don't reveal training sources; no tool exists to see if your work was used",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Lawsuits coming but protection missing",
+      "body": "Publishers and artists are suing, but everyday creators have zero legal shield or compensation path today",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI rights updates",
+      "body": "We track what AI companies take from you \u2014 and what you can do about it"
+    }
+  ]
+}
