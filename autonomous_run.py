@@ -543,7 +543,7 @@ def main(dry=False, force=False):
     kind = "reel"
     story = p.get("_story", {})
     log("autonomous_post", media_id=result["id"], topic=p["topic"], format=kind,
-        slides=len(p["slides"]) + 2, caption=p["caption"][:200], theme=theme,
+        slides=len(p["slides"]) + 2, caption=p["caption"], theme=theme,
         story_headline=story.get("headline", ""), story_url=story.get("url", ""),
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))

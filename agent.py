@@ -177,7 +177,7 @@ def cmd_publish(image_url, caption):
     result = call(f"{IG_API}/me/media_publish",
                   {"creation_id": container["id"], "access_token": ig_token()})
     log("published", media_id=result["id"], image_url=image_url,
-        caption=caption[:200])
+        caption=caption)
     print(f"published, media id {result['id']}")
 
 
