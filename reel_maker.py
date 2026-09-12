@@ -34,6 +34,24 @@ FPS = 24            # 24 is plenty for text motion and keeps render time sane
 SECS = 3.0          # fallback only (still slideshow path)
 
 REVEAL_SECS = 1.2   # wall-clock time for the letters to finish landing
+                    # (content and CTA slides only — see HOOK_REVEAL_SECS)
+
+# Watch-time data (20 posts, once reach and reels.avg_watch_time started
+# being tracked) showed a strong split: posts that stayed within the
+# account's ~7 followers finished 31% of the video on average; posts that
+# Instagram actually pushed to new people finished only 8% — and for 3 of
+# the 4 highest-reach posts, average watch time was SHORTER than the hook
+# slide's own reveal (3.8-4.1s at the old REVEAL_SECS). Cold viewers were
+# leaving before the headline even finished animating in, which is exactly
+# the signal that stops Reels from expanding distribution further.
+#
+# The hook is the one slide a stranger has to be caught by before anything
+# else about the post matters, so it gets its own much faster reveal — the
+# full headline is legible almost immediately instead of over ~1.2s.
+# Content/CTA slides keep the slower reveal; that pacing wasn't implicated
+# and is what's giving committed viewers time to actually read.
+HOOK_REVEAL_SECS = 0.35
+
 WPS = 3.2           # words per second a viewer reads on a phone
 BUFFER = 1.0        # thinking time after the last word
 MIN_SECS = 3.5      # even a 3-word slide needs a beat
@@ -88,11 +106,12 @@ def build_animated(specs, out="reel.mp4", workdir=None, theme=None):
     for spec in specs:
         secs = slide_seconds(spec)
         n = int(secs * FPS)
-        # Letters always land in REVEAL_SECS, so a longer slide simply holds
+        reveal_secs = HOOK_REVEAL_SECS if spec["kind"] == "hook" else REVEAL_SECS
+        # Letters always land in reveal_secs, so a longer slide simply holds
         # still for longer rather than animating more slowly.
-        idx += render_slide_frames(spec, tmp, n, idx, reveal=REVEAL_SECS / secs)
+        idx += render_slide_frames(spec, tmp, n, idx, reveal=reveal_secs / secs)
         print(f"  slide {spec['kind']:7} {secs:4.1f}s "
-              f"(read {secs - REVEAL_SECS:.1f}s)")
+              f"(read {secs - reveal_secs:.1f}s, reveal {reveal_secs:.2f}s)")
     print(f"rendered {idx} animated frames ({len(specs)} slides, {idx / FPS:.1f}s)")
     try:
         _encode(tmp, idx, out, bg)
