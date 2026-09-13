@@ -1,17 +1,28 @@
-1. What performed best and why (saves/shares first)
-2. What flopped
-3. Follower trajectory if inferable
-4. 2-3 concrete changes for next week
+**Account snapshot**: 7 followers, 83 media count, account reach 6
 
+**Recent posts (last week Sept 6-13)**:
+- "AI reshaping capitalism" (Sep 13): 0 reach, 0 everything - just posted
+- "Anthropic CEO calls for AI slowdown" (Sep 12): reach 4, likes 2, saved 2, total_interactions 5, avg_watch_time 22487ms
+- "Mathematicians demand proof OpenAI didn't steal work" (Sep 12): reach 10, likes 2, saved 2, total_interactions 5, avg_watch_time 8087ms
+- "Anthropic blocks AI bioweapon attempts" (Sep 11): reach 9, likes 3, saved 1, total_interactions 5, avg_watch_time 15742ms
+- "Meta launches Muse personal AI agent" (Sep 10): reach 13, likes 3, saved 2, total_interactions 7, avg_watch_time 8059ms
+- "Anthropic researcher quits over AI extinction risk" (Sep 9): reach 26, likes 3, saved 3, total_interactions 8, avg_watch_time 5087ms
+- "OpenAI claims Millennium Problem breakthrough" (Sep 8): reach 14, likes 4, saved 1, total_interactions 7, avg_watch_time 6049ms
+- "OpenAI agents hijack German wiki" (Sep 7): reach 4, likes 3, total_interactions 5, avg_watch_time 19254ms
+- "OpenAI launches GPT-6 Astra with cyber risks" (Sep 6): reach 29, likes 3, saved 1, total_interactions 5, avg_watch_time 2893ms
 
+**Older high performers**:
+- "OpenAI buys 10k Macs, Apple sues" (Sep 1): reach 125, likes 3, saved 2, total_interactions 5
+- "AI dev tools productivity tips" (Aug 26): reach 164, likes 1, saved 1, total_interactions 2
+- "atuin - search shell history" (Aug 28): reach 111, likes 1, total_interactions 1
+- "ruff - Python linter" (Aug 22): reach 95, likes 0, total_interactions 0
+- "Free Chinese AI model goes viral" (Sep 2): reach 68, likes 4, saved 2, total_interactions 8
+- "OpenAI agents hijack German website" (Sep 5): reach 62, likes 4, total_interactions 7
 
-
-From Sept 13 data:
-1. 18094242434531880 - "Anthropic CEO calls for AI slowdown" - VIDEO - reach: 4, likes: 2, saved: 2, shares: 0, views: 4, total_interactions: 5, avg_watch: 22487
-2. 18074753405436043 - "Mathematicians demand proof OpenAI didn't steal work" - VIDEO - reach: 8, likes: 2, saved: 2, shares: 0, views: 13, total_interactions: 5, avg_watch: 9670
-3. 18057914453791550 - "Anthropic blocks AI bioweapon attempts" - VIDEO - reach: 9, likes: 3, saved: 1, shares: 0, views: 13, total_interactions: 5, avg_watch: 15742
-4. 18088831508657519 - "Meta launches Muse personal AI agent" - VIDEO - reach: 13, likes: 3, saved: 2, shares: 0, views: 15, total_interactions: 7, avg_watch: 8059
-5. 18121382927488362 - "Anthropic researcher quits over AI extinction risk" - VIDEO - reach: 26, likes: 3, saved: 3, shares: 0, views: 30, total_interactions: 8, avg_watch: 5087
-6. 18114542018006607 - "OpenAI claims Millennium Problem breakthrough" - VIDEO - reach: 14, likes: 4, saved: 1, shares: 0, views: 20, total_interactions: 7, avg_watch: 6049
-7. 18130542229671328 - "OpenAI agents hijack German wiki" - VIDEO - reach: 4, likes: 3, saved: 0, shares: 0, views: 6, total_interactions: 5, avg_watch: 19254
-8. 18101121506202505 - "OpenAI launches GPT-6 Astra with cyber risks" - VIDEO - reach: 29, likes: 3, saved: 1, shares: 0, views: 32, total_interactions: 5,
+**Flops (carousels mostly)**:
+- lazygit: reach 2, 0 interactions
+- uv: reach 2, 0 interactions
+- Starship: reach 3, 1 like
+- pipx: reach 2, 0 interactions
+- Python venvs: reach 2, 1 like
+- eza: reach 6, 0 interactions
