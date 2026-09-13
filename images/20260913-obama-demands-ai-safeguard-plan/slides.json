@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI safety plan Obama demands",
+      "kicker": "AI Policy"
+    },
+    {
+      "kind": "content",
+      "headline": "Obama speaks on AI rules",
+      "body": "Former president urges Democrats to write concrete AI safeguards now",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "What safeguards mean for you",
+      "body": "Rules could limit biased hiring tools, deepfake scams, and job displacement",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Why Democrats hold the pen",
+      "body": "Party controls key committees but internal splits may delay any bill",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "The honest catch",
+      "body": "Political promises on tech often stall; real protection may take years",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI that affects you",
+      "body": "We translate policy into what changes your phone, job, and privacy"
+    }
+  ]
+}
