@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What nobody tells you about AI and capitalism",
+      "kicker": "Insider Secret"
+    },
+    {
+      "kind": "content",
+      "headline": "AI leaders admit capitalism breaks",
+      "body": "Top researchers say current economy can't survive mass automation",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your labor loses value fast",
+      "body": "Companies pay for data and attention, not hours worked",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Wealth piles up at the top",
+      "body": "Three firms control most AI; workers get no share of gains",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Three moves to protect yourself",
+      "body": "Own your data, learn AI tools, build income outside one job",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for plain-English AI news",
+      "body": "No jargon, no hype \u2014 just what changes your life"
+    }
+  ]
+}
