@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why is Trump ignoring AI safety warnings?",
+      "kicker": "AI Policy"
+    },
+    {
+      "kind": "content",
+      "headline": "Trump spoke this week on AI",
+      "body": "He said risks are exaggerated and the U.S. must win against China first.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "He called safety concerns a distraction",
+      "body": "Critics say this removes guardrails on powerful systems that affect jobs and privacy.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Experts disagree on the trade-off",
+      "body": "Many researchers warn unchecked speed leads to errors, bias, and misuse at scale.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "What this means for your phone",
+      "body": "Fewer rules may mean faster features but less protection for your data and choices.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want the plain-English version?",
+      "body": "Follow for AI news that skips the jargon."
+    }
+  ]
+}
