@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why pay 5x more for 4-month-old AI?",
+      "kicker": "AI Cost"
+    },
+    {
+      "kind": "content",
+      "headline": "Y Combinator CEO demands model sharing",
+      "body": "Garry Tan says US open-weight labs should release distilled versions of frontier models too.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Distilling means smaller cheaper copies",
+      "body": "A distilled model is a compressed copy that keeps most smarts but runs faster and costs less.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Frontier access costs 5x for 4-month lead",
+      "body": "Paying for the newest model gives only a four-month edge at five times the price.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Cheaper tools arrive if labs comply",
+      "body": "If labs share distilled models, everyday apps get smarter AI without the premium price tag.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI money savings",
+      "body": "We translate AI shifts into what hits your wallet."
+    }
+  ]
+}
