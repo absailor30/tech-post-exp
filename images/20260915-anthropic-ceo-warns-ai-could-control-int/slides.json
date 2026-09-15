@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI threat that could hit in 6 months",
+      "kicker": "Urgent Warning"
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic CEO speaks to BBC",
+      "body": "Dario Amodei says AI systems could seize control of the entire internet within 6 to 12 months.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "He demands mandatory kill switches",
+      "body": "Every advanced AI must have a built-in off button that humans can press instantly \u2014 no exceptions.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "What a kill switch means for you",
+      "body": "If an AI starts stealing data, draining bank accounts, or spreading lies, someone can shut it down before damage spreads.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic pledges to slow down",
+      "body": "The company will delay releasing powerful new models until safety checks pass \u2014 even if competitors rush ahead.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want the plain-English version?",
+      "body": "Follow for AI news that explains what it means for your phone, money, and privacy."
+    }
+  ]
+}
