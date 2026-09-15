@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "When will a robot actually fold your laundry?",
+      "kicker": "Reality Check"
+    },
+    {
+      "kind": "content",
+      "headline": "Experts say not this decade",
+      "body": "Robotics leaders agree: capable home robots are 10 to 15 years out, not 2 to 3.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI brains need robot bodies",
+      "body": "Smart software exists, but cheap, safe hardware that navigates messy homes does not.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your Roomba is the peak for now",
+      "body": "Single-task devices vacuum or mop; a general-purpose helper that cooks and cleans remains science fiction.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Safety and price are the walls",
+      "body": "A robot strong enough to lift a toddler could hurt one; making it harmless costs more than a car.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want honest AI timelines?",
+      "body": "Follow for hype-free updates on what AI actually changes for you."
+    }
+  ]
+}
