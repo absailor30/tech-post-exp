@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The $1 billion bet on fair AI",
+      "kicker": "Big Money"
+    },
+    {
+      "kind": "content",
+      "headline": "Gates Foundation commits $1 billion",
+      "body": "Announced this week to fight AI systems that leave poor communities behind",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI inequality means denied loans",
+      "body": "Algorithms reject mortgages, jobs, and healthcare for people with less digital data",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Funding targets Global South access",
+      "body": "Grants will help researchers in Africa and Asia build AI for local languages and needs",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Critics say $1B is too little",
+      "body": "Global AI spending hits $200B yearly \u2014 this is 0.5% of that total",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Will money fix biased AI?",
+      "body": "Follow for plain-English AI news that affects your wallet and rights"
+    }
+  ]
+}
