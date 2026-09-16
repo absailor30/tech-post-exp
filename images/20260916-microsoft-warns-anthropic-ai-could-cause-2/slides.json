@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI warning that could affect you",
+      "kicker": "Warning"
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft warns Anthropic AI risky",
+      "body": "They said its powerful AI models (computer programs that learn from data) might act unpredictably, threatening jobs and safety.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Could affect your job and privacy",
+      "body": "If AI systems make unchecked decisions, they might replace workers or misuse personal data.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic says it builds safe AI",
+      "body": "The company claims its AI models (computer programs that learn) follow strict safety rules, but Microsoft doubts they're enough.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Stay informed, ask for AI safety",
+      "body": "Follow news, support policies that require AI companies to test impacts before release.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI news",
+      "body": "Get clear, jargon\u2011free updates on how AI shapes your life."
+    }
+  ]
+}
