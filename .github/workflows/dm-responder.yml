@@ -27,6 +27,14 @@ jobs:
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
           DM_LINK: ${{ secrets.DM_LINK }}
         run: python dm_responder.py
+      - name: telegram failure alert
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        # Before persist state so persist state can commit+push whatever
+        # this writes (last_alert.json) for the next run's dedup check.
+        run: python notify.py --failure dm-responder
       - name: persist state
         if: always()
         run: |
@@ -35,9 +43,3 @@ jobs:
           git add -A
           git diff --cached --quiet || git commit -m "state: dm run"
           git pull --rebase && git push
-      - name: telegram failure alert
-        if: failure()
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python notify.py --failure dm-responder

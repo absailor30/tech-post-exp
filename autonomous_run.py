@@ -155,6 +155,34 @@ def ig_call(url, params, method="POST"):
         sys.exit(f"API error {e.code}: {e.read().decode()}")
 
 
+def verify_ig_token():
+    """Fail in under a second if the Instagram token is dead, before any
+    research/LLM/render work happens.
+
+    Previously a dead token was only discovered at the final publish call —
+    after a full research pass, an LLM call, and a ~40s video render had
+    already run. That's ~75s of wasted work per failed slot, and with two
+    slots a day each retrying up to 3 times, a token that dies once was
+    quietly costing that every single firing. A GET /me call costs nothing
+    and fails identically, so this catches it immediately and tags the
+    reason so notify.py can turn it into an actionable Telegram message
+    instead of a bare "check the Actions tab" ping.
+    """
+    q = urllib.parse.urlencode({"fields": "id,username", "access_token": ig_token()})
+    try:
+        with urllib.request.urlopen(f"{IG_API}/me?{q}") as r:
+            json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = e.read().decode()
+        try:
+            err = json.loads(body).get("error", {})
+        except json.JSONDecodeError:
+            err = {}
+        if err.get("code") == 190 or "OAuthException" in err.get("type", ""):
+            sys.exit(f"INSTAGRAM_TOKEN_EXPIRED: {err.get('message', body)}")
+        sys.exit(f"Instagram API error {e.code}: {body}")
+
+
 def recent_topics(n=None):
     """EVERY topic ever posted, not a 14-item window.
 
@@ -508,6 +536,8 @@ def main(dry=False, force=False):
         print(f"already posted in the {slot} slot today — nothing to do")
         return
     print(f"slot: {slot}")
+    if not dry:
+        verify_ig_token()   # fail in <1s, not after research+LLM+render
     p = plan()
     stamp = datetime.datetime.now().strftime("%Y%m%d")
     slug = re.sub(r"[^a-z0-9]+", "-", p["topic"].lower())[:40].strip("-")
@@ -607,14 +637,30 @@ def main(dry=False, force=False):
 
 
 if __name__ == "__main__":
+    # Cleared at the start of every run, so a success never leaves a stale
+    # error sitting around for the next failure's Telegram alert to quote.
+    ERROR_F = BASE / "last_error.txt"
+    ERROR_F.unlink(missing_ok=True)
     try:
         if "--forget" in sys.argv:
             cmd_forget(sys.argv[sys.argv.index("--forget") + 1])
         else:
             main(dry="--dry" in sys.argv, force="--force" in sys.argv)
+    except SystemExit as e:
+        # sys.exit(str) is how verify_ig_token/ig_call/research's safety
+        # floor all report a *specific* reason. That reason is the one
+        # thing notify.py needs to turn "daily-post FAILED" into something
+        # the owner can act on without opening the Actions log.
+        if e.code and str(e.code) != "0":
+            ERROR_F.write_text(str(e.code), encoding="utf-8")
+        raise
     except Exception:
         import traceback
+        tb = traceback.format_exc()
         with (BASE / "runlog.txt").open("a", encoding="utf-8") as f:
             f.write(f"\n--- {datetime.datetime.now().isoformat()} ---\n")
-            f.write(traceback.format_exc())
+            f.write(tb)
+        last_line = next((l for l in reversed(tb.strip().splitlines()) if l.strip()),
+                         "unknown error")
+        ERROR_F.write_text(last_line, encoding="utf-8")
         raise

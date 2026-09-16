@@ -45,14 +45,6 @@ jobs:
           GIT_NAME: github-actions[bot]
           GIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: python autonomous_run.py ${{ inputs.force && '--force' || '' }}
-      - name: persist state
-        if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --cached --quiet || git commit -m "state: post run"
-          git pull --rebase && git push
       - name: telegram summary
         if: success()
         env:
@@ -64,4 +56,17 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        # Runs BEFORE persist state on purpose: it can write last_alert.json
+        # (same-day dedup marker) and last_error.txt needs to already exist
+        # from the crashed run-agent step — persist state below is what
+        # actually commits+pushes them so the NEXT firing can see them and
+        # suppress a repeat ping for the same unresolved problem.
         run: python notify.py --failure daily-post
+      - name: persist state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "state: post run"
+          git pull --rebase && git push
