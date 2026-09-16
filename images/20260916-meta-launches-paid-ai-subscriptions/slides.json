@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Would you pay for Instagram?",
+      "kicker": "Social Media Shift"
+    },
+    {
+      "kind": "content",
+      "headline": "Meta One launches this month",
+      "body": "Facebook, Instagram, WhatsApp bundle AI features behind a monthly fee starting September 2025.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Price starts at $14.99 monthly",
+      "body": "Ad-free browsing, priority support, and Meta AI assistant access cost more than Netflix Standard.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Free users become the product",
+      "body": "Non-payers keep ads, data tracking, and slower AI responses \u2014 your attention stays the currency.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Two-tier internet arrives",
+      "body": "Privacy and better AI now require a subscription; critics warn this splits the web by income.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI money moves",
+      "body": "We track who charges, who pays, and what it means for your wallet."
+    }
+  ]
+}
