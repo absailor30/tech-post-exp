@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Where does AI actually live?",
+      "kicker": "Hidden Cost"
+    },
+    {
+      "kind": "content",
+      "headline": "Massive data centers target struggling towns",
+      "body": "Tech giants build AI factories in cities already poisoned by past industry",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "One center uses a city's water",
+      "body": "A single AI campus can consume millions of gallons daily in drought zones",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Promised jobs rarely appear",
+      "body": "Automated facilities need few workers; tax breaks drain local budgets instead",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Residents fight back with lawsuits",
+      "body": "Communities from Virginia to Arizona sue over noise, pollution, and broken promises",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "AI has a physical address",
+      "body": "Follow for the real costs behind every chatbot answer"
+    }
+  ]
+}
