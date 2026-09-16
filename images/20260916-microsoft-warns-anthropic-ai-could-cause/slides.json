@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What Microsoft won't say about Anthropic",
+      "kicker": "Insider"
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft warns Anthropic AI risky",
+      "body": "On Sep 9, Microsoft said Anthropic's powerful AI could cause disastrous harm to humanity if unchecked.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI could affect your daily life",
+      "body": "If AI safety fails, systems might make biased decisions in hiring, loans, or content you see online.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft may exaggerate the threat",
+      "body": "Some experts say the warning is meant to slow competition rather than reflect real danger.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Stay informed, demand transparency",
+      "body": "Follow AI news, ask companies how they test safety, and support rules that protect users.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI safety",
+      "body": "Get clear, non\u2011tech updates on what AI means for you and your community."
+    }
+  ]
+}
