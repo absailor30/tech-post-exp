@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "You're losing safety by ignoring AI (artificial intelligence) risks",
+      "kicker": "Risk Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft warns Anthropic could harm people",
+      "body": "On Sep 10, Microsoft said rival artificial intelligence (AI) firm Anthropic might cause disastrous effects if unchecked.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic builds safe artificial intelligence",
+      "body": "Their Claude chatbot, an artificial intelligence (AI) tool, avoids harmful answers but Microsoft worries it could still fail.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Jobs and news could suffer",
+      "body": "If powerful artificial intelligence (AI) acts unsafe, it might replace workers faster or spread believable lies online.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Heed warning, watch hype",
+      "body": "Microsoft may overstate risk to slow Anthropic, yet artificial intelligence (AI) safety truly matters for everyone.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for safety news",
+      "body": "Get plain\u2011English updates on how artificial intelligence (AI) affects jobs, privacy, and daily life."
+    }
+  ]
+}
