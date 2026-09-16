@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "70% oppose AI data centers. Here's why.",
+      "kicker": "Poll Results"
+    },
+    {
+      "kind": "content",
+      "headline": "Polls show massive opposition nationwide",
+      "body": "Every major survey finds 60-80% against local AI data centers",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "They drain water and power",
+      "body": "One center uses millions of gallons daily, raising your utility bills",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Towns get noise, not jobs",
+      "body": "Automated facilities create few local jobs but constant fan noise",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Companies ignore communities anyway",
+      "body": "Tech giants build despite protests \u2014 your town could be next",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Your town might be next",
+      "body": "Follow for AI impacts on real life, not hype"
+    }
+  ]
+}
