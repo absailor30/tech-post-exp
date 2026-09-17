@@ -18,6 +18,10 @@ on:
         description: "Post even if this slot already posted today"
         type: boolean
         default: false
+      metrics_only:
+        description: "Just fetch fresh Instagram Insights, don't post"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -36,7 +40,20 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -q -r requirements.txt
+      - name: fetch metrics only
+        if: inputs.metrics_only
+        env:
+          # metrics.py never calls the LLM, but it imports agent.py, whose
+          # module-level `os.environ["NIM_API_KEY"]` would KeyError without
+          # this even though nothing here uses it.
+          NIM_API_KEY: ${{ secrets.NIM_API_KEY }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        # Lighter than --dry: skips research/LLM/render entirely (--dry
+        # still builds a full ~40s video just to preview it), just appends
+        # a fresh Insights snapshot to metrics.jsonl for every recent post.
+        run: python metrics.py
       - name: run agent
+        if: "!inputs.metrics_only"
         env:
           NIM_API_KEY: ${{ secrets.NIM_API_KEY }}
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
@@ -46,13 +63,13 @@ jobs:
           GIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: python autonomous_run.py ${{ inputs.force && '--force' || '' }}
       - name: telegram summary
-        if: success()
+        if: success() && !inputs.metrics_only
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify.py --post-summary
       - name: telegram failure alert
-        if: failure()
+        if: failure() && !inputs.metrics_only
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
