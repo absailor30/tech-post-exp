@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Apple said no to AI training. Now yes.",
+      "kicker": "Privacy Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "What changed this week",
+      "body": "Apple published a research paper detailing how it will use your device data to improve its AI models.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "What data they want",
+      "body": "Your emails, messages, photos, and app usage \u2014 processed on your iPhone, then summarized and sent to Apple.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Why the reversal matters",
+      "body": "Apple built its brand on privacy. This move lets them compete with Google and OpenAI, but breaks their core promise.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "The catch you should know",
+      "body": "Apple says data stays anonymous. But researchers have re-identified 'anonymous' datasets before. Opt-out details are still vague.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want the plain-English version?",
+      "body": "Follow for AI news that actually affects your phone, not code."
+    }
+  ]
+}
