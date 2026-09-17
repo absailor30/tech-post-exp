@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why Microsoft fears its AI rival",
+      "kicker": "AI Safety"
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft issues dire warning",
+      "body": "Microsoft told regulators Anthropic's AI could have disastrous impact on humanity",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Rivals in the AI race",
+      "body": "Microsoft backs OpenAI; Anthropic builds competing models like Claude",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Why this affects your phone",
+      "body": "Safety fears drive laws that change which AI tools you can use",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Competition or genuine alarm?",
+      "body": "Microsoft may exaggerate rival's risk to slow them down",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI reality checks",
+      "body": "We explain what AI news means for your life, not just developers"
+    }
+  ]
+}
