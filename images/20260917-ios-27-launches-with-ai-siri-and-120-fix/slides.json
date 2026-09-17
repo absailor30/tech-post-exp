@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "3 things your iPhone now does differently",
+      "kicker": "iPhone Update"
+    },
+    {
+      "kind": "content",
+      "headline": "Siri gets an AI brain",
+      "body": "Apple's voice assistant now understands context like a person, not a command list. Still in beta \u2014 expect mistakes.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "120 security holes patched",
+      "body": "That many fixes means hackers had many ways in. Update today or your photos, messages, and bank apps stay exposed.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "On-device processing keeps data private",
+      "body": "Most AI runs on your phone, not Apple's cloud. Your voice stays yours \u2014 unless you opt in to share it.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Only newer iPhones get the AI",
+      "body": "iPhone 15 Pro and later. Older models get security patches but the smart Siri stays locked out. Check your model first.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Worth the update?",
+      "body": "Follow for plain-English AI news that affects your phone, wallet, and privacy."
+    }
+  ]
+}
