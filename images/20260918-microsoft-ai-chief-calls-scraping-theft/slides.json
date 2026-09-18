@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What Microsoft's AI chief admits about your work",
+      "kicker": "INSIDER ADMISSION"
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft AI CEO speaks out",
+      "body": "Mustafa Suleyman told BBC this week that AI training on creative work is theft",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "His exact words",
+      "body": "\"Largest theft of labor in human history\" \u2014 describing how models learn from artists and writers",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your content was likely taken",
+      "body": "Photos, blogs, art, and code scraped from the open web without asking or paying anyone",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Microsoft still uses that data",
+      "body": "Copilot and other products run on the same training he just called stolen labor",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI ethics",
+      "body": "We cover who profits and who loses when AI takes your work"
+    }
+  ]
+}
