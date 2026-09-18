@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Hackers breached OpenAI's private code vault",
+      "kicker": "Security Breach"
+    },
+    {
+      "kind": "content",
+      "headline": "Two flaws let attackers in",
+      "body": "A memory bug and broken login system gave access to internal code repositories",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Model code and secrets exposed",
+      "body": "Attackers could see unreleased AI models, training data, and employee credentials",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your ChatGPT data at risk",
+      "body": "If internal systems fall, conversations and personal info you shared could leak",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI patched it quietly",
+      "body": "No public notice, no user alerts \u2014 researchers found out months later",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI security truth",
+      "body": "We explain breaches that affect your privacy, not just the code"
+    }
+  ]
+}
