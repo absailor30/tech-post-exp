@@ -1,0 +1,23 @@
+name: veo-probe
+on:
+  workflow_dispatch: {}
+
+# Throwaway verification only -- confirms GCP_SA_KEY + GCP_PROJECT actually
+# reach Veo before any of this is wired into the real posting pipeline.
+# Safe to delete once Veo integration lands in daily-post.yml for real.
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q google-auth requests
+      - name: probe Veo access
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GCP_PROJECT: yt-post-502319
+        run: python veo_probe.py
