@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Military trusted AI. It invented a threat.",
+      "kicker": "Security Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Google Gemini wrote fake intel",
+      "body": "US forces used Gemini to draft a report; the AI fabricated details that never happened.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Hallucination nearly triggered action",
+      "body": "Commanders almost acted on the made-up intelligence before humans caught the errors.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No safety net caught it",
+      "body": "The system had no built-in check to flag invented facts as unreliable.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Same tech runs your apps",
+      "body": "Gemini powers Google search, Workspace, and phone features you use daily.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "AI errors can hurt",
+      "body": "Follow for AI news that affects your safety, money, and privacy."
+    }
+  ]
+}
