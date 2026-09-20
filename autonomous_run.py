@@ -320,8 +320,14 @@ def plan():
                 story["coverage_count"] = len(alt["sources"])
                 break
         else:
-            sys.exit("every candidate story already covered — skipping today "
-                     "rather than posting a repeat")
+            # Not a failure: the dedup floor correctly declined to repost,
+            # it's just that every candidate happened to overlap something
+            # recent today. This resolves itself as soon as new stories
+            # break, exactly like already_posted_in_slot()'s no-op below --
+            # it used to sys.exit(1) here, which failed the Actions run and
+            # sent a scary "FAILED" Telegram ping for a day the system did
+            # the right thing by posting nothing.
+            return None
 
     st = strategy()
     hooks = json.loads((BASE / "hooks.json").read_text(encoding="utf-8"))
@@ -539,6 +545,10 @@ def main(dry=False, force=False):
     if not dry:
         verify_ig_token()   # fail in <1s, not after research+LLM+render
     p = plan()
+    if p is None:
+        print("nothing fresh to post this slot — every candidate story was "
+              "already covered recently")
+        return
     stamp = datetime.datetime.now().strftime("%Y%m%d")
     slug = re.sub(r"[^a-z0-9]+", "-", p["topic"].lower())[:40].strip("-")
 
