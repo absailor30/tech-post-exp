@@ -43,23 +43,6 @@ try:
     print("auth: token acquired OK\n")
     print("service account:", json.load(open(key_path)).get("client_email"))
 
-    # Ground truth from Google's own backend, not the console UI (which can
-    # lag or reflect a different project than the one this key belongs to).
-    print("\n=== live IAM policy on the project (not the console screenshot) ===")
-    iam_r = requests.post(
-        f"https://cloudresourcemanager.googleapis.com/v1/projects/{PROJECT}:getIamPolicy",
-        headers={"Authorization": f"Bearer {creds.token}", "Content-Type": "application/json"},
-        timeout=30)
-    print(f"-> HTTP {iam_r.status_code}")
-    print(iam_r.text[:3000])
-
-    print("\n=== project state (active? billing linked?) ===")
-    proj_r = requests.get(
-        f"https://cloudresourcemanager.googleapis.com/v1/projects/{PROJECT}",
-        headers={"Authorization": f"Bearer {creds.token}"}, timeout=30)
-    print(f"-> HTTP {proj_r.status_code}")
-    print(proj_r.text[:1000])
-
     # Baseline first: if a plain Gemini text call also 404s, the problem is
     # project/IAM access in general, not Veo specifically -- disambiguates
     # in one run instead of burning another whole Actions round trip.
@@ -78,12 +61,32 @@ try:
     print(f"\nSUMMARY: gemini={gemini_status}  veo={veo_status}")
     if gemini_status < 400 and veo_status < 400:
         print("SUCCESS: both reachable.")
+        sys.exit(0)
     elif gemini_status < 400 and veo_status >= 400:
         print("Gemini works, Veo specifically does not -- Veo needs separate "
               "allowlisting/enablement, this is not a general IAM problem.")
-    else:
-        print("Even the baseline Gemini call fails -- this is a general "
-              "project/IAM access problem, not something specific to Veo.")
-        sys.exit(1)
+        sys.exit(0)
+
+    # Regional endpoint failed identically across every prior attempt despite
+    # confirmed-correct IAM -- test whether this project's models are only
+    # reachable via the global (non-regional) endpoint pattern instead.
+    print("\n=== retry via GLOBAL endpoint (no region in host, "
+          "locations/global in path) ===")
+    global_gemini_url = (f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}"
+                         f"/locations/global/publishers/google/models/gemini-2.0-flash-001:generateContent")
+    global_gemini_status = call(global_gemini_url, {"contents": [{"role": "user", "parts": [{"text": "say OK"}]}]})
+
+    print(f"\nGLOBAL gemini status: {global_gemini_status}")
+    if global_gemini_status < 400:
+        print("Global endpoint WORKS where regional 404s -- this project's "
+              "models are only provisioned/reachable via the global endpoint. "
+              "Fix: use locations/global (no region prefix in host) for all "
+              "Vertex AI calls, not us-central1.")
+        sys.exit(0)
+
+    print("\nBoth regional and global endpoints 404 identically -- not an "
+          "endpoint/region issue. Points back to project-level API "
+          "enablement or a propagation delay on the IAM role grant.")
+    sys.exit(1)
 finally:
     os.unlink(key_path)
