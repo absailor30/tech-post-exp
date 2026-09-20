@@ -41,6 +41,24 @@ try:
         key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"])
     creds.refresh(Request())
     print("auth: token acquired OK\n")
+    print("service account:", json.load(open(key_path)).get("client_email"))
+
+    # Ground truth from Google's own backend, not the console UI (which can
+    # lag or reflect a different project than the one this key belongs to).
+    print("\n=== live IAM policy on the project (not the console screenshot) ===")
+    iam_r = requests.post(
+        f"https://cloudresourcemanager.googleapis.com/v1/projects/{PROJECT}:getIamPolicy",
+        headers={"Authorization": f"Bearer {creds.token}", "Content-Type": "application/json"},
+        timeout=30)
+    print(f"-> HTTP {iam_r.status_code}")
+    print(iam_r.text[:3000])
+
+    print("\n=== project state (active? billing linked?) ===")
+    proj_r = requests.get(
+        f"https://cloudresourcemanager.googleapis.com/v1/projects/{PROJECT}",
+        headers={"Authorization": f"Bearer {creds.token}"}, timeout=30)
+    print(f"-> HTTP {proj_r.status_code}")
+    print(proj_r.text[:1000])
 
     # Baseline first: if a plain Gemini text call also 404s, the problem is
     # project/IAM access in general, not Veo specifically -- disambiguates
