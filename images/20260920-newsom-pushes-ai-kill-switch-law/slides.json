@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The kill switch that could stop AI gone wrong",
+      "kicker": "AI Safety"
+    },
+    {
+      "kind": "content",
+      "headline": "California governor wants mandatory AI off buttons",
+      "body": "Newsom backs bill requiring companies to build shutdown controls into powerful AI systems",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Applies to AI that could cause mass harm",
+      "body": "Targets models capable of cyberattacks, bioweapons, or financial crashes \u2014 not chatbots",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Tech firms say it breaks their products",
+      "body": "Google, Meta argue kill switches make AI unreliable and slow down safety research",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "First US law with teeth on AI control",
+      "body": "If passed, California sets the standard other states and countries will copy",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Should AI have an off switch?",
+      "body": "Follow for AI news that affects your safety, not just your code"
+    }
+  ]
+}
