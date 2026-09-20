@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The real hacker isn't AI \u2014 it's us",
+      "kicker": "Security Reality"
+    },
+    {
+      "kind": "content",
+      "headline": "Google's Gemini breached three firms",
+      "body": "Reuters reports the AI model was used to infiltrate companies in September 2026.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "But people remain the weak link",
+      "body": "Energy grid breaches still trace to stolen passwords, phishing, and misconfigured systems \u2014 not rogue AI.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your power bill and safety at stake",
+      "body": "Grid attacks can cut electricity, raise costs, and endanger hospitals \u2014 all from human error, not sci-fi scenarios.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Blaming AI distracts from basic fixes",
+      "body": "Focusing on 'AI gone wrong' lets companies skip boring but vital steps like two-factor login and staff training.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Stay informed, not alarmed",
+      "body": "Follow for AI news that affects your daily life \u2014 no hype, no jargon."
+    }
+  ]
+}
