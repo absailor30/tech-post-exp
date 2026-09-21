@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Meta's new AI watches more than it helps",
+      "kicker": "Privacy Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Meta launched Muse this week",
+      "body": "A personal AI agent meant to run errands on your phone",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "It records every screen and click",
+      "body": "Muse sees your messages, purchases, and location to learn habits",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Reviewers say it barely completes tasks",
+      "body": "It forgets instructions, books wrong dates, and misunderstands simple requests",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your data trains Meta's ad machine",
+      "body": "Everything you share with Muse feeds targeted advertising profiles",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Don't trade privacy for broken help",
+      "body": "Follow for AI warnings that protect your data"
+    }
+  ]
+}
