@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Cheap AI has a hidden cost",
+      "kicker": "AI Controversy"
+    },
+    {
+      "kind": "content",
+      "headline": "Xiaomi tops open AI rankings",
+      "body": "MiMo-V2.6-Pro beats Meta and Alibaba models on public benchmarks",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Training cost just $2.6 million",
+      "body": "Rivals spend billions; Xiaomi used clever reinforcement learning instead",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic accuses data theft",
+      "body": "Claude maker says Xiaomi siphoned Claude outputs to train MiMo",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your AI may use borrowed work",
+      "body": "Free models can hide copied answers from paid competitors",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI truth",
+      "body": "We explain what companies hide about the tools you use daily"
+    }
+  ]
+}
