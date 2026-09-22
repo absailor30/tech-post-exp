@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why mathematicians are now policing AI",
+      "kicker": "AI Safety"
+    },
+    {
+      "kind": "content",
+      "headline": "New advisory group launches",
+      "body": "Top mathematicians unite to audit AI safety and ethics standards",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Public trust is collapsing",
+      "body": "75% of Americans say AI companies ignore disaster prevention",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Math proves AI limits",
+      "body": "Only formal proofs can verify AI won't hallucinate or deceive",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No enforcement power yet",
+      "body": "Group advises only \u2014 companies can still ignore recommendations",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Who watches the AI?",
+      "body": "Follow for plain-English AI accountability updates"
+    }
+  ]
+}
