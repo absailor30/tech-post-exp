@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Top-tier AI now costs 40% less",
+      "kicker": "Price Drop"
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic launched Opus 5.5 today",
+      "body": "New version of their smartest AI model, released September 2025",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Price cut 40% versus previous Opus",
+      "body": "Same company, same quality tier, dramatically lower cost per use",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Matches performance of leading rival Fable 5.1",
+      "body": "Independent benchmarks show it equals the current top performer",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Writing style improved \u2014 less robotic, more natural",
+      "body": "Reviewers say it finally dropped the stiff 'Claude tone' people disliked",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI price watches",
+      "body": "We track which tools give you most value for your money"
+    }
+  ]
+}
