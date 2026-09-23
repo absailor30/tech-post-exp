@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI that makes game characters feel alive",
+      "kicker": "Game AI"
+    },
+    {
+      "kind": "content",
+      "headline": "Unreal Agent AI launched today",
+      "body": "The tool lets game creators build characters that talk and act like real people, no coding needed.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Games feel more lifelike now",
+      "body": "Characters can react to your choices with natural speech and emotions, making play feel like a movie.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Fake characters could mislead",
+      "body": "Characters powered by AI might be used in videos that look real but are scripted to deceive viewers.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Enjoy, but stay aware",
+      "body": "Ask yourself if a game character\u2019s advice could be made by AI, not from a human.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI news",
+      "body": "Get simple explanations of AI that affect your daily life, no tech jargon."
+    }
+  ]
+}
