@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Your AI chat may send you to scammers",
+      "kicker": "Security Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Hackers poison ChatGPT and Gemini results",
+      "body": "Search manipulation redirects users to fake support centers",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Fake listings appear when you ask AI for help",
+      "body": "Scammers game the system so AI trusts their numbers",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "People lose thousands calling fake 'official' support lines",
+      "body": "One victim paid $3,000 thinking they called Google",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Never trust AI-given phone numbers \u2014 verify on official sites",
+      "body": "Call companies directly from their website, not AI suggestions",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Stay safe from AI scams",
+      "body": "Follow for plain-English AI security alerts"
+    }
+  ]
+}
