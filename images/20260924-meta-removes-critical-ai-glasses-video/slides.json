@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Meta deletes criticism of its AI glasses",
+      "kicker": "Contrarian"
+    },
+    {
+      "kind": "content",
+      "headline": "Video showed glasses recording secretly",
+      "body": "A reviewer filmed Meta staff without their knowledge using the AI glasses at Meta headquarters.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Meta claimed copyright to remove it",
+      "body": "Meta used a copyright strike to force YouTube to take down the critical review video.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Glasses look like normal eyewear",
+      "body": "The Ray-Ban Meta glasses have hidden cameras that record video without an obvious red light.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No law stops this in public",
+      "body": "In most places, anyone can wear recording glasses and film you without asking permission.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Who watches the watchers?",
+      "body": "Follow for AI privacy stories that affect your daily life."
+    }
+  ]
+}
