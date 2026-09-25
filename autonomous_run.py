@@ -179,12 +179,31 @@ def seed_comment(topic, caption):
     return strip_reasoning(raw).strip().strip('"')
 
 
+def _looks_like_a_real_comment(text):
+    """Guards against the model echoing its own instructions back instead of
+    writing a comment -- happened live: it returned the constraint bullets
+    ("- Max 2 sentences\\n- Under 150 characters...") and that got posted
+    verbatim to Instagram. A real comment is one short line, not a list, and
+    doesn't talk about its own rules."""
+    if not text or len(text) > 220:
+        return False
+    if text.lstrip().startswith(("-", "*")):
+        return False
+    if "\n" in text.strip():
+        return False
+    bad_markers = ("max ", "under ", "sentence", "hashtag", "character limit",
+                   "link in bio", "sound like", "opinion question")
+    low = text.lower()
+    return not any(m in low for m in bad_markers)
+
+
 def post_seed_comment(media_id, topic, caption):
     """Best-effort: a failed seed comment must never fail the whole run --
     the post already published successfully, so this is non-fatal by design."""
     try:
         text = seed_comment(topic, caption)
-        if not text:
+        if not text or not _looks_like_a_real_comment(text):
+            print(f"seed comment skipped (didn't look like a real comment): {text!r}")
             return
         r = ig_call(f"{IG_API}/{media_id}/comments",
                     {"message": text, "access_token": ig_token()})
