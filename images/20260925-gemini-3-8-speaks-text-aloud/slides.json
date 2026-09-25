@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "3 ways Gemini 3.8 reads to you",
+      "kicker": "New Feature"
+    },
+    {
+      "kind": "content",
+      "headline": "Google added voice to Gemini",
+      "body": "Gemini 3.8 now turns any text into spoken audio using natural-sounding voices.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "It reads articles, emails, PDFs",
+      "body": "Paste a link or upload a file and Gemini reads it back while you do other things.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Hands-free help for daily tasks",
+      "body": "Listen to news while cooking, emails while driving, or documents while resting your eyes.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Limited to Google apps for now",
+      "body": "Only works inside Gmail, Docs, and Chrome. Fewer languages than rivals like ElevenLabs.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want more AI updates?",
+      "body": "Follow for plain-English AI news every week."
+    }
+  ]
+}
