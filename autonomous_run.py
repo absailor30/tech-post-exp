@@ -155,6 +155,47 @@ def ig_call(url, params, method="POST"):
         sys.exit(f"API error {e.code}: {e.read().decode()}")
 
 
+def seed_comment(topic, caption):
+    """Generate one engaging pinned-style first comment for a fresh post.
+    Posting it ourselves immediately gives the post a non-zero comment count
+    from the first second (removes the "empty post" hesitation) and, more
+    importantly, is itself a strong hook for a reply -- an opinion or a
+    direct question reads as an invitation in a way the caption alone
+    doesn't, and replies/saves are what the algorithm actually weighs when
+    deciding whether to push a reel past its first small batch of viewers."""
+    raw = call_llm(
+        "You are the account owner commenting on your own just-published "
+        f"Instagram Reel about: {topic}\n\nFull caption for context:\n{caption}\n\n"
+        "Write ONE short comment (max 2 sentences, under 150 characters) that "
+        "you post yourself as the first comment. It should do ONE of: "
+        "(a) ask a genuine opinion question that's easy to answer in one word "
+        "or (b) state a sharp, slightly opinionated take that invites people "
+        "to agree/disagree, or (c) prompt people to tag someone who needs to "
+        "see this. No hashtags, no emojis-as-decoration (one is fine if it "
+        "fits naturally), no 'link in bio', nothing salesy. Sound like a real "
+        "person, not a brand account. Output ONLY the comment text.",
+        max_tokens=120,
+    )
+    return strip_reasoning(raw).strip().strip('"')
+
+
+def post_seed_comment(media_id, topic, caption):
+    """Best-effort: a failed seed comment must never fail the whole run --
+    the post already published successfully, so this is non-fatal by design."""
+    try:
+        text = seed_comment(topic, caption)
+        if not text:
+            return
+        r = ig_call(f"{IG_API}/{media_id}/comments",
+                    {"message": text, "access_token": ig_token()})
+        log("seed_comment", media_id=media_id, text=text, comment_id=r.get("id"))
+        print(f"seed comment posted: {text}")
+    except SystemExit as e:
+        print(f"seed comment failed (non-fatal): {e}")
+    except Exception as e:
+        print(f"seed comment failed (non-fatal): {e}")
+
+
 def verify_ig_token():
     """Fail in under a second if the Instagram token is dead, before any
     research/LLM/render work happens.
@@ -625,6 +666,7 @@ def main(dry=False, force=False):
     story["media_id"] = result["id"]
     record(story)          # only now is the story genuinely "covered"
     print(f"published {kind}, media id {result['id']}")
+    post_seed_comment(result["id"], p["topic"], p["caption"])
 
     if datetime.date.today().weekday() == 6:   # Sunday: weekly digest
         hist = (BASE / "metrics.jsonl")
