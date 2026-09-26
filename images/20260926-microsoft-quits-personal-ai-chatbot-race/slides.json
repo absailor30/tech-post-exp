@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Microsoft just quit the AI assistant war",
+      "kicker": "Big Tech Pivot"
+    },
+    {
+      "kind": "content",
+      "headline": "Copilot rebooted for work, not you",
+      "body": "New Copilot focuses on Office apps and business data, drops the friendly chatbot personality.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No more race to be your daily AI",
+      "body": "Microsoft admits it can't beat ChatGPT or Gemini for personal use, so it stopped trying.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your Windows AI gets quieter",
+      "body": "The Copilot button on your PC will push work summaries, not conversation or creative help.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "You still pay for the features you lose",
+      "body": "Copilot Pro stays $20/month but drops the chat experience that made it feel useful at home.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Who actually wins now?",
+      "body": "Follow for the AI shifts that change what's on your phone and laptop."
+    }
+  ]
+}
