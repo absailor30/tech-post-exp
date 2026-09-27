@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What Bill Gates calls irresponsible",
+      "kicker": "AI Safety"
+    },
+    {
+      "kind": "content",
+      "headline": "Gates: no safeguards is irresponsible",
+      "body": "Bill Gates said skipping AI safety guards is completely irresponsible this week.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Safeguards mean AI won't harm you",
+      "body": "Safeguards are rules that stop AI from lying, leaking data, or acting dangerously.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No global rules exist yet",
+      "body": "Companies set their own standards. Nothing forces them to protect users first.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your phone apps may skip them",
+      "body": "Free AI tools you use daily often have weaker guards than enterprise versions.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI safety updates",
+      "body": "We explain what AI rules mean for your privacy and money."
+    }
+  ]
+}
