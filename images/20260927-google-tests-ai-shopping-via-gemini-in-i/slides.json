@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "I used to browse for hours. Now AI buys for me.",
+      "kicker": "AI Shopping"
+    },
+    {
+      "kind": "content",
+      "headline": "Google lets Gemini buy from Flipkart",
+      "body": "In India, Gemini can now search Walmart's Flipkart, pick items, and place orders without you leaving the chat.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "You ask, AI does the rest",
+      "body": "Type 'buy black running shoes under 3000 rupees' \u2014 Gemini finds options, compares prices, and checks out if you approve.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Early test, limited to India only",
+      "body": "Works only on Flipkart, only in India, only for invited users. Orders can still fail or pick wrong sizes.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "If it works, shopping changes everywhere",
+      "body": "No more tabs, filters, or checkout forms. But you lose control \u2014 AI picks what it thinks is best, not what you'd choose.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want AI that shops for you?",
+      "body": "Follow for AI news that changes how you live, work, and spend."
+    }
+  ]
+}
