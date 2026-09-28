@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The one ruling that decides which AI serves the military",
+      "kicker": "AI & Government"
+    },
+    {
+      "kind": "content",
+      "headline": "Pentagon cut Anthropic from contracts",
+      "body": "Anthropic, maker of Claude AI, was removed from a Pentagon vendor list last year.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Judges said the ban was legal",
+      "body": "A federal appeals court ruled the Pentagon acted within its rights to exclude Anthropic.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Safety rules clashed with military needs",
+      "body": "Anthropic's strict usage policies prevented its AI from being used in defense applications.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Government now picks AI winners",
+      "body": "This precedent lets agencies favor companies willing to relax safety guards for contracts.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "AI policy affects your tools",
+      "body": "Follow for plain-English AI news that changes what you can use."
+    }
+  ]
+}
