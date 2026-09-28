@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI danger isn't rogue agents",
+      "kicker": "Contrarian"
+    },
+    {
+      "kind": "content",
+      "headline": "Companies ship demos as products",
+      "body": "ChatGPT and rivals launched without the testing a toaster gets",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No accountability when AI fails",
+      "body": "If a chatbot gives bad medical advice, no one is liable",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Users have zero control",
+      "body": "You cannot audit, correct, or opt out of how your data trains models",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Real products need safety standards",
+      "body": "Cars, drugs, and planes face regulation \u2014 AI skips it entirely",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Demand better AI products",
+      "body": "Follow for plain-English AI accountability coverage"
+    }
+  ]
+}
