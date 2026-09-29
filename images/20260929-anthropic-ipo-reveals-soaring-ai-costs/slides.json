@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The one number that shows AI's true price",
+      "kicker": "The Real Cost"
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic files for IPO",
+      "body": "The Claude maker shared private financials this week to prepare for a stock market listing.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Losses hit billions yearly",
+      "body": "The company spends far more on computing power than it earns from subscriptions and business deals.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your AI bill may climb",
+      "body": "When model makers lose this much, they raise prices or add limits \u2014 affecting every app you use.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Vision: AI as coworker",
+      "body": "Anthropic says it's building systems that plan and act independently, not just answer questions.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI money moves",
+      "body": "We track the costs shaping the tools you use daily."
+    }
+  ]
+}
