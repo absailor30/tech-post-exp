@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "You're missing benefits because the system is too complex",
+      "kicker": "Government AI"
+    },
+    {
+      "kind": "content",
+      "headline": "White House launches benefit-finding chatbot pilot",
+      "body": "A new AI assistant guides people through federal programs like SNAP, Medicaid, and veterans' aid without needing a caseworker.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Types your situation, gets plain-language steps",
+      "body": "Describe your income, family size, and zip code \u2014 the bot returns which programs you qualify for and exactly how to apply.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "But it can hallucinate eligibility rules",
+      "body": "Early tests show the chatbot sometimes invents deadlines or misses state-specific rules, risking denied applications or lost benefits.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your data feeds the model unless you opt out",
+      "body": "Conversations are stored to improve the system; sensitive financial and health details stay on government servers but may train future versions.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want simpler government help?",
+      "body": "Follow for AI that affects your wallet, not just your code."
+    }
+  ]
+}
