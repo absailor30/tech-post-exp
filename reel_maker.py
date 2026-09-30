@@ -71,17 +71,39 @@ SLIDE_W, SLIDE_H = 1080, 1350
 BG = "0xF5EEE0"   # fallback; the real value comes from the active theme
 
 
-def _encode(frames_dir, n_frames, out, bg=BG):
-    """Frame sequence -> H.264 Reel, letterboxed onto a 1080x1920 canvas."""
+MUSIC_VOL = 0.9         # music alone
+MUSIC_VOL_UNDER = 0.16  # music bed when a voiceover is on top
+VOICE_VOL = 1.6
+
+
+def _encode(frames_dir, n_frames, out, bg=BG, voice=None):
+    """Frame sequence -> H.264 Reel, letterboxed onto a 1080x1920 canvas.
+
+    voice: optional list of (audio_path, start_seconds) narration clips.
+    """
     from music_maker import pick_track
     track = pick_track()
     dur = n_frames / FPS
     fc = (f"[0:v]pad={W}:{H}:0:(oh-ih)/2:color={bg},setsar=1[v];"
           f"[1:a]aloop=loop=-1:size=2e9,atrim=0:{dur},"
-          f"afade=t=out:st={max(0.1, dur - 1.2)}:d=1.2,volume=0.9[aud]")
+          f"afade=t=out:st={max(0.1, dur - 1.2)}:d=1.2,"
+          f"volume={MUSIC_VOL_UNDER if voice else MUSIC_VOL}[music]")
+    voice_inputs = []
+    if voice:
+        labels = ""
+        for i, (clip, start) in enumerate(voice):
+            voice_inputs += ["-i", str(clip)]
+            ms = int(start * 1000)
+            fc += f";[{i + 2}:a]adelay={ms}|{ms},volume={VOICE_VOL}[vo{i}]"
+            labels += f"[vo{i}]"
+        fc += (f";{labels}amix=inputs={len(voice)}:normalize=0[vo]"
+               f";[music][vo]amix=inputs=2:normalize=0:duration=first,"
+               f"alimiter=limit=0.95[aud]")
+    else:
+        fc = fc.replace("[music]", "[aud]")
     cmd = [get_ffmpeg_exe(), "-y",
            "-framerate", str(FPS), "-i", str(Path(frames_dir) / "f%05d.png"),
-           "-i", str(track),
+           "-i", str(track), *voice_inputs,
            "-filter_complex", fc, "-map", "[v]", "-map", "[aud]",
            "-c:v", "libx264", "-crf", "24", "-preset", "medium",
            "-c:a", "aac", "-shortest",
@@ -92,7 +114,27 @@ def _encode(frames_dir, n_frames, out, bg=BG):
     return out
 
 
-def build_animated(specs, out="reel.mp4", workdir=None, theme=None):
+VOICE_LEAD = 0.25   # narration starts a beat after the slide appears
+VOICE_PAD = 0.6     # hold after the last spoken word before the next slide
+
+
+def _narrate(specs, tmp):
+    """[(clip_path, seconds)] per slide, or None if any slide fails."""
+    from voiceover import duration, narration_text, synth
+    clips = []
+    for i, spec in enumerate(specs):
+        path = synth(narration_text(spec), Path(tmp) / f"vo{i}")
+        if not path:
+            print("  [voiceover] unavailable, building music-only reel")
+            return None
+        clips.append((path, duration(path)))
+    print(f"  [voiceover] {len(clips)} clips, "
+          f"{sum(c[1] for c in clips):.1f}s of speech")
+    return clips
+
+
+def build_animated(specs, out="reel.mp4", workdir=None, theme=None,
+                   narrate=True):
     """specs: list of slide dicts (kind/headline/body/idx/total) in order."""
     from make_image import THEMES, render_slide_frames, set_theme
     if theme:
@@ -102,9 +144,16 @@ def build_animated(specs, out="reel.mp4", workdir=None, theme=None):
 
     tmp = Path(workdir) if workdir else Path(tempfile.mkdtemp(prefix="reelframes"))
     tmp.mkdir(parents=True, exist_ok=True)
+    # Narration first: slide length must cover the spoken audio. All-or-nothing
+    # — if any slide's TTS fails the reel ships music-only, as before.
+    clips = _narrate(specs, tmp) if narrate else None
     idx = 0
-    for spec in specs:
+    voice = []
+    for i, spec in enumerate(specs):
         secs = slide_seconds(spec)
+        if clips:
+            secs = max(secs, clips[i][1] + VOICE_PAD)
+            voice.append((clips[i][0], idx / FPS + VOICE_LEAD))
         n = int(secs * FPS)
         reveal_secs = HOOK_REVEAL_SECS if spec["kind"] == "hook" else REVEAL_SECS
         # Letters always land in reveal_secs, so a longer slide simply holds
@@ -114,7 +163,7 @@ def build_animated(specs, out="reel.mp4", workdir=None, theme=None):
               f"(read {secs - reveal_secs:.1f}s, reveal {reveal_secs:.2f}s)")
     print(f"rendered {idx} animated frames ({len(specs)} slides, {idx / FPS:.1f}s)")
     try:
-        _encode(tmp, idx, out, bg)
+        _encode(tmp, idx, out, bg, voice or None)
     finally:
         if workdir is None:
             shutil.rmtree(tmp, ignore_errors=True)

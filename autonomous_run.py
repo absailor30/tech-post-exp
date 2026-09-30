@@ -365,12 +365,28 @@ def plan():
     import random
     from metrics import collect
 
-    story = research()
+    # Env var (workflow input) or a one-shot story_override.txt committed to
+    # the repo; the file is consumed (git rm) when the post is committed.
+    override = os.environ.get("STORY_OVERRIDE", "").strip()
+    _f = REPO_DIR / "story_override.txt"
+    if not override and _f.exists():
+        override = _f.read_text(encoding="utf-8").strip()
+    if override:
+        # Manual topic (workflow_dispatch `story` input): "headline | summary".
+        # Skips research and dedup — the operator chose this story on purpose.
+        head, _, summ = override.partition("|")
+        story = {"headline": head.strip(), "url": "", "summary": summ.strip(),
+                 "sources_covering": ["manual"], "coverage_count": 1,
+                 "all_headlines": [head.strip()], "runners_up": [],
+                 "sources_ok": ["manual"], "sources_failed": [],
+                 "source_count": 1, "degraded": False, "score": 0}
+    else:
+        story = research()
     print(f"[research] {story['source_count']} sources responded "
           f"-> {story['coverage_count']} outlets on: {story['headline']}")
     if story["degraded"]:
         print(f"[research] WARNING degraded: {', '.join(story['sources_failed'])}")
-    if already_covered(story["headline"]):
+    if not override and already_covered(story["headline"]):
         for alt in story["runners_up"]:
             if not already_covered(alt["headline"]):
                 print(f"[research] top story already covered, using: {alt['headline']}")
@@ -491,9 +507,12 @@ def git_out(*args):
 
 
 def git(*args):
-    subprocess.run(["git", "-C", str(REPO_DIR), "-c", f"user.name={GIT_NAME}",
-                    "-c", f"user.email={GIT_EMAIL}", *args],
-                   check=True, capture_output=True)
+    r = subprocess.run(["git", "-C", str(REPO_DIR), "-c", f"user.name={GIT_NAME}",
+                        "-c", f"user.email={GIT_EMAIL}", *args],
+                       capture_output=True)
+    if r.returncode != 0:   # surface git's own reason, not just "exit status 1"
+        print(f"git {' '.join(args)} failed:\n{r.stderr.decode(errors='replace')}")
+        raise subprocess.CalledProcessError(r.returncode, args)
 
 
 def wait_finished(container_id, tries=25, delay=15):
@@ -662,6 +681,14 @@ def main(dry=False, force=False):
     build_animated(specs, outdir / "reel.mp4", theme=theme)
     rel_paths.append((outdir / "reel.mp4").relative_to(REPO_DIR).as_posix())
 
+    if (REPO_DIR / "story_override.txt").exists():
+        git("rm", "-q", "-f", "story_override.txt")   # one-shot: never reused
+    # A branch run is a shallow checkout that can't prove its commit descends
+    # from main, so the push is rejected even when it should fast-forward.
+    # Parent the post commit on main's tip (tree is unchanged); a no-op when
+    # the run is already on main.
+    git("fetch", "-q", "--depth=1", "origin", "main")
+    git("reset", "-q", "--soft", "FETCH_HEAD")
     git("add", "images")
     git("commit", "-m", f"post {stamp}: {p['topic'][:60]}")
     git("push", "-q", "origin", "HEAD:main")

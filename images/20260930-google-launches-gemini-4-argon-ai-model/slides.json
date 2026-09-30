@@ -1,0 +1,43 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What Google's new AI handles that broke others",
+      "kicker": "Insider Secret"
+    },
+    {
+      "kind": "content",
+      "headline": "Google drops Gemini 4 Argon Sept 30",
+      "body": "New flagship model processes 1 million tokens at once \u2014 roughly ten full novels in a single conversation.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Beats rivals on Google's own benchmarks",
+      "body": "Scores 77.9% on coding test versus 74% for Claude and GPT-6, but no independent verification exists yet.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "First users: security pros and US government",
+      "body": "Rolled out without safety guardrails to vetted defenders; regular paid subscribers get access later.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "API costs $2 in, $10 out per million tokens",
+      "body": "Cheap for companies automating workflows; adds up fast if you personally feed it huge documents daily.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for plain-English AI news",
+      "body": "We skip the jargon so you know what actually matters."
+    }
+  ]
+}

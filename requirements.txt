@@ -3,3 +3,5 @@ python-dotenv
 pillow
 numpy
 imageio-ffmpeg
+edge-tts
+nvidia-riva-client
