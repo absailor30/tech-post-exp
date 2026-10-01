@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI model they won't let you use",
+      "kicker": "Forbidden Access"
+    },
+    {
+      "kind": "content",
+      "headline": "Google released Gemini 4 Argon",
+      "body": "Called their most powerful AI model yet on September 25",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Only cyber experts get access",
+      "body": "Restricted to trusted security researchers, not the public",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Safety fears drive the lockout",
+      "body": "Google says the model could enable serious cyber attacks",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Power concentrates in few hands",
+      "body": "Good: prevents misuse. Bad: public can't benefit or scrutinize",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Who should control strong AI?",
+      "body": "Follow for AI news that affects your life, not just developers"
+    }
+  ]
+}
