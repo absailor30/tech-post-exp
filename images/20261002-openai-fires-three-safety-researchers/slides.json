@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The safety firings OpenAI tried to hide",
+      "kicker": "forbidden"
+    },
+    {
+      "kind": "content",
+      "headline": "Three researchers fired this week",
+      "body": "Wall Street Journal says they leaked confidential info to an outside AI safety group",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "A fourth researcher quit same day",
+      "body": "OpenAI's safety team loses four people at once while building more powerful models",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Fewer watchdogs inside the biggest lab",
+      "body": "Safety team shrinks as OpenAI races to release agents that act on your behalf",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "No independent check on what ships",
+      "body": "When the people paid to say 'wait' are gone, regular users bear the risk",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI news that matters",
+      "body": "We translate lab chaos into what it means for your phone, job, and privacy"
+    }
+  ]
+}
