@@ -1,0 +1,44 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run models like DeepSeek and Gemma locally",
+      "kicker": "Repo 1 of 100",
+      "repo": "github.com/ollama/ollama"
+    },
+    {
+      "kind": "content",
+      "headline": "Run AI models on your computer",
+      "body": "Download and use models like DeepSeek and Gemma without cloud services",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Works on Mac, Windows, Linux",
+      "body": "Includes a programming interface and connects to chat apps like Open WebUI",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "182,086 stars, MIT licence, Go",
+      "body": "Created June 2023, last updated October 2026",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Check README for hardware needs",
+      "body": "MIT licence allows free use; see README for computer requirements",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for all 100",
+      "body": "One AI repo explained in plain words, every day."
+    }
+  ]
+}
