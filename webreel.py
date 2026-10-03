@@ -128,8 +128,54 @@ def subtitle(frame, text, label=""):
     return Image.alpha_composite(img, layer).convert("RGB")
 
 
+PRESENTER = Path(__file__).parent / "assets" / "presenter.jpg"
+FACE_D = 270                        # px diameter of the presenter window
+_face = None
+
+
+def presenter(frame, t, speaking):
+    """Small round presenter window, top-right, below Instagram's header.
+    A still photo with gentle motion (breathing, sway, nods while speaking); no lip sync."""
+    global _face
+    import math
+    if _face is None:
+        if not PRESENTER.exists():
+            return frame
+        _face = Image.open(PRESENTER).convert("RGB")
+    amp = 1.0 if speaking else 0.35
+    sway = math.sin(t * 1.7) * 1.6 * amp                       # degrees
+    nod = (math.sin(t * 5.2) * 0.5 + 0.5) ** 3 * 9 * amp if speaking else 0
+    zoom = 1.06 + 0.015 * math.sin(t * 2.1) + (0.012 if speaking else 0)
+    S = FACE_D * 3                                              # supersample for smooth edge
+    src = _face.resize((int(S * zoom), int(S * zoom)))
+    src = src.rotate(sway, resample=Image.BICUBIC)
+    ox, oy = (src.width - S) // 2, (src.height - S) // 2 - int(nod * 3)
+    tile = src.crop((ox, oy, ox + S, oy + S))
+    ring = 24
+    big = Image.new("RGBA", (S + 2 * ring, S + 2 * ring), (0, 0, 0, 0))
+    d = ImageDraw.Draw(big)
+    d.ellipse((0, 0, big.width - 1, big.height - 1), fill=(0, 0, 0, 255))
+    d.ellipse((8, 8, big.width - 9, big.height - 9), fill=GOLD + (255,))
+    d.ellipse((ring - 6, ring - 6, big.width - ring + 5, big.height - ring + 5), fill=(0, 0, 0, 255))
+    mask = Image.new("L", tile.size, 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, S - 1, S - 1), fill=255)
+    big.paste(tile, (ring, ring), mask)
+    out_d = FACE_D + 2 * ring // 3
+    small = big.resize((out_d, out_d), Image.LANCZOS)
+    bob = int(math.sin(t * 2.3) * 4 * amp)
+    img = frame.convert("RGBA")
+    img.alpha_composite(small, (W - out_d - 50, 210 + bob))
+    return img.convert("RGB")
+
+
 def overlay(frame, spec, alpha, t=0.0, scene_dur=1.0):
     """Subtitle layer for one frame of one scene (t = seconds into the scene)."""
+    frame = _overlay_text(frame, spec, t, scene_dur)
+    speaking = bool(spec.get("say")) and rm.VOICE_LEAD <= t <= rm.VOICE_LEAD + spec.get("_dur", scene_dur)
+    return presenter(frame, spec.get("_clock", 0.0) + t, speaking)
+
+
+def _overlay_text(frame, spec, t=0.0, scene_dur=1.0):
     label = spec.get("kicker", "") if spec["kind"] == "hook" else ""
     if spec.get("say"):
         chunks = spec.get("_chunks") or chunk_words(spec["say"])
@@ -158,6 +204,7 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
             voice.append((clips[i][0], idx / rm.FPS + rm.VOICE_LEAD))
             spec["_dur"] = clips[i][1]                 # subtitle timing follows the audio
         n = int(secs * rm.FPS)
+        spec["_clock"] = idx / rm.FPS
         counts.append(n)
         idx += n
     total = idx
