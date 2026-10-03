@@ -133,7 +133,31 @@ FACE_D = 270                        # px diameter of the presenter window
 _face = None
 
 
-def presenter(frame, t, speaking):
+MOUTH = (328, 482)                  # mouth centre in the 640px presenter crop
+MAX_OPEN = 20                       # px of jaw drop at full volume (640px space)
+
+
+def _talk(face, openness):
+    """Same photo with the jaw dropped by `openness` (0..1) and a dark mouth interior.
+    Driven by the narration's loudness, so it roughly follows the speech (no phoneme sync)."""
+    d = int(round(MAX_OPEN * openness))
+    if d < 1:
+        return face
+    from PIL import ImageFilter
+    mx, my = MOUTH
+    shifted = Image.new("RGB", face.size)
+    shifted.paste(face, (0, d))
+    mask = Image.new("L", face.size, 0)
+    ImageDraw.Draw(mask).ellipse((mx - 78, my - 4, mx + 78, my + 95), fill=255)
+    mask = mask.filter(ImageFilter.GaussianBlur(10))
+    out = Image.composite(shifted, face, mask)
+    ov = Image.new("L", face.size, 0)
+    ImageDraw.Draw(ov).ellipse((mx - 34, my - 2, mx + 34, my + d + 1), fill=255)
+    ov = ov.filter(ImageFilter.GaussianBlur(2.2))
+    return Image.composite(Image.new("RGB", face.size, (38, 14, 16)), out, ov)
+
+
+def presenter(frame, t, speaking, openness=0.0):
     """Small round presenter window, top-right, below Instagram's header.
     A still photo with gentle motion (breathing, sway, nods while speaking); no lip sync."""
     global _face
@@ -147,7 +171,7 @@ def presenter(frame, t, speaking):
     nod = (math.sin(t * 5.2) * 0.5 + 0.5) ** 3 * 9 * amp if speaking else 0
     zoom = 1.06 + 0.015 * math.sin(t * 2.1) + (0.012 if speaking else 0)
     S = FACE_D * 3                                              # supersample for smooth edge
-    src = _face.resize((int(S * zoom), int(S * zoom)))
+    src = _talk(_face, openness).resize((int(S * zoom), int(S * zoom)))
     src = src.rotate(sway, resample=Image.BICUBIC)
     ox, oy = (src.width - S) // 2, (src.height - S) // 2 - int(nod * 3)
     tile = src.crop((ox, oy, ox + S, oy + S))
@@ -172,7 +196,9 @@ def overlay(frame, spec, alpha, t=0.0, scene_dur=1.0):
     """Subtitle layer for one frame of one scene (t = seconds into the scene)."""
     frame = _overlay_text(frame, spec, t, scene_dur)
     speaking = bool(spec.get("say")) and rm.VOICE_LEAD <= t <= rm.VOICE_LEAD + spec.get("_dur", scene_dur)
-    return presenter(frame, spec.get("_clock", 0.0) + t, speaking)
+    env = spec.get("_env") or []
+    k = int(t * rm.FPS)
+    return presenter(frame, spec.get("_clock", 0.0) + t, speaking, env[k] if 0 <= k < len(env) else 0.0)
 
 
 def _overlay_text(frame, spec, t=0.0, scene_dur=1.0):
@@ -184,6 +210,29 @@ def _overlay_text(frame, spec, t=0.0, scene_dur=1.0):
         return subtitle(frame, text, label)
     # no spoken script (news-style specs): show the headline only, still outlined
     return subtitle(frame, spec.get("headline", ""), label)
+
+
+def _envelope(path, n_frames):
+    """Per-video-frame mouth openness 0..1 from the clip's loudness (starts at VOICE_LEAD)."""
+    try:
+        import numpy as np
+        import soundfile as sf
+        a, sr = sf.read(str(path))
+        if a.ndim > 1:
+            a = a.mean(axis=1)
+        hop = sr / rm.FPS
+        n = int(len(a) / hop)
+        rms = np.array([np.sqrt(np.mean(a[int(i * hop):int((i + 1) * hop)] ** 2) + 1e-12) for i in range(n)])
+        ref = np.percentile(rms, 90) or 1.0
+        e = np.clip(rms / ref, 0, 1) ** 0.8
+        e = np.convolve(e, [0.25, 0.5, 0.25], mode="same")          # smooth jitter
+        e = np.where(e < 0.12, 0.0, e)                              # closed between words
+        lead = int(rm.VOICE_LEAD * rm.FPS)
+        out = [0.0] * lead + [float(x) for x in e]
+        return (out + [0.0] * n_frames)[:n_frames]
+    except Exception as ex:
+        print(f"  [webreel] mouth envelope unavailable: {ex!r:.100}")
+        return []
 
 
 def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scroll_cap=SCROLL_CAP):
@@ -203,6 +252,7 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
                 secs = max(secs, clips[i][1] + rm.VOICE_PAD)
             voice.append((clips[i][0], idx / rm.FPS + rm.VOICE_LEAD))
             spec["_dur"] = clips[i][1]                 # subtitle timing follows the audio
+            spec["_env"] = _envelope(clips[i][0], int(secs * rm.FPS))
         n = int(secs * rm.FPS)
         spec["_clock"] = idx / rm.FPS
         counts.append(n)
