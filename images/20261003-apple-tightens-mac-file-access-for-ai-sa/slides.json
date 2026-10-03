@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why is Apple locking down your Mac files?",
+      "kicker": "Security Alert"
+    },
+    {
+      "kind": "content",
+      "headline": "Apple announced stricter file permissions",
+      "body": "New macOS rules limit which apps can see all your files, citing AI agent risks.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI agents can now read everything",
+      "body": "Autonomous AI tools that act on your behalf can access photos, documents, and passwords if granted Full Disk Access.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Your private data is the target",
+      "body": "Tax returns, medical records, and family photos could be scanned by AI without you realizing which app asked.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Legitimate apps may stop working",
+      "body": "Backup tools, password managers, and disk cleaners will need re-approval \u2014 some may break until updated.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Stay ahead of AI privacy risks",
+      "body": "Follow for plain-English AI security news that protects your data."
+    }
+  ]
+}
