@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run AI models on your computer",
+      "kicker": "Repo 1 of 100",
+      "say": "Did you know you can now run AI models like DeepSeek and Gemma on your own computer? This is Day 1 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "Run models like DeepSeek locally",
+      "body": "This tool lets you run AI models such as DeepSeek, Qwen, and Gemma on your own device without needing the cloud.",
+      "say": "This tool lets you run AI models like DeepSeek and Gemma on your own computer.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Works on Mac, Windows, Linux",
+      "body": "It runs on Mac, Windows, and Linux, with a Docker option and a REST API for connecting other apps.",
+      "say": "It works on Mac, Windows, and Linux, with a Docker option and a REST API for connecting other apps.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "182,097 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Go \u00b7 Since June 2023",
+      "say": "It has over 180 thousand stars on GitHub and uses the MIT licence. It's written in Go and it's been around since June 2023.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Read the README and licence first",
+      "body": "No specific warnings listed, so check the README and MIT licence before you start.",
+      "say": "No specific warnings listed, so read the README and licence before you start.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Comment REPO for the full list",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 99 repos... or you might not see us again. And comment REPO, I'll send you the full list."
+    }
+  ]
+}
