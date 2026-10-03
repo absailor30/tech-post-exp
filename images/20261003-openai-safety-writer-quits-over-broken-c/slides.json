@@ -1,0 +1,43 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The safety culture AI labs ignore",
+      "kicker": "AI Safety"
+    },
+    {
+      "kind": "content",
+      "headline": "Top safety writer leaves OpenAI",
+      "body": "David Robinson wrote safety reports for every major model release. He resigned this week.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "He says industry culture is broken",
+      "body": "Robinson calls Silicon Valley's 'extreme confidence' and 'perpetual sprints' dangerous for AI development.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Nuclear-level safeguards needed now",
+      "body": "He says AI labs must run like nuclear plants \u2014 with redundancy and careful planning, not speed.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Growing exodus of safety researchers",
+      "body": "At least 6 researchers from OpenAI, Anthropic, and Google DeepMind have quit and warned publicly.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want the real AI risks?",
+      "body": "Follow for plain-English safety news that affects your phone, job, and family."
+    }
+  ]
+}
