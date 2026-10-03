@@ -94,7 +94,7 @@ def audio_graph(voice, dur, music_idx=1, first_voice_idx=2):
           f"loudnorm=I={VOICE_LUFS}:TP=-1.5:LRA=7,asplit=2[vo][vosc]"
           f";[music][vosc]sidechaincompress=threshold={DUCK_THRESHOLD}:ratio=6:"
           f"attack=15:release=300[musicd]"
-          f";[vo][musicd]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.89[aud]")
+          f";[vo][musicd]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.8[aud]")
     return g
 
 

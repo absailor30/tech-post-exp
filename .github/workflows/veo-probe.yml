@@ -23,6 +23,7 @@ jobs:
       - name: remix audio onto the existing Day 1 video
         env:
           NIM_API_KEY: x
+          PREVIEW_DIR: images/20261003-run-ai-models-like-deepseek-locally
         run: python remix_audio.py
       - name: commit result to this branch
         if: always()

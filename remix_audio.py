@@ -7,8 +7,7 @@ from imageio_ffmpeg import get_ffmpeg_exe
 import reel_maker as rm
 from music_maker import pick_track
 
-d = sorted(glob.glob("images/20261003-*/"), key=os.path.getmtime)[-1]
-d = Path(d)
+d = Path(os.environ["PREVIEW_DIR"])      # explicit: never guess which preview to remix
 specs = json.loads((d / "slides.json").read_text())["slides"]
 tmp = Path(tempfile.mkdtemp())
 clips = rm._narrate(specs, tmp)
