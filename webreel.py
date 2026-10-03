@@ -137,7 +137,10 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
     for i, spec in enumerate(specs):
         secs = rm.slide_seconds(spec)
         if clips:
-            secs = max(secs, clips[i][1] + rm.VOICE_PAD)
+            if spec.get("say"):        # a spoken script drives the pace, not the on-screen words
+                secs = max(2.5, clips[i][1] + rm.VOICE_PAD)
+            else:
+                secs = max(secs, clips[i][1] + rm.VOICE_PAD)
             voice.append((clips[i][0], idx / rm.FPS + rm.VOICE_LEAD))
         n = int(secs * rm.FPS)
         counts.append(n)

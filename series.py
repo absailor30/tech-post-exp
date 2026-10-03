@@ -142,6 +142,35 @@ def fetch_facts(entry):
             "topics": d.get("topics") or [], "readme": readme, "extra": ""}
 
 
+# Rotating openings: A/B test which one sounds better. Chosen by day so every run
+# is deterministic and the choice is recorded in series_state.json.
+OPENINGS = [
+    "Did you know you can now {usp}?",
+    "Quick question... would you like to {usp}?",
+    "Okay, here's something cool. You can {usp}.",
+    "Stop scrolling... you can {usp}.",
+    "Imagine if you could {usp}. Well... you can.",
+]
+
+
+def opening_for(day):
+    i = (day - 1) % len(OPENINGS)
+    return i, OPENINGS[i]
+
+
+def series_line(day, total):
+    return (f"This is Day {day} of our exclusive {total}-day series, "
+            "finding the best GitHub repo for you.")
+
+
+def cta_say(day, total):
+    left = total - day
+    follow = (f"Follow for the next {left} repos" if left > 1 else
+              "Follow for the last repo" if left == 1 else "Follow for what comes next")
+    return ("Loved it? Save this, and send it to a friend. "
+            f"{follow}... and comment REPO. I'll send you the full list.")
+
+
 def series_note(day, total):
     return (
         f"SERIES MODE — Day {day} of {total} of the owner's '{total} AI repos worth "
@@ -149,21 +178,30 @@ def series_note(day, total):
         "facts that appear under EXTRA CONTEXT and SOURCE MATERIAL. If something is "
         "not stated there (hardware needs, privacy, offline use, speed, number of "
         "models, who uses it), leave it out — never add it from memory.\n"
-        "  HOOK: the hook headline is the repo's USP — what it does — taken from the "
-        "'Description:' line in EXTRA CONTEXT and restated in plain everyday words, "
-        "max 10 words. Use only ideas that are in that description or the README. No "
-        "hype, no superlatives, no 'nobody tells you' / 'secret' / 'hidden', and no "
-        "number that is not in the source.\n"
-        "  The 4 content slides must be, in this order:\n"
-        "    1. What it does (from the description and README).\n"
-        "    2. What is inside or how it is used (from the README sections/text).\n"
-        "    3. The facts: GitHub stars (exact number), licence, main language, created "
-        "and last-updated dates.\n"
-        "    4. What to know before using it (only a caveat the README or licence "
-        "supports; if none, say to check the README and licence).\n"
-        "  Say the repo name. Explain every technical term in everyday words. For "
-        "trading or finance repos, say it is for research and not financial advice. "
-        "Do not explain how to bypass paywalls, bot detection or terms of service.")
+        "  NEVER write the repository's name (or its owner's) anywhere — not in the "
+        "headline, body, spoken lines or caption. Say 'this tool' or 'this repo'.\n"
+        "  The reel is spoken aloud by a warm, playful voice, like a clever friend "
+        "sharing a find. Short sentences, '...' for a beat. Keep the WHOLE reel "
+        "under 60 seconds: about 20 words for hook.usp's sentence and at most 18 "
+        "spoken words per content slide.\n"
+        "  JSON additions (required):\n"
+        "    hook.usp = ONE verb phrase, max 14 words, no leading 'to', saying what "
+        "the repo lets a person do, restated in plain words from the 'Description:' "
+        "line (e.g. 'run AI models like DeepSeek and Gemma on your own computer'). "
+        "Only ideas that are in the description or README.\n"
+        "    hook.headline = the on-screen version, max 8 words.\n"
+        "    every content slide gets a \"say\" string: what is spoken for that slide.\n"
+        "  The 4 content slides, in this order:\n"
+        "    1. What it does (description/README). 2. What is inside or how it is "
+        "used (README). 3. The facts: round the star count in speech ('over 180 "
+        "thousand stars'), plus licence, language, how long it has existed. 4. What "
+        "to know before using it (only a caveat the README or licence supports; if "
+        "none, say to read the README and licence first).\n"
+        "  The caption: max 60 words, warm, no hashtags beyond the usual 8-10.\n"
+        "  For trading or finance repos, say it is for research and not financial "
+        "advice. Do not explain how to bypass paywalls, bot detection or terms of "
+        "service. The opening line, the series line and the call to action are added "
+        "by the system — do not write them.")
 
 
 _STOP = set("a an the and or of to in on for with from by is are be it its this that "
@@ -172,8 +210,8 @@ _STOP = set("a an the and or of to in on for with from by is are be it its this 
 
 
 def _words(text):
-    return [w for w in re.findall(r"[a-z0-9][a-z0-9'+.-]*", (text or "").lower())
-            if w not in _STOP and len(w) > 1]
+    ws = (w.rstrip(".'+-") for w in re.findall(r"[a-z0-9][a-z0-9'+.-]*", (text or "").lower()))
+    return [w for w in ws if w and w not in _STOP and len(w) > 1]
 
 
 def hook_grounded(headline, source_text, min_overlap=0.5):
@@ -194,32 +232,76 @@ def fallback_hook(story):
     facts = story["summary"]
     m = re.search(r"Description: (.*?)(?: \| |$)", facts)
     desc = (m.group(1) if m else story["headline"]).strip()
-    name = story["series"]["repo"].split("/")[-1]
     words = desc.split()
-    short = " ".join(words[:11]).rstrip(",;:- ") + ("…" if len(words) > 11 else "")
-    return f"{name}: {short}"
+    return " ".join(words[:11]).rstrip(",;:- ") + ("…" if len(words) > 11 else "")
+
+
+def _description(story):
+    m = re.search(r"Description: (.*?)(?: \| |$)", story["summary"])
+    return (m.group(1) if m else story["headline"]).strip().rstrip(".")
+
+
+def scrub_name(text, repo):
+    """Remove the repo's name from any text: 'Ollama lets...' -> 'This tool lets...'.
+    The recording shows the name; the words and captions must not give it away."""
+    if not text:
+        return text
+    name = repo.split("/")[-1]
+    variants = {name, name.replace("-", " "), name.replace("-", ""), name.replace("_", " ")}
+    squashed = re.sub(r"[^a-z0-9]", "", name.lower())
+    text = re.sub(r"#\w*" + re.escape(squashed) + r"\w*", "", text, flags=re.I)   # hashtags first
+    for v in sorted((x for x in variants if len(x) > 2), key=len, reverse=True):
+        pat = re.compile(r"(?<![A-Za-z0-9])" + re.escape(v) + r"(?![A-Za-z0-9])", re.I)
+
+        def repl(m, t=text):
+            before = t[:m.start()].rstrip()
+            return "This tool" if (not before or before[-1] in ".!?\n") else "this tool"
+        text = pat.sub(repl, text)
+    return re.sub(r"[ \t]{2,}", " ", text).strip()
 
 
 def finalize(p, story):
-    """Deterministic parts of a series post, so none of it depends on the model:
-    the kicker, a hook that is verifiably grounded in the description, the CTA,
-    and the find-it line + series hashtag in the caption."""
+    """Everything fixed about the series flow is added here, in code, so every
+    reel follows the same flow regardless of what the model wrote:
+    kicker -> grounded hook -> rotating opening + series line (spoken) ->
+    4 content slides -> fixed save/share/follow/comment call to action."""
     s = story["series"]
-    src = story["summary"] + "\n" + story.get("article", "") + "\n" + s["repo"]
+    repo, day, total = s["repo"], s["day"], s["total"]
+    src = story["summary"] + "\n" + story.get("article", "") + "\n" + repo
+
     hook = p.setdefault("hook", {})
-    hook["kicker"] = f"Repo {s['day']} of {s['total']}"
+    hook["kicker"] = f"Repo {day} of {total}"
     if not hook_grounded(hook.get("headline", ""), src):
-        print(f"[series] hook not grounded in the description, using fallback: "
-              f"{hook.get('headline')!r}")
+        print(f"[series] hook headline not grounded, using fallback: {hook.get('headline')!r}")
         hook["headline"] = fallback_hook(story)
-    p["cta"] = {"headline": f"Follow for all {s['total']}",
-                "body": "One AI repo explained in plain words, every day."}
-    cap = p.get("caption", "").rstrip()
-    link = f"github.com/{s['repo']}" if "/" in s["repo"] else f"github.com/{s['repo']}"
-    if link not in cap:
-        cap += f"\n\nFind it: {link}"
-    if "#100AIRepos" not in cap:
-        cap += "\n#100AIRepos"
+    usp = (hook.get("usp") or "").strip().rstrip(".?!")
+    usp = re.sub(r"^(to|you can)\s+", "", usp, flags=re.I)
+    idx, tmpl = opening_for(day)
+    s["opening"] = idx
+    if usp and hook_grounded(usp, src, min_overlap=0.4):
+        hook["say"] = tmpl.format(usp=usp)
+    else:
+        print(f"[series] usp not grounded ({usp!r}), using the description")
+        d = _description(story).split()
+        hook["say"] = "Here's one worth knowing... " + " ".join(d[:18]).rstrip(",;:- ") + "."
+    hook["say"] += " " + series_line(day, total)
+
+    for sl in p.get("slides", []):
+        if not sl.get("say"):
+            sl["say"] = f"{sl.get('headline', '')}. {sl.get('body', '')}".strip(". ")
+
+    p["cta"] = {"headline": "Save · Share · Follow", "body": "Comment REPO for the full list",
+                "say": cta_say(day, total)}
+
+    # the name stays out of every word and caption (the recording shows it)
+    hook["headline"] = scrub_name(hook["headline"], repo)
+    hook["say"] = scrub_name(hook["say"], repo)
+    for sl in p.get("slides", []):
+        for k in ("headline", "body", "say"):
+            sl[k] = scrub_name(sl.get(k, ""), repo)
+
+    cap = scrub_name(p.get("caption", ""), repo).rstrip()
+    cap += "\n\nSave this and share it with a friend. Comment REPO and I'll DM you the full list.\n#100AIRepos"
     p["caption"] = cap
     return p
 
@@ -279,5 +361,6 @@ def pick_story(repos=None, state=None):
 def mark_posted(state, story, media_id):
     s = story["series"]
     state["posted"].append({"repo": s["repo"], "day": s["day"], "media_id": media_id,
+                            "opening": s.get("opening"),
                             "date": datetime.datetime.now(datetime.timezone.utc).date().isoformat()})
     save_state(state)

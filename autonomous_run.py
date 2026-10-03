@@ -420,8 +420,8 @@ def _draft(prompt):
 
 def plan_text(p):
     """Everything a viewer will read or hear, as one block."""
-    parts = [p.get("hook", {}).get("headline", "")]
-    parts += [f"{s.get('headline', '')}. {s.get('body', '')}" for s in p["slides"]]
+    parts = [p.get("hook", {}).get("headline", ""), p.get("hook", {}).get("usp", "")]
+    parts += [f"{s.get('headline', '')}. {s.get('body', '')} {s.get('say', '')}" for s in p["slides"]]
     parts += [p.get("cta", {}).get("headline", ""), p.get("caption", "")]
     return "\n".join(x for x in parts if x)
 
@@ -824,15 +824,15 @@ def main(dry=False, force=False, series=False):
     # Slide text is kept beside the PNGs so the Reel can animate it letter by
     # letter, and so a reel can be rebuilt later without re-asking the model.
     specs = [{"kind": "hook", "headline": p["hook"]["headline"],
-              "kicker": p["hook"].get("kicker", "")}]
+              "kicker": p["hook"].get("kicker", ""), "say": p["hook"].get("say", "")}]
     web_url = None
     if series:      # real-video reel: a Chrome scroll through the repo's own page
-        web_url = p["_story"]["url"]
-        specs[0]["repo"] = web_url.replace("https://", "")
+        web_url = p["_story"]["url"]    # the recording shows the name; we never print or say it
     specs += [{"kind": "content", "headline": s["headline"], "body": s["body"],
-               "idx": i + 1, "total": total} for i, s in enumerate(p["slides"], 1)]
+               "say": s.get("say", ""), "idx": i + 1, "total": total}
+              for i, s in enumerate(p["slides"], 1)]
     specs.append({"kind": "cta", "headline": p["cta"]["headline"],
-                  "body": p["cta"]["body"]})
+                  "body": p["cta"]["body"], "say": p["cta"].get("say", "")})
     (outdir / "slides.json").write_text(
         json.dumps({"theme": theme, "slides": specs}, indent=2), encoding="utf-8")
 
