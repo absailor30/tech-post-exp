@@ -76,7 +76,7 @@ MUSIC_VOL_UNDER = 0.16  # music bed when a voiceover is on top
 VOICE_VOL = 1.6
 
 
-def _encode(frames_dir, n_frames, out, bg=BG, voice=None):
+def _encode(frames_dir, n_frames, out, bg=BG, voice=None, pattern="f%05d.png"):
     """Frame sequence -> H.264 Reel, letterboxed onto a 1080x1920 canvas.
 
     voice: optional list of (audio_path, start_seconds) narration clips.
@@ -102,7 +102,7 @@ def _encode(frames_dir, n_frames, out, bg=BG, voice=None):
     else:
         fc = fc.replace("[music]", "[aud]")
     cmd = [get_ffmpeg_exe(), "-y",
-           "-framerate", str(FPS), "-i", str(Path(frames_dir) / "f%05d.png"),
+           "-framerate", str(FPS), "-i", str(Path(frames_dir) / pattern),
            "-i", str(track), *voice_inputs,
            "-filter_complex", fc, "-map", "[v]", "-map", "[aud]",
            "-c:v", "libx264", "-crf", "24", "-preset", "medium",

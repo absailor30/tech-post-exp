@@ -97,8 +97,13 @@ def overlay(frame, spec, alpha):
         f, lines = mi.fit(spec["headline"], 104, "black", max_w=inner, max_lines=4, min_size=60)
         lh = int(f.size * 1.15)
         box_h = lh * len(lines) + 80
-        panel_with([(lines, f, lh, (255, 255, 255), 0)], bottom - box_h, bottom,
-                   spec.get("kicker", "").upper() or None)
+        specs_ = []
+        if spec.get("repo"):
+            fr = mi.font(40, "mono")
+            specs_.append(([spec["repo"]], fr, 56, GOLD, 8))
+            box_h += 64
+        specs_.append((lines, f, lh, (255, 255, 255), 0))
+        panel_with(specs_, bottom - box_h, bottom, spec.get("kicker", "").upper() or None)
     elif kind == "cta":
         f, lines = mi.fit(spec["headline"], 96, "black", max_w=inner, max_lines=3, min_size=60)
         fb, blines = mi.fit(spec.get("body", ""), 46, "regular", max_w=inner, max_lines=3, min_size=34)
@@ -145,30 +150,37 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
         page.goto(url, wait_until="networkidle", timeout=45000)
         page.wait_for_timeout(1200)
         page_h = page.evaluate("document.documentElement.scrollHeight")
-        max_y = max(0, min(page_h - VIEW_H, scroll_cap))
-        print(f"  [webreel] {url} height={page_h}px, scrolling to {max_y}px over {total / rm.FPS:.1f}s")
+        # Open on the README (logo + description), not the file tree above it.
+        readme_y = page.evaluate(
+            "(()=>{const r=document.querySelector('#readme, article.markdown-body');"
+            "return r ? r.getBoundingClientRect().top + window.scrollY : 0})()")
+        start_y = max(0, int(readme_y) - 150)
+        max_y = max(start_y, min(page_h - VIEW_H, start_y + scroll_cap))
+        print(f"  [webreel] {url} height={page_h}px, readme at {readme_y:.0f}px, "
+              f"scrolling {start_y}->{max_y}px over {total / rm.FPS:.1f}s")
 
         n_scenes = len(specs)
         frame_no = 0
         for si, (spec, n) in enumerate(zip(specs, counts)):
             # hook: hold on the page header; content scenes: ease down; CTA: hold
-            y0 = 0 if si == 0 else max_y * ((si - 1) / max(1, n_scenes - 2)) * 0.98
-            y1 = 0 if si == 0 else max_y * (si / max(1, n_scenes - 2)) * 0.98
+            span = max_y - start_y
+            y0 = start_y if si == 0 else start_y + span * ((si - 1) / max(1, n_scenes - 2)) * 0.98
+            y1 = start_y if si == 0 else start_y + span * (si / max(1, n_scenes - 2)) * 0.98
             if spec["kind"] == "cta":
-                y0 = y1 = max_y * 0.98
+                y0 = y1 = start_y + span * 0.98
             for k in range(n):
                 t = k / max(1, n - 1)
                 y = y0 + (y1 - y0) * _smooth(min(1.0, t * 1.15))
                 page.evaluate(f"window.scrollTo(0,{y:.1f})")
-                shot = Image.open(io.BytesIO(page.screenshot(type="png")))
+                shot = Image.open(io.BytesIO(page.screenshot(type="jpeg", quality=92)))
                 fa = min(1.0, (k / rm.FPS) / FADE_SECS)
                 frame = overlay(shot, spec, fa)
-                frame.save(tmp / f"f{frame_no + 1:05d}.png")
+                frame.save(tmp / f"f{frame_no + 1:05d}.jpg", quality=92)
                 frame_no += 1
         browser.close()
     print(f"  [webreel] captured {frame_no} frames ({total / rm.FPS:.1f}s)")
     try:
-        rm._encode(tmp, frame_no, out, "0x0A0C10", voice or None)
+        rm._encode(tmp, frame_no, out, "0x0A0C10", voice or None, pattern="f%05d.jpg")
     finally:
         if workdir is None:
             shutil.rmtree(tmp, ignore_errors=True)

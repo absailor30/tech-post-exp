@@ -1,7 +1,7 @@
 """Scratch: capture a real GitHub page into a reel on the runner and commit it to the branch for review."""
 import subprocess, sys
 import webreel
-specs=[{"kind":"hook","headline":"Run AI models like DeepSeek and Qwen locally","kicker":"Repo 1 of 100"},
+specs=[{"kind":"hook","headline":"Run AI models like DeepSeek and Qwen locally","kicker":"Repo 1 of 100","repo":"github.com/ollama/ollama"},
  {"kind":"content","headline":"What it does","body":"Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.","idx":2,"total":6},
  {"kind":"content","headline":"What is inside","body":"Install options for Mac, Windows and Linux, a quickstart, and community integrations.","idx":3,"total":6},
  {"kind":"content","headline":"The facts","body":"Over 182,000 GitHub stars, MIT licence, written in Go. Created June 2023.","idx":4,"total":6},
