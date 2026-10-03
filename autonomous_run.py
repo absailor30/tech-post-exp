@@ -431,8 +431,9 @@ def fact_check(p, material):
 
     Independent second pass: a model grading a draft against evidence is far
     more reliable than the same model remembering to stay grounded while
-    writing. Returns [] when clean. If the checker itself fails or gives no
-    parseable verdict, returns [] -- a broken checker must not block posting.
+    writing. Returns [] when clean, a list of claims when not, and None when
+    the checker could not give a verdict (API error, truncated/rambling reply).
+    None is NOT clean: the caller retries, then skips the post.
     """
     try:
         raw = call_llm(
@@ -450,16 +451,16 @@ def fact_check(p, material):
             'UNSUPPORTED: ["claim 1", "claim 2"]   (use [] if everything is supported)',
             max_tokens=4000)
     except Exception as e:
-        print(f"[fact-check] checker unavailable ({e!r:.120}); not blocking")
-        return []
+        print(f"[fact-check] checker unavailable ({e!r:.120})")
+        return None
     hits = re.findall(r"(?im)^\s*\**UNSUPPORTED:?\**\s*(\[.*\])\s*$", raw or "")
     if not hits:
-        print("[fact-check] no verdict returned; not blocking")
-        return []
+        print("[fact-check] no verdict returned")
+        return None
     try:
         claims = json.loads(hits[-1])
     except json.JSONDecodeError:
-        return []
+        return None
     return [str(c) for c in claims if str(c).strip()][:8]
 
 
@@ -538,9 +539,25 @@ def plan(series_story=None):
         material += (f"\nThis is post {story['series']['day']} of the account's "
                      f"{story['series']['total']}-repo series; the account asks viewers to "
                      "follow for the rest.")
+    def checked(plan_):
+        """Claims list, or None if the checker stayed unavailable after retries."""
+        for i in range(3):
+            r = fact_check(plan_, material)
+            if r is not None:
+                return r
+            if i < 2:
+                import time
+                time.sleep(8)
+        return None
+
     p = _draft(prompt)
     for attempt in range(2):
-        bad = fact_check(p, material)
+        bad = checked(p)
+        if bad is None:
+            print("[fact-check] could not verify this post (checker unavailable) — "
+                  "skipping rather than publishing unverified claims")
+            log("fact_check_unavailable", headline=story["headline"])
+            return None
         if not bad:
             break
         print(f"[fact-check] {len(bad)} unsupported claim(s): {bad}")
