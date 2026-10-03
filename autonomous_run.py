@@ -108,6 +108,10 @@ now. Write about THIS and nothing else:
 {coverage_lines}
   EXTRA CONTEXT: {summary}
 
+SOURCE MATERIAL (article text; may be empty). This and the headlines above are
+the ONLY facts you may state:
+{article}
+
 Already covered — do not repeat any of these stories:
 {recent}
 
@@ -121,13 +125,27 @@ LAST WEEK'S LESSON:
 HOOK PATTERNS (pick the ONE that fits this story; the hook decides everything):
 {hooks}
 
+ACCURACY RULES (a fact-checker reads your output against the source material
+above and rejects the post if any claim is unsupported):
+- Every name, number, date, product feature and "who gets it" claim must appear
+  in the headlines, EXTRA CONTEXT or SOURCE MATERIAL. If it is not there, do not
+  write it — a shorter true post beats a detailed invented one.
+- Copy numbers and units exactly. Do not restate a figure as a different
+  quantity (e.g. an "output limit" is not a "context window"; a price per
+  million tokens is not a monthly fee).
+- Explaining what a term means is fine. Predicting what it means for the reader
+  is fine ONLY if phrased as "could"/"may"/"might", never as established fact.
+- Do not invent consequences, risks, quotes or reactions. Do not attribute
+  claims to people or companies unless the source does.
+- If the only evidence is a company's own claim, say "the company says".
+
 WRITING RULES:
 - The reader is not a programmer. Never assume they know what a model, a
   token, an API, or a repo is. If you must use such a word, define it in the
   same sentence in plain speech.
 - Lead with what happened, then what it means for the reader's own life —
   their job, their money, their phone, their kids, their privacy.
-- Be specific: names, numbers, dates. No "AI is changing everything".
+- Be specific using ONLY facts from the source material. No "AI is changing everything".
 - Give an honest verdict, including what is bad or overhyped about it.
 - Short sentences. No jargon, no hype words, no emoji in the slide text.
 
@@ -375,6 +393,74 @@ def last_lesson():
     return reps[-1].read_text(encoding="utf-8").strip()[-1200:]
 
 
+def _draft(prompt):
+    """One plan from the LLM, with a retry if it returns too few content slides
+    (cheaper than losing the day, and it usually complies on the second ask)."""
+    p = None
+    for attempt in range(2):
+        raw = call_llm(prompt, max_tokens=6000)
+        p = extract_plan(raw)
+        if not p:
+            if attempt:
+                sys.exit(f"no usable JSON in plan:\n{raw[-1500:]}")
+            continue
+        if len(p["slides"]) >= CONTENT_SLIDES:
+            break
+        print(f"[plan] got {len(p['slides'])} content slides, want "
+              f"{CONTENT_SLIDES} — retrying")
+    if not p:
+        sys.exit("no usable plan after retry")
+    if len(p["slides"]) > CONTENT_SLIDES:
+        print(f"[plan] trimming {len(p['slides'])} content slides to {CONTENT_SLIDES}")
+        p["slides"] = p["slides"][:CONTENT_SLIDES]
+    elif len(p["slides"]) < CONTENT_SLIDES:
+        print(f"[plan] WARNING only {len(p['slides'])} content slides; posting anyway")
+    return p
+
+
+def plan_text(p):
+    """Everything a viewer will read or hear, as one block."""
+    parts = [p.get("hook", {}).get("headline", "")]
+    parts += [f"{s.get('headline', '')}. {s.get('body', '')}" for s in p["slides"]]
+    parts += [p.get("cta", {}).get("headline", ""), p.get("caption", "")]
+    return "\n".join(x for x in parts if x)
+
+
+def fact_check(p, material):
+    """Claims in the finished post that the source material does not support.
+
+    Independent second pass: a model grading a draft against evidence is far
+    more reliable than the same model remembering to stay grounded while
+    writing. Returns [] when clean. If the checker itself fails or gives no
+    parseable verdict, returns [] -- a broken checker must not block posting.
+    """
+    try:
+        raw = call_llm(
+            "You are a strict fact-checker. SOURCE MATERIAL is the only truth.\n\n"
+            f"SOURCE MATERIAL:\n{material}\n\nPOST TEXT:\n{plan_text(p)}\n\n"
+            "List every factual claim in the POST TEXT that the SOURCE MATERIAL "
+            "does not support or that contradicts it: wrong or invented numbers, "
+            "names, dates, features, who gets access, or a figure described as a "
+            "different quantity than the source describes. Do NOT flag opinions, "
+            "plain-language explanations of terms, or implications phrased with "
+            "could/may/might. Quote each unsupported claim briefly.\n"
+            "Keep any thinking short. Finish with ONE last line, exactly:\n"
+            'UNSUPPORTED: ["claim 1", "claim 2"]   (use [] if everything is supported)',
+            max_tokens=4000)
+    except Exception as e:
+        print(f"[fact-check] checker unavailable ({e!r:.120}); not blocking")
+        return []
+    hits = re.findall(r"(?im)^\s*\**UNSUPPORTED:?\**\s*(\[.*\])\s*$", raw or "")
+    if not hits:
+        print("[fact-check] no verdict returned; not blocking")
+        return []
+    try:
+        claims = json.loads(hits[-1])
+    except json.JSONDecodeError:
+        return []
+    return [str(c) for c in claims if str(c).strip()][:8]
+
+
 def plan():
     import random
     from metrics import collect
@@ -435,31 +521,27 @@ def plan():
         covering=", ".join(story["sources_covering"]),
         coverage_lines="\n".join(f"    {h}" for h in story["all_headlines"]),
         summary=story.get("summary", "") or "none",
+        article=story.get("article", "") or "none available — write only from the headlines and say less",
         recent=recent_topics(), performance=collect(), lesson=last_lesson(),
         hooks=hooks_txt)
 
-    # One retry if the model returns too few content slides — cheaper than
-    # losing the day, and it usually complies on the second ask.
-    p = None
+    material = "\n".join([story["headline"], *story.get("all_headlines", []),
+                          story.get("summary", ""), story.get("article", "")])
+    p = _draft(prompt)
     for attempt in range(2):
-        raw = call_llm(prompt, max_tokens=6000)
-        p = extract_plan(raw)
-        if not p:
-            if attempt:
-                sys.exit(f"no usable JSON in plan:\n{raw[-1500:]}")
-            continue
-        if len(p["slides"]) >= CONTENT_SLIDES:
+        bad = fact_check(p, material)
+        if not bad:
             break
-        print(f"[plan] got {len(p['slides'])} content slides, want "
-              f"{CONTENT_SLIDES} — retrying")
-    if not p:
-        sys.exit("no usable plan after retry")
-
-    if len(p["slides"]) > CONTENT_SLIDES:
-        print(f"[plan] trimming {len(p['slides'])} content slides to {CONTENT_SLIDES}")
-        p["slides"] = p["slides"][:CONTENT_SLIDES]
-    elif len(p["slides"]) < CONTENT_SLIDES:
-        print(f"[plan] WARNING only {len(p['slides'])} content slides; posting anyway")
+        print(f"[fact-check] {len(bad)} unsupported claim(s): {bad}")
+        if attempt:
+            print("[fact-check] still unsupported after a rewrite — skipping this "
+                  "post rather than publishing unverified claims")
+            log("fact_check_blocked", headline=story["headline"], claims=bad)
+            return None
+        p = _draft(prompt + "\n\nA FACT-CHECK of your previous draft found these "
+                   "claims NOT supported by the source material. Rewrite the whole "
+                   "plan without them (delete them, do not paraphrase them):\n"
+                   + "\n".join(f"- {c}" for c in bad))
 
     banned = [b.lower() for b in st.get("banned_topics", [])]
     blob = f"{p['topic']} {p['hook'].get('headline','')}".lower()
@@ -724,7 +806,7 @@ def main(dry=False, force=False):
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))
     story["media_id"] = result["id"]
-    record(story)          # only now is the story genuinely "covered"
+    record({k: v for k, v in story.items() if k != "article"})   # only now is the story genuinely "covered" (article text is too big to keep)
     print(f"published {kind}, media id {result['id']}")
     post_seed_comment(result["id"], p["topic"], p["caption"])
 

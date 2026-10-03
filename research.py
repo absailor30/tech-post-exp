@@ -201,6 +201,45 @@ def clean(text):
     return html.unescape(text).strip()
 
 
+def extract_article_text(raw, limit=3500):
+    """Readable paragraph text from article HTML (best effort, no deps)."""
+    raw = re.sub(r"(?is)<(script|style|noscript|nav|header|footer|aside|form)\b.*?</\1>",
+                 " ", raw or "")
+    paras = []
+    for m in re.finditer(r"(?is)<p\b[^>]*>(.*?)</p>", raw):
+        t = re.sub(r"\s+", " ", clean(m.group(1)))
+        if len(t) >= 60:                     # skip bylines, captions, buttons
+            paras.append(t)
+    return "\n".join(paras)[:limit]
+
+
+def fetch_article(items, limit=3500):
+    """Body text of the story, so the writer works from facts and not from a
+    headline plus a 400-char blurb (which it padded with invented detail).
+
+    Tries up to 3 distinct publisher URLs; Google News links are redirects
+    that only resolve in a browser, so they are skipped. Returns '' on failure
+    -- the caller then has to write from headlines alone and say less.
+    """
+    tried = 0
+    for it in items:
+        url = it.get("url", "")
+        if not url.startswith("http") or "news.google.com" in url:
+            continue
+        if tried >= 3:
+            break
+        tried += 1
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                text = extract_article_text(r.read(600_000).decode("utf-8", "replace"), limit)
+        except Exception:
+            continue
+        if len(text) >= 300:
+            return text
+    return ""
+
+
 def age_hours(stamp):
     """Parse whatever date shape a feed hands us. Unknown -> treat as 24h old."""
     if not stamp:
@@ -442,6 +481,7 @@ def research():
         "headline": lead["title"],
         "url": lead["url"],
         "summary": lead.get("summary", ""),
+        "article": fetch_article(sorted(top["items"], key=lambda i: -i["engagement"])),
         "sources_covering": top["sources"],
         "coverage_count": len(top["sources"]),
         "score": top["score"],
