@@ -142,19 +142,89 @@ def fetch_facts(entry):
             "topics": d.get("topics") or [], "readme": readme, "extra": ""}
 
 
-# Hook rotation: which opening sounds better is an A/B test across days. The type
-# is chosen by day and recorded in series_state.json.
+# Hook library. Which opening sounds better is an A/B test across days: the type
+# is chosen by day, recorded in series_state.json, and joined to Instagram metrics
+# by hook_report.py. Every template is fact-safe: the slots come from the repo's
+# own description / stats / licence, never from memory, and templates that need a
+# fact are skipped (the rotation moves to the next one) when that fact is missing.
 HOOK_TEMPLATES = {
+    # --- curiosity / question ---
     "did_you_know":   "Did you know you can now {usp}?",
     "quick_question": "Quick question... would you like to {usp}?",
-    "something_cool": "Okay, here's something cool. You can {usp}.",
+    "what_if":        "What if I told you... you could {usp}?",
+    "bet_you_didnt":  "Bet you didn't know you could {usp}.",
+    # --- pattern interrupt ---
     "stop_scrolling": "Stop scrolling... you can {usp}.",
+    "wait_what":      "Wait... you can {usp}? Yes. You really can.",
     "imagine":        "Imagine if you could {usp}. Well... you can.",
-    # needs a named alternative in the repo's own words + a licence; see pick_hook()
+    "something_cool": "Okay, here's something cool. You can {usp}.",
+    # --- story / discovery ---
+    "found_this":     "I found a GitHub project that lets you {usp}.",
+    "one_project":    "One GitHub project, and it lets you {usp}.",
+    "real_quick":     "Real quick. Want to {usp}? Here's the project.",
+    "under_a_minute": "In under a minute, I'll show you a GitHub project that lets you {usp}.",
+    # --- share / save drivers ---
+    "save_this":      "Save this one. It lets you {usp}.",
+    "send_friend":    "Send this to a friend who'd love to {usp}.",
+    # --- fact-backed (need a stat from the repo's own page) ---
+    "proof_stars":    "{stars} people starred this GitHub project. It lets you {usp}.",
+    "since_year":     "This GitHub project has been around since {year}, and it lets you {usp}.",
+    "fresh_update":   "Updated {fresh}... this GitHub project lets you {usp}.",
+    "free_open":      "A free, open-source GitHub project that lets you {usp}.",
+    # --- competitor framing (need a named alternative in the repo's own words) ---
     "stop_using":     "Stop using {alt}... this GitHub developer {just}made {feature} free.",
+    "might_not_need": "You might not need {alt}... this GitHub project lets you {usp}.",
 }
-HOOK_CYCLE = ["did_you_know", "stop_using", "quick_question", "something_cool",
-              "stop_using", "stop_scrolling", "imagine"]
+# Rotation order: question / pattern-interrupt / story / share / fact / competitor mixed
+# so neighbouring days differ in style. Day 1 is the owner's example opening.
+HOOK_CYCLE = ["did_you_know", "stop_using", "found_this", "proof_stars", "stop_scrolling",
+              "send_friend", "what_if", "free_open", "wait_what", "might_not_need",
+              "one_project", "since_year", "imagine", "save_this", "quick_question",
+              "fresh_update", "bet_you_didnt", "real_quick", "something_cool",
+              "under_a_minute"]
+_OSI = {"MIT", "APACHE-2.0", "BSD-2-CLAUSE", "BSD-3-CLAUSE", "ISC", "MPL-2.0", "GPL-2.0",
+        "GPL-3.0", "AGPL-3.0", "LGPL-3.0", "LGPL-2.1", "UNLICENSE", "0BSD", "CC0-1.0"}
+
+
+def stars_phrase(n):
+    """182086 -> 'Over 180 thousand' (always rounded down, so always true)."""
+    if n >= 1_000_000:
+        return f"Over {int(n // 100_000) / 10:g} million"
+    if n >= 10_000:
+        return f"Over {int(n // 10_000) * 10} thousand"
+    return f"Over {int(n // 1000)} thousand"
+
+
+def _eligible(t, ctx):
+    if t == "stop_using":
+        return bool(ctx.get("alt") and ctx.get("feature_ok") and ctx.get("license"))
+    if t == "might_not_need":
+        return bool(ctx.get("alt"))
+    if t == "proof_stars":
+        return (ctx.get("stars") or 0) >= 1000
+    if t == "since_year":
+        return bool(ctx.get("year"))
+    if t == "fresh_update":
+        return ctx.get("pushed_days") is not None and ctx["pushed_days"] <= 30
+    if t == "free_open":
+        return (ctx.get("license") or "").upper() in _OSI
+    return True
+
+
+def pick_hook(day, ctx):
+    """(type_id, template): the cycle entry for this day, or the next eligible one."""
+    i = (day - 1) % len(HOOK_CYCLE)
+    for step in range(len(HOOK_CYCLE)):
+        t = HOOK_CYCLE[(i + step) % len(HOOK_CYCLE)]
+        if _eligible(t, ctx):
+            return t, HOOK_TEMPLATES[t]
+    return "did_you_know", HOOK_TEMPLATES["did_you_know"]
+
+
+def opening_for(day):                       # kept for older callers/tests
+    t = HOOK_CYCLE[(day - 1) % len(HOOK_CYCLE)]
+    return t, HOOK_TEMPLATES[t]
+
 
 _GENERIC = {"open", "source", "self", "free", "local", "privacy", "private", "the", "a",
             "an", "this", "that", "best", "new", "better", "simple", "powerful", "modern",
@@ -174,18 +244,6 @@ def detect_alternative(text):
             if name.lower() not in _GENERIC and len(name) > 2:
                 return name
     return None
-
-
-def pick_hook(day, alt, license_ok):
-    """(type_id, template). Skips 'stop_using' when the source gives no named
-    alternative or no licence, moving on to the next opening in the cycle."""
-    i = (day - 1) % len(HOOK_CYCLE)
-    for step in range(len(HOOK_CYCLE)):
-        t = HOOK_CYCLE[(i + step) % len(HOOK_CYCLE)]
-        if t == "stop_using" and not (alt and license_ok):
-            continue
-        return t, HOOK_TEMPLATES[t]
-    return "did_you_know", HOOK_TEMPLATES["did_you_know"]
 
 
 def series_line(day, total):
@@ -310,26 +368,34 @@ def finalize(p, story):
     usp = (hook.get("usp") or "").strip().rstrip(".?!")
     usp = re.sub(r"^(to|you can)\s+", "", usp, flags=re.I)
     lic = (s.get("license") or "").strip()
+    if lic.upper() in ("NOASSERTION", "OTHER"):
+        lic = ""
     alt = s.get("alt")
     feature = (hook.get("feature") or "").strip().rstrip(".?!")
     feature_ok = bool(feature) and hook_grounded(feature, src, min_overlap=0.4)
-    htype, tmpl = pick_hook(day, alt if feature_ok else None,
-                            bool(lic) and lic.upper() not in ("NOASSERTION", "OTHER"))
-    s["opening"] = htype
-    if htype == "stop_using":
-        age_days = 9999
+    today = datetime.date.today()
+
+    def _days(iso):
         try:
-            age_days = (datetime.date.today() - datetime.date.fromisoformat(s["created"])).days
+            return (today - datetime.date.fromisoformat(iso)).days
         except Exception:
-            pass
-        hook["say"] = tmpl.format(alt=alt, feature=feature,
-                                  just="just " if age_days <= 180 else "")
-    elif usp and hook_grounded(usp, src, min_overlap=0.4):
-        hook["say"] = tmpl.format(usp=usp)
-    else:
+            return None
+    age_days, pushed_days = _days(s.get("created", "")), _days(s.get("pushed", ""))
+    ctx = {"alt": alt, "feature_ok": feature_ok, "license": lic, "stars": s.get("stars"),
+           "year": (s.get("created") or "")[:4] or None, "pushed_days": pushed_days}
+    htype, tmpl = pick_hook(day, ctx)
+    s["opening"] = htype
+    slots = {"usp": usp, "alt": alt or "", "feature": feature,
+             "just": "just " if (age_days is not None and age_days <= 180) else "",
+             "stars": stars_phrase(s.get("stars") or 0), "year": ctx["year"] or "",
+             "fresh": ("this week" if (pushed_days is not None and pushed_days <= 7) else "this month")}
+    needs_usp = "{usp}" in tmpl
+    if needs_usp and not (usp and hook_grounded(usp, src, min_overlap=0.4)):
         print(f"[series] usp not grounded ({usp!r}), using the description")
         d = _description(story).split()
         hook["say"] = "Here's one worth knowing... " + " ".join(d[:18]).rstrip(",;:- ") + "."
+    else:
+        hook["say"] = tmpl.format(**slots)
     hook["say"] += " " + series_line(day, total)
 
     for sl in p.get("slides", []):
@@ -375,6 +441,7 @@ def build_story(entry, facts, day, total):
             "degraded": False, "score": 0,
             "series": {"repo": entry["repo"], "day": day, "total": total,
                        "license": facts.get("license", ""), "created": facts.get("created", ""),
+                       "pushed": facts.get("pushed", ""), "stars": facts.get("stars"),
                        "alt": detect_alternative(
                            f"{facts['description']} {entry.get('note', '')} "
                            f"{(facts.get('readme') or '')[:1200]}")}}
