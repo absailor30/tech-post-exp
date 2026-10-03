@@ -212,7 +212,11 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
     with sync_playwright() as p:
         browser = _launch(p)
         page = browser.new_page(viewport={"width": VIEW_W, "height": VIEW_H}, device_scale_factor=2)
-        resp = page.goto(url, wait_until="networkidle", timeout=45000)
+        resp = page.goto(url, wait_until="domcontentloaded", timeout=60000)
+        try:
+            page.wait_for_load_state("networkidle", timeout=15000)   # GitHub sometimes never idles
+        except Exception:
+            pass
         if resp is None or resp.status >= 400:
             raise RuntimeError(f"web capture failed: {url} returned "
                                f"{getattr(resp, 'status', 'no response')}")
