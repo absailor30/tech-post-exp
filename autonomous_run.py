@@ -163,6 +163,10 @@ def seed_comment(topic, caption):
     direct question reads as an invitation in a way the caption alone
     doesn't, and replies/saves are what the algorithm actually weighs when
     deciding whether to push a reel past its first small batch of viewers."""
+    # The model is a reasoning model: it thinks in the visible output before
+    # answering. max_tokens=120 cut it off mid-thought every time, so the
+    # "comment" was its truncated scratchpad (the restated constraint list).
+    # Give it room, and take ONLY a line it explicitly marks as the answer.
     raw = call_llm(
         "You are the account owner commenting on your own just-published "
         f"Instagram Reel about: {topic}\n\nFull caption for context:\n{caption}\n\n"
@@ -173,10 +177,20 @@ def seed_comment(topic, caption):
         "to agree/disagree, or (c) prompt people to tag someone who needs to "
         "see this. No hashtags, no emojis-as-decoration (one is fine if it "
         "fits naturally), no 'link in bio', nothing salesy. Sound like a real "
-        "person, not a brand account. Output ONLY the comment text.",
-        max_tokens=120,
+        "person, not a brand account. Keep any thinking very short. Finish "
+        "with the final comment on its own last line, formatted exactly as:\n"
+        "COMMENT: <the comment text>",
+        max_tokens=3000,
     )
-    return strip_reasoning(raw).strip().strip('"')
+    return extract_comment(raw)
+
+
+def extract_comment(raw):
+    """The text after the LAST 'COMMENT:' marker, or '' if the model never
+    produced one (truncated / rambling) -- better no comment than a bad one."""
+    text = re.sub(r"(?is)<think>.*?</think>", "", raw or "")
+    hits = re.findall(r"(?im)^\s*\**COMMENT:?\**\s*(.+)$", text)
+    return hits[-1].strip().strip('"').strip("*").strip() if hits else ""
 
 
 def _looks_like_a_real_comment(text):
@@ -187,8 +201,8 @@ def _looks_like_a_real_comment(text):
     doesn't talk about its own rules."""
     if not text or len(text) > 220:
         return False
-    if text.lstrip().startswith(("-", "*")):
-        return False
+    if text.lstrip().startswith(("-", "*", "<")) or "<" in text:
+        return False                       # bullet list / echoed placeholder
     if "\n" in text.strip():
         return False
     bad_markers = ("max ", "under ", "sentence", "hashtag", "character limit",
