@@ -114,8 +114,8 @@ def _encode(frames_dir, n_frames, out, bg=BG, voice=None, pattern="f%05d.png"):
     return out
 
 
-VOICE_LEAD = 0.25   # narration starts a beat after the slide appears
-VOICE_PAD = 0.6     # hold after the last spoken word before the next slide
+VOICE_LEAD = 0.08   # narration starts right as the scene appears
+VOICE_PAD = 0.12    # tiny hold after the last word; the story keeps moving
 
 
 def _narrate(specs, tmp):

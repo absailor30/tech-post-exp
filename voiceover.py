@@ -72,7 +72,7 @@ def _synth_riva(text, out):
 
 
 KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "am_michael")
-KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "1.08"))   # ~180 words/min
+KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "1.25"))   # measured: 1.08 -> ~141 wpm overall; 180+ needs ~1.25
 _kokoro = None
 
 

@@ -63,67 +63,81 @@ def _draw_lines(d, lines, f, x, y, fill, line_h):
     return y
 
 
-def overlay(frame, spec, alpha):
-    """Caption layer for one scene. alpha 0..1 fades the whole layer in.
+BLACK = (0, 0, 0)
 
-    Safe zone: Instagram covers roughly the bottom 20% (caption/audio row) and a
-    ~130px strip on the right (like/comment/share), so captions stay clear of
-    both. The hook sits low so the page header (name, description, stars) stays
-    visible as the evidence.
-    """
+
+def chunk_words(text, max_words=5):
+    """Split spoken text into short subtitle chunks at punctuation, <= max_words each."""
+    import re
+    out = []
+    for part in re.split(r"(?<=[.,;:?!…])\s+|\.\.\.\s*", (text or "").strip()):
+        words = part.split()
+        for i in range(0, len(words), max_words):
+            c = " ".join(words[i:i + max_words]).strip()
+            if c:
+                out.append(c)
+    # merge a 1-word tail into the previous chunk so nothing flashes by
+    merged = []
+    for c in out:
+        if merged and len(c.split()) == 1 and len(merged[-1].split()) < max_words + 1:
+            merged[-1] += " " + c
+        else:
+            merged.append(c)
+    return merged
+
+
+def chunk_at(chunks, t, lead, dur):
+    """Which chunk is on screen at scene-time t (seconds); time is shared by length."""
+    if not chunks:
+        return ""
+    if t < lead:
+        return chunks[0]
+    weights = [max(3, len(c)) for c in chunks]
+    x = (t - lead) / max(0.05, dur) * sum(weights)
+    acc = 0
+    for c, w in zip(chunks, weights):
+        acc += w
+        if x < acc:
+            return c
+    return chunks[-1]
+
+
+def _outlined(d, xy, text, f, fill=GOLD, stroke=7):
+    d.text(xy, text, font=f, fill=fill, stroke_width=stroke, stroke_fill=BLACK)
+
+
+def subtitle(frame, text, label=""):
+    """Gold text with a black outline, centred, max 2 lines, no background box.
+    Sits above Instagram's bottom UI and clear of the right-hand buttons."""
     img = frame.convert("RGBA")
-    left, right, bottom = 48, W - 130, H - 380
-    inner = right - left - 80          # text width inside a panel
-    kind = spec["kind"]
     layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
-
-    def chip(d, text, y):
-        f = mi.font(40, "black")
-        w = int(f.getlength(text)) + 56
-        d.rounded_rectangle((left, y, left + w, y + 76), radius=38, fill=GOLD)
-        d.text((left + 28, y + 14), text, font=f, fill=(20, 20, 20))
-
-    def panel_with(lines_specs, top, bottom_, chip_text=None):
-        nonlocal layer
-        layer = _panel(layer, (left, top, right, bottom_))
-        d = ImageDraw.Draw(layer)
-        if chip_text:
-            chip(d, chip_text, top - 92)
-        y = top + 40
-        for lines, f, lh, fill, gap in lines_specs:
-            y = _draw_lines(d, lines, f, left + 40, y, fill, lh) + gap
-
-    if kind == "hook":
-        f, lines = mi.fit(spec["headline"], 104, "black", max_w=inner, max_lines=4, min_size=60)
-        lh = int(f.size * 1.15)
-        box_h = lh * len(lines) + 80
-        specs_ = []
-        if spec.get("repo"):
-            fr = mi.font(40, "mono")
-            specs_.append(([spec["repo"]], fr, 56, GOLD, 8))
-            box_h += 64
-        specs_.append((lines, f, lh, (255, 255, 255), 0))
-        panel_with(specs_, bottom - box_h, bottom, spec.get("kicker", "").upper() or None)
-    elif kind == "cta":
-        f, lines = mi.fit(spec["headline"], 96, "black", max_w=inner, max_lines=3, min_size=60)
-        fb, blines = mi.fit(spec.get("body", ""), 46, "regular", max_w=inner, max_lines=3, min_size=34)
-        lh, blh = int(f.size * 1.15), int(fb.size * 1.3)
-        box_h = lh * len(lines) + blh * len(blines) + 100
-        panel_with([(lines, f, lh, GOLD, 14), (blines, fb, blh, (255, 255, 255), 0)],
-                   bottom - box_h, bottom)
-    else:
-        f, lines = mi.fit(spec["headline"], 68, "black", max_w=inner, max_lines=3, min_size=44)
-        fb, blines = mi.fit(spec.get("body", ""), 44, "regular", max_w=inner, max_lines=5, min_size=32)
-        lh, blh = int(f.size * 1.15), int(fb.size * 1.3)
-        box_h = lh * len(lines) + blh * len(blines) + 96
-        chip_text = f"{spec['idx'] - 1} / {spec['total'] - 2}" if spec.get("idx") else None
-        panel_with([(lines, f, lh, GOLD, 12), (blines, fb, blh, (255, 255, 255), 0)],
-                   bottom - box_h, bottom, chip_text)
-
-    if alpha < 1.0:
-        a = layer.getchannel("A").point(lambda v: int(v * alpha))
-        layer.putalpha(a)
+    d = ImageDraw.Draw(layer)
+    left, right, bottom = 70, W - 140, H - 470
+    inner = right - left
+    if text:
+        f, lines = mi.fit(text, 66, "black", max_w=inner, max_lines=2, min_size=46)
+        lh = int(f.size * 1.18)
+        y = bottom - lh * len(lines)
+        for ln in lines:
+            w = d.textlength(ln, font=f)
+            _outlined(d, (left + (inner - w) / 2, y), ln, f)
+            y += lh
+    if label:
+        fl = mi.font(34, "black")
+        _outlined(d, (60, 150), label.upper(), fl, stroke=5)
     return Image.alpha_composite(img, layer).convert("RGB")
+
+
+def overlay(frame, spec, alpha, t=0.0, scene_dur=1.0):
+    """Subtitle layer for one frame of one scene (t = seconds into the scene)."""
+    label = spec.get("kicker", "") if spec["kind"] == "hook" else ""
+    if spec.get("say"):
+        chunks = spec.get("_chunks") or chunk_words(spec["say"])
+        spec["_chunks"] = chunks
+        text = chunk_at(chunks, t, rm.VOICE_LEAD, spec.get("_dur", scene_dur - rm.VOICE_LEAD))
+        return subtitle(frame, text, label)
+    # no spoken script (news-style specs): show the headline only, still outlined
+    return subtitle(frame, spec.get("headline", ""), label)
 
 
 def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scroll_cap=SCROLL_CAP):
@@ -142,6 +156,7 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
             else:
                 secs = max(secs, clips[i][1] + rm.VOICE_PAD)
             voice.append((clips[i][0], idx / rm.FPS + rm.VOICE_LEAD))
+            spec["_dur"] = clips[i][1]                 # subtitle timing follows the audio
         n = int(secs * rm.FPS)
         counts.append(n)
         idx += n
@@ -183,8 +198,7 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
                 y = y0 + (y1 - y0) * _smooth(min(1.0, t * 1.15))
                 page.evaluate(f"window.scrollTo(0,{y:.1f})")
                 shot = Image.open(io.BytesIO(page.screenshot(type="jpeg", quality=92)))
-                fa = min(1.0, (k / rm.FPS) / FADE_SECS)
-                frame = overlay(shot, spec, fa)
+                frame = overlay(shot, spec, 1.0, t=k / rm.FPS, scene_dur=n / rm.FPS)
                 frame.save(tmp / f"f{frame_no + 1:05d}.jpg", quality=92)
                 frame_no += 1
         browser.close()

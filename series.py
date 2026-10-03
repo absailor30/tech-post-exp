@@ -284,10 +284,11 @@ def series_line(day, total):
 
 def cta_say(day, total):
     left = total - day
-    follow = (f"Follow for the next {left} repos" if left > 1 else
-              "Follow for the last repo" if left == 1 else "Follow for what comes next")
+    more = (f"Follow for the next {left} repos" if left > 1 else
+            "Follow for the last repo" if left == 1 else "Follow for what comes next")
     return ("Loved it? Save this, and send it to a friend. "
-            f"{follow}... and comment REPO. I'll send you the full list.")
+            f"{more}... or you might not see us again. "
+            "And comment REPO, I'll send you the full list.")
 
 
 def series_note(day, total):
