@@ -89,6 +89,42 @@ def _synth_kokoro(text, out):
     sf.write(str(out), audio, 24000)
 
 
+TARGET_WPM = float(os.environ.get("TARGET_WPM", "190"))   # speech-only; ~180+ overall once scene gaps are counted
+MAX_STRETCH = 1.35                                         # beyond this the voice starts to sound chipmunk-y
+
+
+def tighten(path, text, target=None):
+    """Make a narration clip meet the target pace, whatever the TTS engine did.
+
+    1. Collapse silences longer than ~0.25s (Kokoro turns '...' and sentence ends into
+       long gaps that make the pace feel slow even when the words are fast).
+    2. If the speech is still slower than `target` WPM, time-stretch it (pitch-preserving
+       atempo) up to MAX_STRETCH.
+    Returns (path, seconds, wpm). Falls back to the untouched clip if ffmpeg fails."""
+    target = target or TARGET_WPM
+    words = len(text.split())
+    out = Path(str(path)).with_name(Path(path).stem + "_t.wav")
+    ff = get_ffmpeg_exe()
+    base = duration(path)
+    cmd = [ff, "-y", "-i", str(path), "-af",
+           "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03:"
+           "stop_periods=-1:stop_duration=0.25:stop_threshold=-45dB:stop_silence=0.12",
+           "-ar", "24000", str(out)]
+    if subprocess.run(cmd, capture_output=True).returncode != 0 or not _ok(out):
+        return Path(path), base, words / base * 60 if base else 0
+    secs = duration(out)
+    wpm = words / secs * 60 if secs else 0
+    if wpm and wpm < target:
+        k = min(MAX_STRETCH, target / wpm)
+        out2 = out.with_name(Path(path).stem + "_s.wav")
+        r = subprocess.run([ff, "-y", "-i", str(out), "-af", f"atempo={k:.3f}", str(out2)],
+                           capture_output=True)
+        if r.returncode == 0 and _ok(out2):
+            out, secs = out2, duration(out2)
+            wpm = words / secs * 60
+    return out, secs, wpm
+
+
 def _ok(path):
     return Path(path).exists() and Path(path).stat().st_size > 1000
 

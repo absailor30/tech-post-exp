@@ -130,16 +130,25 @@ VOICE_PAD = 0.12    # tiny hold after the last word; the story keeps moving
 
 def _narrate(specs, tmp):
     """[(clip_path, seconds)] per slide, or None if any slide fails."""
-    from voiceover import duration, narration_text, synth
-    clips = []
+    from voiceover import duration, narration_text, synth, tighten
+    clips, words = [], 0
     for i, spec in enumerate(specs):
-        path = synth(narration_text(spec), Path(tmp) / f"vo{i}")
+        text = narration_text(spec)
+        path = synth(text, Path(tmp) / f"vo{i}")
         if not path:
             print("  [voiceover] unavailable, building music-only reel")
             return None
-        clips.append((path, duration(path)))
-    print(f"  [voiceover] {len(clips)} clips, "
-          f"{sum(c[1] for c in clips):.1f}s of speech")
+        raw = duration(path)
+        if spec.get("say"):            # series reels have a pace contract; news reels keep theirs
+            path, secs, wpm = tighten(path, text)
+            print(f"  [voiceover] clip {i}: {len(text.split())} words, {raw:.1f}s -> {secs:.1f}s ({wpm:.0f} wpm)")
+        else:
+            secs = raw
+        words += len(text.split())
+        clips.append((path, secs))
+    speech = sum(c[1] for c in clips)
+    print(f"  [voiceover] {len(clips)} clips, {speech:.1f}s of speech, "
+          f"{words / speech * 60:.0f} wpm speech-only")
     return clips
 
 
