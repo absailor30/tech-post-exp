@@ -5,3 +5,4 @@ numpy
 imageio-ffmpeg
 edge-tts
 nvidia-riva-client
+playwright
