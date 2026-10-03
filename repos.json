@@ -1,0 +1,505 @@
+{
+ "title": "100 AI repos worth knowing",
+ "repos": [
+  {
+   "repo": "ollama/ollama",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "decolua/9router",
+   "category": "router",
+   "note": "Free local AI router connecting coding agents to 40+ LLM providers with fallback"
+  },
+  {
+   "repo": "elder-plinius/CL4R1T4S",
+   "category": "prompts",
+   "note": "Collection of leaked/extracted system prompts from major AI products"
+  },
+  {
+   "repo": "ChatGPTNextWeb/NextChat",
+   "category": "chatui",
+   "note": ""
+  },
+  {
+   "repo": "huggingface/smolagents",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "anthropics/claude-code",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "daijro/camoufox",
+   "category": "scraping",
+   "note": "Anti-detect Firefox fork built for web scraping and AI agents"
+  },
+  {
+   "repo": "OpenBB-finance/OpenBB",
+   "category": "trading",
+   "note": ""
+  },
+  {
+   "repo": "unslothai/unsloth",
+   "category": "training",
+   "note": ""
+  },
+  {
+   "repo": "google-gemini/gemini-cli",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "chopratejas/headroom",
+   "category": "tokens",
+   "note": "Compresses tool outputs/logs/RAG chunks before reaching the LLM to save tokens"
+  },
+  {
+   "repo": "the-agency-ai/the-agency",
+   "category": "agents",
+   "note": "Multi-agent development framework/monorepo for Claude Code"
+  },
+  {
+   "repo": "mempalace/mempalace",
+   "category": "memory",
+   "note": "Local-first open-source AI memory system storing conversations verbatim"
+  },
+  {
+   "repo": "myshell-ai/OpenVoice",
+   "category": "voice",
+   "note": ""
+  },
+  {
+   "repo": "calesthio/OpenMontage",
+   "category": "video",
+   "note": "Open-source agentic video production system turning coding assistants into video studios"
+  },
+  {
+   "repo": "Significant-Gravitas/AutoGPT",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "IceWhaleTech/CasaOS",
+   "category": "infra",
+   "note": "Simple open-source personal cloud/homeserver OS"
+  },
+  {
+   "repo": "run-llama/llama_index",
+   "category": "rag",
+   "note": ""
+  },
+  {
+   "repo": "modelcontextprotocol/servers",
+   "category": "mcp",
+   "note": ""
+  },
+  {
+   "repo": "FoundationAgents/MetaGPT",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "anthropics/anthropic-cookbook",
+   "category": "skills",
+   "note": ""
+  },
+  {
+   "repo": "TauricResearch/TradingAgents",
+   "category": "trading",
+   "note": "Multi-agent LLM framework simulating a trading firm for research"
+  },
+  {
+   "repo": "Aider-AI/aider",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "crewAIInc/crewAI",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "d4vinci/Scrapling",
+   "category": "scraping",
+   "note": ""
+  },
+  {
+   "repo": "comfy-org/comfyui",
+   "category": "image",
+   "note": "Modular node-graph GUI/backend for diffusion model image/video generation"
+  },
+  {
+   "repo": "gitroomhq/postiz-app",
+   "category": "social",
+   "note": "Agentic social media scheduling tool across 28+ channels"
+  },
+  {
+   "repo": "microsoft/autogen",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "danny-avila/librechat",
+   "category": "chatui",
+   "note": "Self-hosted, multi-provider AI chat platform with agents, MCP, and plugins"
+  },
+  {
+   "repo": "AI4Finance-Foundation/FinGPT",
+   "category": "trading",
+   "note": ""
+  },
+  {
+   "repo": "letta-ai/letta",
+   "category": "memory",
+   "note": ""
+  },
+  {
+   "repo": "Panniantong/Agent-Reach",
+   "category": "agents",
+   "note": "CLI giving AI agents read/search access to Twitter, Reddit, YouTube, GitHub, etc."
+  },
+  {
+   "repo": "oobabooga/text-generation-webui",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "AUTOMATIC1111/stable-diffusion-webui",
+   "category": "image",
+   "note": ""
+  },
+  {
+   "repo": "lobehub/lobe-chat",
+   "category": "chatui",
+   "note": ""
+  },
+  {
+   "repo": "langchain-ai/langchain",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "janhq/jan",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "deepset-ai/haystack",
+   "category": "rag",
+   "note": ""
+  },
+  {
+   "repo": "TabbyML/tabby",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "openai/whisper",
+   "category": "voice",
+   "note": ""
+  },
+  {
+   "repo": "apilayer",
+   "category": "apis",
+   "note": "Marketplace/org of 178+ production-ready APIs (currency, geolocation, weather, etc.)"
+  },
+  {
+   "repo": "HKUDS/Vibe-Trading",
+   "category": "trading",
+   "note": "Personal AI trading agent turning finance questions into research/backtests"
+  },
+  {
+   "repo": "khoj-ai/khoj",
+   "category": "search",
+   "note": ""
+  },
+  {
+   "repo": "ppgranger/token-saver",
+   "category": "tokens",
+   "note": "Content-aware output compression tool reducing tokens for AI coding assistants"
+  },
+  {
+   "repo": "huggingface/diffusers",
+   "category": "image",
+   "note": ""
+  },
+  {
+   "repo": "DietrichGebert/ponytail",
+   "category": "coding",
+   "note": "Ruleset making AI coding agents write minimal, lazy-senior-dev-style code"
+  },
+  {
+   "repo": "langgenius/dify",
+   "category": "lowcode",
+   "note": "Production-ready platform for building agentic LLM workflows and apps"
+  },
+  {
+   "repo": "mem0ai/mem0",
+   "category": "memory",
+   "note": ""
+  },
+  {
+   "repo": "heygen-com/hyperframes",
+   "category": "video",
+   "note": "Write HTML, render deterministic MP4 video, built for AI agents"
+  },
+  {
+   "repo": "OpenInterpreter/open-interpreter",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "FlowiseAI/Flowise",
+   "category": "lowcode",
+   "note": ""
+  },
+  {
+   "repo": "microsoft/markitdown",
+   "category": "rag",
+   "note": ""
+  },
+  {
+   "repo": "SYSTRAN/faster-whisper",
+   "category": "voice",
+   "note": ""
+  },
+  {
+   "repo": "diegosouzapw/OmniRoute",
+   "category": "router",
+   "note": "Free AI gateway routing coding agents to 231+ LLM providers with fallback"
+  },
+  {
+   "repo": "n8n-io/n8n",
+   "category": "lowcode",
+   "note": ""
+  },
+  {
+   "repo": "block/goose",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "ggml-org/llama.cpp",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "anthropics/skills",
+   "category": "skills",
+   "note": "Anthropic's official public repository of Agent Skills for Claude"
+  },
+  {
+   "repo": "infiniflow/ragflow",
+   "category": "rag",
+   "note": ""
+  },
+  {
+   "repo": "hpcaitech/Open-Sora",
+   "category": "video",
+   "note": ""
+  },
+  {
+   "repo": "openai/codex",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "langchain-ai/langgraph",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "AgriciDaniel/claude-ads",
+   "category": "skills",
+   "note": "Claude Code skill for auditing and optimizing paid ad campaigns across platforms"
+  },
+  {
+   "repo": "microsoft/qlib",
+   "category": "trading",
+   "note": ""
+  },
+  {
+   "repo": "cline/cline",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "openswarm-ai/openswarm",
+   "category": "agents",
+   "note": "Mission control/orchestrator for running/monitoring swarms of AI coding agents"
+  },
+  {
+   "repo": "google-research/timesfm",
+   "category": "forecasting",
+   "note": "Google's pretrained time-series forecasting model. v2.5 is Apache-2.0; v3.0 weights are non-commercial."
+  },
+  {
+   "repo": "ItzCrazyKns/Perplexica",
+   "category": "search",
+   "note": "Privacy-focused, self-hosted AI answering/search engine (Perplexity alternative)"
+  },
+  {
+   "repo": "FujiwaraChoki/supoclip",
+   "category": "video",
+   "note": "Open-source OpusClip alternative for AI-powered video clipping"
+  },
+  {
+   "repo": "openai/openai-agents-python",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "microsoft/graphrag",
+   "category": "rag",
+   "note": ""
+  },
+  {
+   "repo": "AI4Finance-Foundation/FinRL",
+   "category": "trading",
+   "note": ""
+  },
+  {
+   "repo": "github/github-mcp-server",
+   "category": "mcp",
+   "note": ""
+  },
+  {
+   "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+   "category": "skills",
+   "note": "AI skill providing design intelligence for building UI/UX across platforms"
+  },
+  {
+   "repo": "mintplex-labs/anything-llm",
+   "category": "chatui",
+   "note": "All-in-one local AI app for chatting with docs using agents and RAG"
+  },
+  {
+   "repo": "virattt/ai-hedge-fund",
+   "category": "trading",
+   "note": ""
+  },
+  {
+   "repo": "Wan-Video/Wan2.1",
+   "category": "video",
+   "note": ""
+  },
+  {
+   "repo": "nomic-ai/gpt4all",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "lllyasviel/Fooocus",
+   "category": "image",
+   "note": ""
+  },
+  {
+   "repo": "stackblitz-labs/bolt.diy",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "666ghj/MiroFish",
+   "category": "agents",
+   "note": "Swarm-intelligence engine simulating thousands of AI agents to predict outcomes"
+  },
+  {
+   "repo": "vllm-project/vllm",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "Alishahryar1/free-claude-code",
+   "category": "router",
+   "note": "Proxy letting you use Claude Code/Codex free via alternate model providers"
+  },
+  {
+   "repo": "continuedev/continue",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "safishamsi/graphify",
+   "category": "memory",
+   "note": "Turns codebases/docs into a queryable knowledge graph for AI coding assistants"
+  },
+  {
+   "repo": "Fincept-Corporation/FinceptTerminal",
+   "category": "trading",
+   "note": "Open-source Bloomberg-like terminal for market analytics and investment research"
+  },
+  {
+   "repo": "BerriAI/litellm",
+   "category": "router",
+   "note": ""
+  },
+  {
+   "repo": "repowise-dev/repowise",
+   "category": "coding",
+   "note": "Codebase intelligence tool: health scores, docs, dead code detection via MCP"
+  },
+  {
+   "repo": "getzep/graphiti",
+   "category": "memory",
+   "note": ""
+  },
+  {
+   "repo": "imgly/videoclipper",
+   "category": "video",
+   "note": "Fully automated tool that turns long videos into short clips"
+  },
+  {
+   "repo": "fishaudio/fish-speech",
+   "category": "voice",
+   "note": ""
+  },
+  {
+   "repo": "browser-use/browser-use",
+   "category": "agents",
+   "note": ""
+  },
+  {
+   "repo": "langflow-ai/langflow",
+   "category": "lowcode",
+   "note": "Visual low-code builder for AI agents, workflows, and RAG apps"
+  },
+  {
+   "repo": "mlc-ai/web-llm",
+   "category": "local",
+   "note": ""
+  },
+  {
+   "repo": "SamurAIGPT/AI-Youtube-Shorts-Generator",
+   "category": "video",
+   "note": "Turns long YouTube videos into viral 9:16 shorts via LLM highlight detection"
+  },
+  {
+   "repo": "ruvnet/ruflo",
+   "category": "agents",
+   "note": "Agent meta-harness for multi-agent swarms, workflows, and conversational AI"
+  },
+  {
+   "repo": "hiyouga/LLaMA-Factory",
+   "category": "training",
+   "note": ""
+  },
+  {
+   "repo": "All-Hands-AI/OpenHands",
+   "category": "coding",
+   "note": ""
+  },
+  {
+   "repo": "Anil-matcha/Open-Generative-AI",
+   "category": "image",
+   "note": "Self-hosted, unrestricted AI image/video generation studio with 200+ models"
+  },
+  {
+   "repo": "open-webui/open-webui",
+   "category": "chatui",
+   "note": ""
+  }
+ ]
+}

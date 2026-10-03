@@ -1,0 +1,195 @@
+"""'100 AI repos worth knowing' series: one repo per post, in repos.json order.
+
+Facts come from GitHub's API on the runner at post time (never from memory):
+description, stars, language, licence, dates, README. The README excerpt is
+passed to the writer as source material, so autonomous_run's fact-checker can
+hold the post to it exactly like a news story.
+
+State (which repos have gone out) lives in series_state.json, written by the
+run and committed by the workflow's persist step.
+"""
+
+import base64
+import datetime
+import json
+import os
+import re
+import urllib.error
+import urllib.parse
+import urllib.request
+from pathlib import Path
+
+BASE = Path(__file__).parent
+REPOS_F = BASE / "repos.json"
+STATE_F = BASE / "series_state.json"
+API = "https://api.github.com"
+MAX_TRIES = 5          # dead/archived repos skipped per run before giving up
+
+
+def load_repos():
+    return json.loads(REPOS_F.read_text(encoding="utf-8"))["repos"]
+
+
+def load_state():
+    if STATE_F.exists():
+        return json.loads(STATE_F.read_text(encoding="utf-8"))
+    return {"posted": [], "skipped": []}
+
+
+def save_state(state):
+    STATE_F.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+
+def done_ids(state):
+    return {e["repo"].lower() for e in state["posted"] + state["skipped"]}
+
+
+def posted_today(state, today=None):
+    today = today or datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+    return any(e.get("date") == today for e in state["posted"])
+
+
+def next_entries(repos, state):
+    """Remaining repos, in list order."""
+    done = done_ids(state)
+    return [r for r in repos if r["repo"].lower() not in done]
+
+
+def _get(path, accept="application/vnd.github+json"):
+    headers = {"Accept": accept, "User-Agent": "thealgorithmzedge-series",
+               "X-GitHub-Api-Version": "2022-11-28"}
+    tok = os.environ.get("GITHUB_TOKEN")
+    if tok:
+        headers["Authorization"] = f"Bearer {tok}"
+    req = urllib.request.Request(f"{API}{path}", headers=headers)
+    with urllib.request.urlopen(req, timeout=20) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def clean_readme(md, limit=3500):
+    """Readable prose from a README: no badges, images, HTML, code or tables."""
+    md = re.sub(r"(?s)<!--.*?-->", " ", md or "")
+    md = re.sub(r"(?s)```.*?```", " ", md)
+    md = re.sub(r"<[^>]+>", " ", md)
+    md = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", md)          # images / badges
+    md = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", md)       # links -> text
+    md = "\n".join(l for l in md.splitlines()
+                   if not l.lstrip().startswith(("|", "#")))   # tables, headings
+    paras = []
+    for block in re.split(r"\n\s*\n", md):
+        t = re.sub(r"\s+", " ", re.sub(r"^[#>\-*\s|]+", "", block)).strip()
+        if len(t) >= 50 and not t.startswith(("|", "---")):
+            paras.append(t)
+    return "\n".join(paras)[:limit]
+
+
+class RepoUnusable(Exception):
+    """404 / archived / no description: skip it and move on."""
+
+
+def fetch_facts(entry):
+    """Live facts for one entry. Raises RepoUnusable to skip, other errors to
+    abort the run (API down / rate limited: better no post than a made-up one)."""
+    name = entry["repo"]
+    org_only = "/" not in name
+    try:
+        if org_only:
+            d = json.loads(_get(f"/orgs/{urllib.parse.quote(name)}"))
+            return {"full_name": name, "description": d.get("description") or "",
+                    "stars": None, "language": "", "license": "", "created": "",
+                    "pushed": "", "topics": [], "readme": "",
+                    "extra": f"GitHub organisation with {d.get('public_repos')} public repositories."}
+        d = json.loads(_get(f"/repos/{name}"))
+    except urllib.error.HTTPError as e:
+        if e.code in (404, 410, 451):
+            raise RepoUnusable(f"HTTP {e.code}")
+        raise
+    if d.get("archived") or d.get("disabled"):
+        raise RepoUnusable("archived")
+    if not d.get("description"):
+        raise RepoUnusable("no description")
+    try:
+        readme = clean_readme(_get(f"/repos/{name}/readme",
+                                   accept="application/vnd.github.raw"))
+    except Exception:
+        readme = ""
+    return {"full_name": d["full_name"], "description": d["description"],
+            "stars": d["stargazers_count"], "language": d.get("language") or "",
+            "license": (d.get("license") or {}).get("spdx_id") or "",
+            "created": (d.get("created_at") or "")[:10],
+            "pushed": (d.get("pushed_at") or "")[:10],
+            "topics": d.get("topics") or [], "readme": readme, "extra": ""}
+
+
+def series_note(day, total):
+    return (
+        f"SERIES MODE — Day {day} of {total} of the owner's '{total} AI repos worth "
+        "knowing' series. Today's story is a GitHub repository, not news. Explain "
+        "in plain language what it does, who it helps (a concrete everyday use), "
+        "how popular it is (use the star count exactly as given), and an honest "
+        "downside (setup effort, cost, maturity, licence, risk) — but only claims "
+        "supported by the source material. Say the repo name so people can find it. "
+        f"The hook kicker must be exactly 'Repo {day} of {total}'. The CTA should "
+        f"invite people to follow for all {total}. The no-CLI/terminal/developer-tool "
+        "rule is waived for this series because every repo is AI-related; still "
+        "explain every technical term in everyday words. For trading or finance "
+        "repos, say it is for research and not financial advice.")
+
+
+def build_story(entry, facts, day, total):
+    bits = [f"Repository: {facts['full_name']}", f"Description: {facts['description']}"]
+    if facts["stars"] is not None:
+        bits.append(f"GitHub stars: {facts['stars']:,}")
+    for label, key in (("Main language", "language"), ("Licence", "license"),
+                       ("Created", "created"), ("Last pushed", "pushed")):
+        if facts[key]:
+            bits.append(f"{label}: {facts[key]}")
+    if facts["topics"]:
+        bits.append("Topics: " + ", ".join(facts["topics"][:10]))
+    if facts["extra"]:
+        bits.append(facts["extra"])
+    if entry.get("note"):
+        bits.append(f"Owner's note: {entry['note']}")
+    headline = f"{facts['full_name'].split('/')[-1]}: {facts['description']}"[:140]
+    return {"headline": headline, "url": f"https://github.com/{facts['full_name']}",
+            "summary": " | ".join(bits), "article": facts["readme"],
+            "sources_covering": ["GitHub"], "coverage_count": 1,
+            "all_headlines": [headline], "runners_up": [],
+            "sources_ok": ["GitHub"], "sources_failed": [], "source_count": 1,
+            "degraded": False, "score": 0,
+            "series": {"repo": entry["repo"], "day": day, "total": total}}
+
+
+def pick_story(repos=None, state=None):
+    """(story, state) for the next usable repo, or (None, state).
+
+    Unusable repos are recorded as skipped so they are never retried.
+    """
+    repos = repos if repos is not None else load_repos()
+    state = state if state is not None else load_state()
+    total = len(repos)
+    for _ in range(MAX_TRIES):
+        remaining = next_entries(repos, state)
+        if not remaining:
+            print("[series] all repos done")
+            return None, state
+        entry = remaining[0]
+        day = len(state["posted"]) + 1
+        try:
+            facts = fetch_facts(entry)
+        except RepoUnusable as e:
+            print(f"[series] skipping {entry['repo']}: {e}")
+            state["skipped"].append({"repo": entry["repo"], "reason": str(e),
+                                     "date": datetime.date.today().isoformat()})
+            save_state(state)
+            continue
+        return build_story(entry, facts, day, total), state
+    print("[series] too many unusable repos in a row; stopping this run")
+    return None, state
+
+
+def mark_posted(state, story, media_id):
+    s = story["series"]
+    state["posted"].append({"repo": s["repo"], "day": s["day"], "media_id": media_id,
+                            "date": datetime.datetime.now(datetime.timezone.utc).date().isoformat()})
+    save_state(state)

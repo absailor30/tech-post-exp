@@ -461,7 +461,7 @@ def fact_check(p, material):
     return [str(c) for c in claims if str(c).strip()][:8]
 
 
-def plan():
+def plan(series_story=None):
     import random
     from metrics import collect
 
@@ -471,7 +471,10 @@ def plan():
     _f = REPO_DIR / "story_override.txt"
     if not override and _f.exists():
         override = _f.read_text(encoding="utf-8").strip()
-    if override:
+    if series_story:
+        override = "series"            # skips news dedup and the banned-topic check
+        story = series_story
+    elif override:
         # Manual topic (workflow_dispatch `story` input): "headline | summary".
         # Skips research and dedup — the operator chose this story on purpose.
         head, _, summ = override.partition("|")
@@ -515,7 +518,9 @@ def plan():
     prompt = PLAN_PROMPT.format(
         mandate=st.get("mandate", ""), audience=st.get("audience", ""),
         banned=", ".join(st.get("banned_topics", [])) or "none",
-        directives="\n".join(f"- {d}" for d in st.get("directives", [])) or "none",
+        directives=("\n".join(f"- {d}" for d in st.get("directives", [])) or "none")
+        + (("\n- " + __import__("series").series_note(
+            story["series"]["day"], story["series"]["total"])) if series_story else ""),
         source_count=story["source_count"], headline=story["headline"],
         url=story.get("url", ""), coverage=story["coverage_count"],
         covering=", ".join(story["sources_covering"]),
@@ -546,7 +551,7 @@ def plan():
     banned = [b.lower() for b in st.get("banned_topics", [])]
     blob = f"{p['topic']} {p['hook'].get('headline','')}".lower()
     hit = [b for b in banned if b in blob]
-    if hit:
+    if hit and not series_story:       # series is owner-approved; "git" would match "github"
         sys.exit(f"plan violates mandate (banned: {', '.join(hit)}): {p['topic']}")
 
     p["theme"] = pick_theme(p, story)
@@ -711,19 +716,47 @@ def cmd_forget(media_id):
           f"dropped); its story can be picked again")
 
 
-def main(dry=False, force=False):
-    slot = current_slot()
-    if not dry and not force and already_posted_in_slot(slot):
-        print(f"already posted in the {slot} slot today — nothing to do")
-        return
-    print(f"slot: {slot}")
-    if not dry:
-        verify_ig_token()   # fail in <1s, not after research+LLM+render
-    p = plan()
-    if p is None:
-        print("nothing fresh to post this slot — every candidate story was "
-              "already covered recently")
-        return
+def main(dry=False, force=False, series=False):
+    sstate = None
+    if series:
+        # The 100-day AI repos series: its own once-a-day guard, independent of
+        # the news slots, and its own story source (series.py + GitHub API).
+        import series as _series
+        sstate = _series.load_state()
+        if not dry and not force and _series.posted_today(sstate):
+            print("series already posted today — nothing to do")
+            return
+        print("mode: series")
+        if not dry:
+            verify_ig_token()
+        sstory, sstate = _series.pick_story(state=sstate)
+        if sstory is None:
+            print("series: no usable repo to post right now")
+            return
+        p = plan(series_story=sstory)
+        if p is None:
+            repo = sstory["series"]["repo"]
+            n = sstate.setdefault("blocked", {}).get(repo, 0) + 1
+            sstate["blocked"][repo] = n
+            if n >= 2:      # don't let one repo stall the series forever
+                sstate["skipped"].append({"repo": repo, "reason": "fact-check blocked twice",
+                                          "date": datetime.date.today().isoformat()})
+            _series.save_state(sstate)
+            print(f"series: {repo} blocked by the fact-check ({n}x)")
+            return
+    else:
+        slot = current_slot()
+        if not dry and not force and already_posted_in_slot(slot):
+            print(f"already posted in the {slot} slot today — nothing to do")
+            return
+        print(f"slot: {slot}")
+        if not dry:
+            verify_ig_token()   # fail in <1s, not after research+LLM+render
+        p = plan()
+        if p is None:
+            print("nothing fresh to post this slot — every candidate story was "
+                  "already covered recently")
+            return
     stamp = datetime.datetime.now().strftime("%Y%m%d")
     slug = re.sub(r"[^a-z0-9]+", "-", p["topic"].lower())[:40].strip("-")
 
@@ -806,7 +839,10 @@ def main(dry=False, force=False):
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))
     story["media_id"] = result["id"]
-    record({k: v for k, v in story.items() if k != "article"})   # only now is the story genuinely "covered" (article text is too big to keep)
+    # only now is the story genuinely "covered" (article text is too big to keep)
+    record({k: v for k, v in story.items() if k != "article"})
+    if series:
+        _series.mark_posted(sstate, story, result["id"])
     print(f"published {kind}, media id {result['id']}")
     post_seed_comment(result["id"], p["topic"], p["caption"])
 
@@ -839,7 +875,8 @@ if __name__ == "__main__":
         if "--forget" in sys.argv:
             cmd_forget(sys.argv[sys.argv.index("--forget") + 1])
         else:
-            main(dry="--dry" in sys.argv, force="--force" in sys.argv)
+            main(dry="--dry" in sys.argv, force="--force" in sys.argv,
+                 series="--series" in sys.argv)
     except SystemExit as e:
         # sys.exit(str) is how verify_ig_token/ig_call/research's safety
         # floor all report a *specific* reason. That reason is the one

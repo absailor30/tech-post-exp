@@ -109,3 +109,27 @@ To trigger a real run and check Actions logs, use the GitHub MCP tools
 `absailor30/tech-post-exp` — always pull real log output before reporting
 success or failure; this project has a strict "verify against evidence,
 never guess" norm established over many rounds of debugging.
+
+## Added 2026-10-03 (voiceover, accuracy, repos series)
+
+- **Voiceover**: `voiceover.py` narrates each slide's on-screen text (edge-tts;
+  Riva is tried first only if `NVIDIA_TTS_FUNCTION_ID` is set — it isn't). Slide
+  length stretches to fit the audio; any TTS failure falls back to music-only.
+- **Accuracy**: `research.fetch_article()` grabs article text; the plan prompt
+  allows only source-backed facts; `fact_check()` is a second LLM pass that blocks
+  unsupported claims (one rewrite, then skip and log `fact_check_blocked`).
+- **Seed comment fix**: the 120-token cap truncated the reasoning model's
+  scratchpad every time. Now 3000 tokens + a `COMMENT:` marker line.
+- **Image generation**: no usable backend. NVIDIA key lists no image models;
+  hosted FLUX.1-dev returned 500 and schnell timed out (2026-10-03 probe); SD3 is
+  404 for this account. Veo/Imagen blocked by the GCP key issue above.
+- **100-day "AI repos worth knowing" series**: `repos.json` (100 repos, spaced by
+  category; 39 seeded from the owner's SecondBrain/00-Inbox/Review.md),
+  `series.py` (live GitHub API facts + README as source material),
+  `series_state.json` (posted/skipped/blocked), `python autonomous_run.py --series`,
+  workflow `series-post.yml` (once a day, 09:00 IST primary + 2 backups). Repos
+  that 404/are archived are skipped automatically.
+- **Posting cadence caveat**: scheduled runs fire 4-7h late, so the "morning" news
+  runs land in the evening slot and real news output is ~1 post/day, not 2.
+- **Git gotcha**: the Actions bot token cannot push commits that touch
+  `.github/workflows/`. Never let a branch run push workflow-file history to main.
