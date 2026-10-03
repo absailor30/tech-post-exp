@@ -71,9 +71,31 @@ SLIDE_W, SLIDE_H = 1080, 1350
 BG = "0xF5EEE0"   # fallback; the real value comes from the active theme
 
 
-MUSIC_VOL = 0.9         # music alone
-MUSIC_VOL_UNDER = 0.16  # music bed when a voiceover is on top
-VOICE_VOL = 1.6
+MUSIC_VOL = 0.9          # music alone (no voiceover)
+# With a voiceover the mix is set by measured loudness, not guessed gains:
+VOICE_LUFS = -15         # narration: loud and clear, with headroom for AAC
+MUSIC_LUFS = -32         # music bed: ~17 LU under the voice, audible but never competing
+DUCK_THRESHOLD = 0.02    # sidechain: music dips further whenever the narrator speaks
+
+
+def audio_graph(voice, dur, music_idx=1, first_voice_idx=2):
+    """ffmpeg filtergraph text producing [aud] from one music input and N voice clips."""
+    g = (f"[{music_idx}:a]aloop=loop=-1:size=2e9,atrim=0:{dur},"
+         f"afade=t=out:st={max(0.1, dur - 1.2)}:d=1.2")
+    if not voice:
+        return g + f",volume={MUSIC_VOL}[aud]"
+    g += f",loudnorm=I={MUSIC_LUFS}:TP=-8:LRA=11[music]"
+    labels = ""
+    for i, (_clip, start) in enumerate(voice):
+        ms = int(start * 1000)
+        g += f";[{first_voice_idx + i}:a]adelay={ms}|{ms}[vo{i}]"
+        labels += f"[vo{i}]"
+    g += (f";{labels}amix=inputs={len(voice)}:normalize=0,highpass=f=80,"
+          f"loudnorm=I={VOICE_LUFS}:TP=-1.5:LRA=7,asplit=2[vo][vosc]"
+          f";[music][vosc]sidechaincompress=threshold={DUCK_THRESHOLD}:ratio=6:"
+          f"attack=15:release=300[musicd]"
+          f";[vo][musicd]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.89[aud]")
+    return g
 
 
 def _encode(frames_dir, n_frames, out, bg=BG, voice=None, pattern="f%05d.png"):
@@ -85,28 +107,16 @@ def _encode(frames_dir, n_frames, out, bg=BG, voice=None, pattern="f%05d.png"):
     track = pick_track()
     dur = n_frames / FPS
     fc = (f"[0:v]pad={W}:{H}:0:(oh-ih)/2:color={bg},setsar=1[v];"
-          f"[1:a]aloop=loop=-1:size=2e9,atrim=0:{dur},"
-          f"afade=t=out:st={max(0.1, dur - 1.2)}:d=1.2,"
-          f"volume={MUSIC_VOL_UNDER if voice else MUSIC_VOL}[music]")
+          + audio_graph(voice, dur))
     voice_inputs = []
-    if voice:
-        labels = ""
-        for i, (clip, start) in enumerate(voice):
-            voice_inputs += ["-i", str(clip)]
-            ms = int(start * 1000)
-            fc += f";[{i + 2}:a]adelay={ms}|{ms},volume={VOICE_VOL}[vo{i}]"
-            labels += f"[vo{i}]"
-        fc += (f";{labels}amix=inputs={len(voice)}:normalize=0[vo]"
-               f";[music][vo]amix=inputs=2:normalize=0:duration=first,"
-               f"alimiter=limit=0.95[aud]")
-    else:
-        fc = fc.replace("[music]", "[aud]")
+    for clip, _start in (voice or []):
+        voice_inputs += ["-i", str(clip)]
     cmd = [get_ffmpeg_exe(), "-y",
            "-framerate", str(FPS), "-i", str(Path(frames_dir) / pattern),
            "-i", str(track), *voice_inputs,
            "-filter_complex", fc, "-map", "[v]", "-map", "[aud]",
            "-c:v", "libx264", "-crf", "24", "-preset", "medium",
-           "-c:a", "aac", "-shortest",
+           "-c:a", "aac", "-b:a", "160k", "-shortest",
            "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out)]
     r = subprocess.run(cmd, capture_output=True)
     if r.returncode != 0:
