@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run models like DeepSeek on your computer",
+      "kicker": "Repo 1 of 100",
+      "say": "Did you know you can now run AI models like DeepSeek and Gemma on your own computer? This is Day 1 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "Run models like DeepSeek locally",
+      "body": "This tool lets you run models such as DeepSeek, Qwen, and Gemma on your own machine.",
+      "say": "This tool lets you run models like DeepSeek, Qwen, and Gemma right on your own computer ... no cloud needed, just download it and start chatting.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Works on Mac Windows Linux Docker",
+      "body": "Download it for Mac, Windows, or Linux, or use Docker. It has a REST API and Python and JavaScript libraries.",
+      "say": "You can download it for Mac, Windows, or Linux, or run it in Docker ... it also gives you a REST API and libraries for Python and JavaScript.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "182,100 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Go \u00b7 Since June 2023",
+      "say": "It has over 180 thousand stars on GitHub and uses the MIT licence. It's written in Go and it's been around since June 2023.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Read the README and licence first",
+      "body": "No specific caveats listed. Check the README and MIT licence before you start.",
+      "say": "The README does not list specific caveats, so please read it and the MIT licence carefully before you dive in.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Comment REPO for the full list",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 99 repos... or you might not see us again. Comment REPO, and I'll send you the full list, with install commands and similar repos."
+    }
+  ]
+}
