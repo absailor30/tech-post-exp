@@ -145,16 +145,83 @@ def fetch_facts(entry):
 def series_note(day, total):
     return (
         f"SERIES MODE — Day {day} of {total} of the owner's '{total} AI repos worth "
-        "knowing' series. Today's story is a GitHub repository, not news. Explain "
-        "in plain language what it does, who it helps (a concrete everyday use), "
-        "how popular it is (use the star count exactly as given), and an honest "
-        "downside (setup effort, cost, maturity, licence, risk) — but only claims "
-        "supported by the source material. Say the repo name so people can find it. "
-        f"The hook kicker must be exactly 'Repo {day} of {total}'. The CTA should "
-        f"invite people to follow for all {total}. The no-CLI/terminal/developer-tool "
-        "rule is waived for this series because every repo is AI-related; still "
-        "explain every technical term in everyday words. For trading or finance "
-        "repos, say it is for research and not financial advice.")
+        "knowing' series. Today's story is a GitHub repository, not news. Use ONLY "
+        "facts that appear under EXTRA CONTEXT and SOURCE MATERIAL. If something is "
+        "not stated there (hardware needs, privacy, offline use, speed, number of "
+        "models, who uses it), leave it out — never add it from memory.\n"
+        "  HOOK: the hook headline is the repo's USP — what it does — taken from the "
+        "'Description:' line in EXTRA CONTEXT and restated in plain everyday words, "
+        "max 10 words. Use only ideas that are in that description or the README. No "
+        "hype, no superlatives, no 'nobody tells you' / 'secret' / 'hidden', and no "
+        "number that is not in the source.\n"
+        "  The 4 content slides must be, in this order:\n"
+        "    1. What it does (from the description and README).\n"
+        "    2. What is inside or how it is used (from the README sections/text).\n"
+        "    3. The facts: GitHub stars (exact number), licence, main language, created "
+        "and last-updated dates.\n"
+        "    4. What to know before using it (only a caveat the README or licence "
+        "supports; if none, say to check the README and licence).\n"
+        "  Say the repo name. Explain every technical term in everyday words. For "
+        "trading or finance repos, say it is for research and not financial advice. "
+        "Do not explain how to bypass paywalls, bot detection or terms of service.")
+
+
+_STOP = set("a an the and or of to in on for with from by is are be it its this that "
+            "your you our we as at into over any all more can will get up out how "
+            "what why who one two use used using lets let make makes made".split())
+
+
+def _words(text):
+    return [w for w in re.findall(r"[a-z0-9][a-z0-9'+.-]*", (text or "").lower())
+            if w not in _STOP and len(w) > 1]
+
+
+def hook_grounded(headline, source_text, min_overlap=0.5):
+    """True if the hook only leans on the source: most of its content words occur
+    in the description/README, and any number in it occurs there too."""
+    src = set(_words(source_text))
+    ws = _words(headline)
+    if not ws:
+        return False
+    nums = [w for w in ws if any(c.isdigit() for c in w)]
+    if any(n not in src for n in nums):
+        return False
+    return sum(1 for w in ws if w in src) / len(ws) >= min_overlap
+
+
+def fallback_hook(story):
+    """No imagination: the repo name plus its own description, trimmed."""
+    facts = story["summary"]
+    m = re.search(r"Description: (.*?)(?: \| |$)", facts)
+    desc = (m.group(1) if m else story["headline"]).strip()
+    name = story["series"]["repo"].split("/")[-1]
+    words = desc.split()
+    short = " ".join(words[:11]).rstrip(",;:- ") + ("…" if len(words) > 11 else "")
+    return f"{name}: {short}"
+
+
+def finalize(p, story):
+    """Deterministic parts of a series post, so none of it depends on the model:
+    the kicker, a hook that is verifiably grounded in the description, the CTA,
+    and the find-it line + series hashtag in the caption."""
+    s = story["series"]
+    src = story["summary"] + "\n" + story.get("article", "") + "\n" + s["repo"]
+    hook = p.setdefault("hook", {})
+    hook["kicker"] = f"Repo {s['day']} of {s['total']}"
+    if not hook_grounded(hook.get("headline", ""), src):
+        print(f"[series] hook not grounded in the description, using fallback: "
+              f"{hook.get('headline')!r}")
+        hook["headline"] = fallback_hook(story)
+    p["cta"] = {"headline": f"Follow for all {s['total']}",
+                "body": "One AI repo explained in plain words, every day."}
+    cap = p.get("caption", "").rstrip()
+    link = f"github.com/{s['repo']}" if "/" in s["repo"] else f"github.com/{s['repo']}"
+    if link not in cap:
+        cap += f"\n\nFind it: {link}"
+    if "#100AIRepos" not in cap:
+        cap += "\n#100AIRepos"
+    p["caption"] = cap
+    return p
 
 
 def build_story(entry, facts, day, total):

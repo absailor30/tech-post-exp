@@ -516,6 +516,9 @@ def plan(series_story=None):
     picked = random.sample(hooks, 4)
     hooks_txt = "\n".join(f"- {h['name']}: {h['formula']} (e.g. \"{h['example']}\")"
                            for h in picked)
+    if series_story:    # the dev-tips pattern list would invite unsupported hooks
+        hooks_txt = ("- repo_usp: say what the repo does, in plain words, straight "
+                     "from its GitHub description — nothing the description does not say")
     # Reasoning models (nemotron ultra) spend most of the budget thinking before
     # emitting the JSON — give them room or the plan comes back truncated.
     prompt = PLAN_PROMPT.format(
@@ -571,6 +574,9 @@ def plan(series_story=None):
                    "claims NOT supported by the source material. Rewrite the whole "
                    "plan without them (delete them, do not paraphrase them):\n"
                    + "\n".join(f"- {c}" for c in bad))
+
+    if series_story:
+        p = __import__("series").finalize(p, story)
 
     banned = [b.lower() for b in st.get("banned_topics", [])]
     blob = f"{p['topic']} {p['hook'].get('headline','')}".lower()
