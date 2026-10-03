@@ -443,7 +443,9 @@ def fact_check(p, material):
             "names, dates, features, who gets access, or a figure described as a "
             "different quantity than the source describes. Do NOT flag opinions, "
             "plain-language explanations of terms, or implications phrased with "
-            "could/may/might. Quote each unsupported claim briefly.\n"
+            "could/may/might. Also do NOT flag the account's own branding or call to "
+            "action (e.g. 'Repo 3 of 100', 'Follow for more'); they are not claims "
+            "about the world. Quote each unsupported claim briefly.\n"
             "Keep any thinking short. Finish with ONE last line, exactly:\n"
             'UNSUPPORTED: ["claim 1", "claim 2"]   (use [] if everything is supported)',
             max_tokens=4000)
@@ -532,6 +534,10 @@ def plan(series_story=None):
 
     material = "\n".join([story["headline"], *story.get("all_headlines", []),
                           story.get("summary", ""), story.get("article", "")])
+    if series_story:
+        material += (f"\nThis is post {story['series']['day']} of the account's "
+                     f"{story['series']['total']}-repo series; the account asks viewers to "
+                     "follow for the rest.")
     p = _draft(prompt)
     for attempt in range(2):
         bad = fact_check(p, material)
@@ -541,6 +547,7 @@ def plan(series_story=None):
         if attempt:
             print("[fact-check] still unsupported after a rewrite — skipping this "
                   "post rather than publishing unverified claims")
+            print("[fact-check] blocked draft was:\n" + plan_text(p))
             log("fact_check_blocked", headline=story["headline"], claims=bad)
             return None
         p = _draft(prompt + "\n\nA FACT-CHECK of your previous draft found these "

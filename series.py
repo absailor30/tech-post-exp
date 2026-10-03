@@ -66,21 +66,33 @@ def _get(path, accept="application/vnd.github+json"):
         return r.read().decode("utf-8", "replace")
 
 
-def clean_readme(md, limit=3500):
-    """Readable prose from a README: no badges, images, HTML, code or tables."""
+def clean_readme(md, limit=6000):
+    """Readable text from a README: no badges, images, HTML, code or tables.
+
+    Keeps the section headings (as a one-line outline, they name the features)
+    and every prose paragraph / bullet of reasonable length.
+    """
     md = re.sub(r"(?s)<!--.*?-->", " ", md or "")
     md = re.sub(r"(?s)```.*?```", " ", md)
     md = re.sub(r"<[^>]+>", " ", md)
     md = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", md)          # images / badges
     md = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", md)       # links -> text
-    md = "\n".join(l for l in md.splitlines()
-                   if not l.lstrip().startswith(("|", "#")))   # tables, headings
+    heads, body = [], []
+    for l in md.splitlines():
+        t = l.strip()
+        if t.startswith("#"):
+            h = t.lstrip("#").strip()
+            if 2 < len(h) < 60:
+                heads.append(h)
+        elif not t.startswith("|"):                          # drop tables
+            body.append(l)
     paras = []
-    for block in re.split(r"\n\s*\n", md):
-        t = re.sub(r"\s+", " ", re.sub(r"^[#>\-*\s|]+", "", block)).strip()
-        if len(t) >= 50 and not t.startswith(("|", "---")):
+    for block in re.split(r"\n\s*\n", "\n".join(body)):
+        t = re.sub(r"\s+", " ", re.sub(r"^[>\-*\s]+", "", block)).strip()
+        if len(t) >= 40:
             paras.append(t)
-    return "\n".join(paras)[:limit]
+    out = ("README sections: " + "; ".join(heads[:25]) + "\n" if heads else "")
+    return (out + "\n".join(paras))[:limit]
 
 
 class RepoUnusable(Exception):
@@ -113,6 +125,15 @@ def fetch_facts(entry):
                                    accept="application/vnd.github.raw"))
     except Exception:
         readme = ""
+    home = d.get("homepage") or ""
+    if home.startswith("http") and "github.com" not in home:
+        try:                                  # project website text, best effort
+            import research
+            site = research.fetch_article([{"url": home}], limit=2500)
+            if site:
+                readme += "\n\nProject website text:\n" + site
+        except Exception:
+            pass
     return {"full_name": d["full_name"], "description": d["description"],
             "stars": d["stargazers_count"], "language": d.get("language") or "",
             "license": (d.get("license") or {}).get("spdx_id") or "",
