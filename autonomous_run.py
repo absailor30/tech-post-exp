@@ -734,6 +734,12 @@ def main(dry=False, force=False, series=False):
             print("series: no usable repo to post right now")
             return
         p = plan(series_story=sstory)
+        if dry and p is not None:
+            print("=== SERIES PREVIEW ===")
+            print(json.dumps({k: p.get(k) for k in ("topic", "theme", "hook", "slides", "cta", "caption")},
+                             indent=1, ensure_ascii=False))
+            print("=== SOURCE FACTS ===")
+            print(sstory["summary"])
         if p is None:
             repo = sstory["series"]["repo"]
             n = sstate.setdefault("blocked", {}).get(repo, 0) + 1

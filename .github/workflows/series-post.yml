@@ -13,6 +13,10 @@ on:
         description: "Post even if the series already posted today"
         type: boolean
         default: false
+      dry:
+        description: "Preview only: render and print the plan, publish nothing, save no state"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -40,21 +44,21 @@ jobs:
           REPO_DIR: ${{ github.workspace }}
           GIT_NAME: github-actions[bot]
           GIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-        run: python autonomous_run.py --series ${{ inputs.force && '--force' || '' }}
+        run: python autonomous_run.py --series ${{ inputs.force && '--force' || '' }} ${{ inputs.dry && '--dry' || '' }}
       - name: telegram summary
-        if: success()
+        if: success() && !inputs.dry
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify.py --post-summary
       - name: telegram failure alert
-        if: failure()
+        if: failure() && !inputs.dry
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify.py --failure series-post
       - name: persist state
-        if: always()
+        if: always() && !inputs.dry
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
