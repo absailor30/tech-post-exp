@@ -288,7 +288,7 @@ def cta_say(day, total):
             "Follow for the last repo" if left == 1 else "Follow for what comes next")
     return ("Loved it? Save this, and send it to a friend. "
             f"{more}... or you might not see us again. "
-            "And comment REPO, I'll send you the full list.")
+            "Comment REPO, and I'll send you the full list, with install commands and similar repos.")
 
 
 def series_note(day, total):
@@ -302,8 +302,9 @@ def series_note(day, total):
         "headline, body, spoken lines or caption. Say 'this tool' or 'this repo'.\n"
         "  The reel is spoken aloud by a warm, playful voice, like a clever friend "
         "sharing a find. Short sentences, '...' for a beat. Keep the WHOLE reel "
-        "under 60 seconds: about 20 words for hook.usp's sentence and at most 18 "
-        "spoken words per content slide.\n"
+        "about 50 seconds: about 20 words for hook.usp's sentence and 24-28 "
+        "spoken words per content slide (two or three short sentences). Slide 1 must "
+        "add detail beyond the hook, never repeat it.\n"
         "  JSON additions (required):\n"
         "    hook.usp = ONE verb phrase, max 14 words, no leading 'to', saying what "
         "the repo lets a person do, restated in plain words from the 'Description:' "
