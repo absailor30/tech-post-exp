@@ -229,11 +229,12 @@ def _looks_like_a_real_comment(text):
     return not any(m in low for m in bad_markers)
 
 
-def post_seed_comment(media_id, topic, caption):
+def post_seed_comment(media_id, topic, caption, fixed=None):
     """Best-effort: a failed seed comment must never fail the whole run --
-    the post already published successfully, so this is non-fatal by design."""
+    the post already published successfully, so this is non-fatal by design.
+    `fixed` (series posts) is a ready-made comment, so no model is involved."""
     try:
-        text = seed_comment(topic, caption)
+        text = fixed or seed_comment(topic, caption)
         if not text or not _looks_like_a_real_comment(text):
             print(f"seed comment skipped (didn't look like a real comment): {text!r}")
             return
@@ -564,6 +565,14 @@ def plan(series_story=None):
         if not bad:
             break
         print(f"[fact-check] {len(bad)} unsupported claim(s): {bad}")
+        if attempt and series_story:
+            # swap only the flagged parts for plain source-derived fallbacks, re-check
+            p = __import__("series").repair(p, bad, story)
+            bad = checked(p)
+            if bad == []:
+                break
+            if bad is None:
+                bad = ["(checker unavailable after repair)"]
         if attempt:
             print("[fact-check] still unsupported after a rewrite — skipping this "
                   "post rather than publishing unverified claims")
@@ -892,7 +901,16 @@ def main(dry=False, force=False, series=False):
     if series:
         _series.mark_posted(sstate, story, result["id"])
     print(f"published {kind}, media id {result['id']}")
-    post_seed_comment(result["id"], p["topic"], p["caption"])
+    if series:
+        try:                     # refresh the REPO list PDF with today's repo
+            import series_doc
+            series_doc.build(sstate)
+        except Exception as e:
+            print(f"[series] PDF build failed (non-fatal): {e!r}")
+        post_seed_comment(result["id"], p["topic"], p["caption"],
+                          fixed="Comment REPO and I'll DM you the full list of every repo in this series.")
+    else:
+        post_seed_comment(result["id"], p["topic"], p["caption"])
 
     if datetime.date.today().weekday() == 6:   # Sunday: weekly digest
         hist = (BASE / "metrics.jsonl")

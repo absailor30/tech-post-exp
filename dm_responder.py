@@ -10,6 +10,8 @@ Usage: python dm_responder.py            (intended for a scheduled task)
 """
 
 import json
+import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -21,11 +23,20 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 STATE = BASE / "dm_state.json"
 KEYWORD = "EDGE"
+# "REPO" -> the series list (every repo posted so far, as a PDF that updates daily).
+SERIES_KEYWORD = "REPO"
+SERIES_PDF_URL = os.environ.get(
+    "SERIES_PDF_URL",
+    "https://cdn.jsdelivr.net/gh/absailor30/tech-post-exp@main/docs/100-ai-repos.pdf")
+SERIES_DM_TEXT = (
+    "Hey! Thanks for commenting 🙌 Here's the list of every repo in the series so far "
+    "(it updates every day): {link}\n\n"
+    "Save it, send it to a friend, and follow so you don't miss tomorrow's repo."
+)
 DM_TEXT = (
     "Hey! Thanks for the comment 🙌 Here's the full guide: {link}\n\n"
     "It's free — save it, use it, share it. More every week if you're following."
 )
-import os
 LINK = os.environ.get("DM_LINK", "")
 
 
@@ -42,12 +53,19 @@ def call(url, params, method="GET"):
         return None
 
 
+def wants(text, word):
+    """Whole-word, case-insensitive: 'repo' matches, 'report' does not."""
+    return re.search(r"(?<![A-Za-z0-9])" + re.escape(word) + r"(?![A-Za-z0-9])", text or "", re.I)
+
+
 def main():
-    if not LINK:
-        sys.exit("DM_LINK not set in .env — not running (nothing to send)")
+    if not LINK and not SERIES_PDF_URL:
+        sys.exit("no DM links configured — not running (nothing to send)")
     state = json.loads(STATE.read_text()) if STATE.exists() else {"replied": []}
+    me = call(f"{IG_API}/me", {"fields": "username", "access_token": ig_token()}) or {}
+    own = (me.get("username") or "").lower()
     media = call(f"{IG_API}/me/media", {"fields": "id,caption",
-                                        "limit": "4", "access_token": ig_token()})
+                                        "limit": "15", "access_token": ig_token()})
     if not media:
         return
     sent = 0
@@ -57,11 +75,20 @@ def main():
         if not comments:
             continue
         for c in comments.get("data", []):
-            if c["id"] in state["replied"] or KEYWORD.lower() not in c.get("text", "").lower():
+            if c["id"] in state["replied"]:
+                continue
+            if own and (c.get("username") or "").lower() == own:
+                continue                      # never answer our own seed comment
+            text = c.get("text", "")
+            if wants(text, SERIES_KEYWORD):
+                msg = SERIES_DM_TEXT.format(link=SERIES_PDF_URL)
+            elif LINK and KEYWORD.lower() in text.lower():
+                msg = DM_TEXT.format(link=LINK)
+            else:
                 continue
             r = call(f"{IG_API}/me/messages",
                      {"recipient": json.dumps({"comment_id": c["id"]}),
-                      "message": json.dumps({"text": DM_TEXT.format(link=LINK)})},
+                      "message": json.dumps({"text": msg})},
                      "POST")
             state["replied"].append(c["id"])
             if r:

@@ -95,6 +95,31 @@ def clean_readme(md, limit=6000):
     return (out + "\n".join(paras))[:limit]
 
 
+_START_HEAD = re.compile(r"install|quick ?start|getting started|get started|usage|run|download", re.I)
+_CMD_START = re.compile(r"^\s*(\$ )?(pip3?|pipx|uv|npm|npx|pnpm|yarn|brew|curl|wget|docker|git clone|cargo|go install|"
+                        r"conda|apt|sudo|ollama|irm|iwr)\b")
+
+
+def extract_quickstart(md, limit=400):
+    """The first install/run command from the README, verbatim ('' if none).
+    Taken from a code block under an install/quickstart heading, else the first
+    block that starts like a shell command."""
+    blocks = []                       # (preceding heading, code)
+    head = ""
+    for m in re.finditer(r"^(#{1,4}) +([^\n]*)$|```[A-Za-z0-9_+-]*\n((?s:.*?))```", md or "", re.M):
+        if m.group(2) is not None:
+            head = m.group(2)
+        elif m.group(3) is not None:
+            blocks.append((head, m.group(3).strip()))
+    for h, code in blocks:
+        if _START_HEAD.search(h) and _CMD_START.search(code.splitlines()[0] if code else ""):
+            return code[:limit]
+    for h, code in blocks:
+        if code and _CMD_START.search(code.splitlines()[0]):
+            return code[:limit]
+    return ""
+
+
 class RepoUnusable(Exception):
     """404 / archived / no description: skip it and move on."""
 
@@ -134,7 +159,13 @@ def fetch_facts(entry):
                 readme += "\n\nProject website text:\n" + site
         except Exception:
             pass
+    raw_md = ""
+    try:
+        raw_md = _get(f"/repos/{name}/readme", accept="application/vnd.github.raw")
+    except Exception:
+        pass
     return {"full_name": d["full_name"], "description": d["description"],
+            "quickstart": extract_quickstart(raw_md),
             "stars": d["stargazers_count"], "language": d.get("language") or "",
             "license": (d.get("license") or {}).get("spdx_id") or "",
             "created": (d.get("created_at") or "")[:10],
@@ -351,6 +382,87 @@ def scrub_name(text, repo):
     return re.sub(r"[ \t]{2,}", " ", text).strip()
 
 
+_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August",
+           "September", "October", "November", "December"]
+
+
+def _sections(story):
+    m = re.search(r"README sections: ([^\n]*)", story.get("article", ""))
+    return [x.strip() for x in m.group(1).split(";") if x.strip()] if m else []
+
+
+def facts_slide(story):
+    """The 'proof' slide, built purely from GitHub's numbers: it cannot be wrong."""
+    s = story["series"]
+    stars, lic, lang = s.get("stars"), (s.get("license") or "").strip(), s.get("language", "")
+    if lic.upper() in ("NOASSERTION", "OTHER"):
+        lic = ""
+    when = ""
+    try:
+        d = datetime.date.fromisoformat(s.get("created", ""))
+        when = f"{_MONTHS[d.month - 1]} {d.year}"
+    except Exception:
+        pass
+    head = f"{stars:,} GitHub stars" if stars else "The facts"
+    body = " · ".join(x for x in ((f"{lic} licence" if lic else ""),
+                                  (f"Written in {lang}" if lang else ""),
+                                  (f"Since {when}" if when else "")) if x)
+    first = []
+    if stars:
+        first.append(f"{stars_phrase(stars).lower()} stars on GitHub")
+    if lic:
+        first.append(f"the {lic} licence")
+    say = ("It has " + " and uses ".join(first) + ".") if first else ""
+    extra = " and ".join(x for x in ((f"it's written in {lang}" if lang else ""),
+                                     (f"it's been around since {when}" if when else "")) if x)
+    if extra:
+        say = (say + " " if say else "") + extra[0].upper() + extra[1:] + "."
+    return {"headline": head, "body": body or "Facts straight from GitHub", "say": say or head}
+
+
+def fallback_slide(i, story):
+    """Plain, source-derived replacement for slide i (1-4). Used when a slide's own
+    wording was flagged by the fact-check, so one bad sentence can't sink the post."""
+    desc = _description(story)
+    dw = desc.split()
+    if i == 1:
+        return {"headline": "What it does", "body": " ".join(dw[:20]).rstrip(",;:- "),
+                "say": "In the project's own words... " + " ".join(dw[:24]).rstrip(",;:- ") + "."}
+    if i == 2:
+        sec = [x for x in _sections(story) if x.lower() not in ("table of contents",)][:4]
+        if sec:
+            return {"headline": "What's inside", "body": ", ".join(sec),
+                    "say": "Inside, you'll find: " + ", ".join(sec[:-1]) +
+                           (" and " if len(sec) > 1 else "") + sec[-1] + "."}
+        return {"headline": "What's inside", "body": "See the README for details",
+                "say": "The README walks you through the details."}
+    if i == 3:
+        return facts_slide(story)
+    return {"headline": "Before you use it", "body": "Read the README and check the licence first",
+            "say": "One last thing... read the README, and check the licence, before you rely on it."}
+
+
+def repair(p, claims, story):
+    """Replace only the parts of the post that the fact-check flagged with plain
+    source-derived fallbacks. Returns the repaired plan."""
+    def hit(claim, text):
+        cw, tw = set(_words(claim)), set(_words(text))
+        return bool(cw) and len(cw & tw) / len(cw) >= 0.6
+    slides = p.get("slides", [])
+    for c in claims:
+        for i, sl in enumerate(slides, 1):
+            if hit(c, f"{sl.get('headline', '')} {sl.get('body', '')} {sl.get('say', '')}"):
+                print(f"[series] repairing slide {i} (flagged: {c!r})")
+                slides[i - 1] = fallback_slide(i, story)
+        if hit(c, p.get("caption", "")):
+            print(f"[series] repairing caption (flagged: {c!r})")
+            p["caption"] = _description(story) + "."
+        if hit(c, f"{p.get('hook', {}).get('headline', '')} {p.get('hook', {}).get('usp', '')}"):
+            print(f"[series] repairing hook (flagged: {c!r})")
+            p["hook"] = {"headline": fallback_hook(story), "usp": ""}
+    return p
+
+
 def finalize(p, story):
     """Everything fixed about the series flow is added here, in code, so every
     reel follows the same flow regardless of what the model wrote:
@@ -398,6 +510,8 @@ def finalize(p, story):
         hook["say"] = tmpl.format(**slots)
     hook["say"] += " " + series_line(day, total)
 
+    if len(p.get("slides", [])) >= 3:
+        p["slides"][2] = facts_slide(story)       # the proof slide is never model-written
     for sl in p.get("slides", []):
         if not sl.get("say"):
             sl["say"] = f"{sl.get('headline', '')}. {sl.get('body', '')}".strip(". ")
@@ -442,6 +556,9 @@ def build_story(entry, facts, day, total):
             "series": {"repo": entry["repo"], "day": day, "total": total,
                        "license": facts.get("license", ""), "created": facts.get("created", ""),
                        "pushed": facts.get("pushed", ""), "stars": facts.get("stars"),
+                       "description": facts["description"], "language": facts.get("language", ""),
+                       "category": entry.get("category", ""), "note": entry.get("note", ""),
+                       "quickstart": facts.get("quickstart", ""), "full_name": facts["full_name"],
                        "alt": detect_alternative(
                            f"{facts['description']} {entry.get('note', '')} "
                            f"{(facts.get('readme') or '')[:1200]}")}}
@@ -477,7 +594,14 @@ def pick_story(repos=None, state=None):
 
 def mark_posted(state, story, media_id):
     s = story["series"]
-    state["posted"].append({"repo": s["repo"], "day": s["day"], "media_id": media_id,
-                            "opening": s.get("opening"),
-                            "date": datetime.datetime.now(datetime.timezone.utc).date().isoformat()})
+    state["posted"].append({
+        "repo": s["repo"], "day": s["day"], "media_id": media_id,
+        "opening": s.get("opening"),
+        "date": datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
+        # kept for the REPO list PDF (live facts at posting time)
+        "name": s.get("full_name") or s["repo"], "url": story["url"],
+        "description": s.get("description", ""), "stars": s.get("stars"),
+        "license": s.get("license", ""), "language": s.get("language", ""),
+        "category": s.get("category", ""), "note": s.get("note", ""),
+        "quickstart": s.get("quickstart", "")})
     save_state(state)
