@@ -57,6 +57,14 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify.py --failure series-post
+      - name: save preview to this branch (dry runs only)
+        if: success() && inputs.dry && github.ref_name != 'main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images
+          git diff --cached --quiet || git commit -m "preview: series dry run"
+          git push
       - name: persist state
         if: always() && !inputs.dry
         run: |

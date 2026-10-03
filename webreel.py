@@ -147,7 +147,14 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
     with sync_playwright() as p:
         browser = _launch(p)
         page = browser.new_page(viewport={"width": VIEW_W, "height": VIEW_H}, device_scale_factor=2)
-        page.goto(url, wait_until="networkidle", timeout=45000)
+        resp = page.goto(url, wait_until="networkidle", timeout=45000)
+        if resp is None or resp.status >= 400:
+            raise RuntimeError(f"web capture failed: {url} returned "
+                               f"{getattr(resp, 'status', 'no response')}")
+        title = (page.title() or "").lower()
+        if any(bad in title for bad in ("page not found", "rate limit", "too many requests",
+                                        "access denied", "just a moment")):
+            raise RuntimeError(f"web capture hit an error page: {page.title()!r}")
         page.wait_for_timeout(1200)
         page_h = page.evaluate("document.documentElement.scrollHeight")
         # Open on the README (logo + description), not the file tree above it.

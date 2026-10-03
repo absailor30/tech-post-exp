@@ -825,6 +825,10 @@ def main(dry=False, force=False, series=False):
     # letter, and so a reel can be rebuilt later without re-asking the model.
     specs = [{"kind": "hook", "headline": p["hook"]["headline"],
               "kicker": p["hook"].get("kicker", "")}]
+    web_url = None
+    if series:      # real-video reel: a Chrome scroll through the repo's own page
+        web_url = p["_story"]["url"]
+        specs[0]["repo"] = web_url.replace("https://", "")
     specs += [{"kind": "content", "headline": s["headline"], "body": s["body"],
                "idx": i + 1, "total": total} for i, s in enumerate(p["slides"], 1)]
     specs.append({"kind": "cta", "headline": p["cta"]["headline"],
@@ -834,16 +838,24 @@ def main(dry=False, force=False, series=False):
 
     print(f"topic: {p['topic']}\nslides: {len(files)}\ncaption:\n{p['caption']}\n")
     if dry:
-        from reel_maker import build_animated
-        build_animated(specs, outdir / "reel.mp4", theme=theme)
+        if web_url:
+            from webreel import build_web_reel
+            build_web_reel(specs, web_url, outdir / "reel.mp4")
+        else:
+            from reel_maker import build_animated
+            build_animated(specs, outdir / "reel.mp4", theme=theme)
         print(f"[dry run] rendered to {outdir}, nothing pushed or published")
         return
 
     # Reels only. Carousels reached 1-3 accounts each for the whole of August
     # and earned zero saves and zero shares — Instagram had stopped
     # distributing them entirely, so there is nothing to salvage there.
-    from reel_maker import build_animated
-    build_animated(specs, outdir / "reel.mp4", theme=theme)
+    if web_url:
+        from webreel import build_web_reel
+        build_web_reel(specs, web_url, outdir / "reel.mp4")
+    else:
+        from reel_maker import build_animated
+        build_animated(specs, outdir / "reel.mp4", theme=theme)
     rel_paths.append((outdir / "reel.mp4").relative_to(REPO_DIR).as_posix())
 
     if (REPO_DIR / "story_override.txt").exists():
