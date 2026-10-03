@@ -1,4 +1,7 @@
-"""Text-to-speech narration for Reels (edge-tts, no API key).
+"""Text-to-speech narration for Reels.
+
+Order: Kokoro (open source, Apache-2.0, runs on CPU, voice am_michael) -> NVIDIA
+Riva (only if NVIDIA_TTS_FUNCTION_ID is set) -> Microsoft edge-tts -> silence.
 
 Best-effort by design: every failure returns None so the reel falls back to
 music-only exactly as before. A voice problem must never fail a post.
@@ -13,12 +16,15 @@ from pathlib import Path
 
 from imageio_ffmpeg import get_ffmpeg_exe
 
-VOICE = "en-US-AndrewNeural"
+VOICE = "en-US-AndrewMultilingualNeural"   # fallback; the older AndrewNeural sounded robotic
 RATE = "+8%"          # slightly brisk; Reels viewers skip slow narration
 
 
 def narration_text(spec):
-    """What gets spoken for a slide — same words as on screen."""
+    """What gets spoken for a slide: its own spoken script if it has one
+    (series reels), else the on-screen words."""
+    if spec.get("say"):
+        return re.sub(r"\s+", " ", spec["say"]).strip()
     parts = [spec.get("headline", ""), spec.get("body", "")]
     text = ". ".join(p.strip().rstrip(".!?") for p in parts if p and p.strip())
     return re.sub(r"\s+", " ", text).strip()
@@ -65,6 +71,24 @@ def _synth_riva(text, out):
         w.writeframes(resp.audio)
 
 
+KOKORO_VOICE = os.environ.get("KOKORO_VOICE", "am_michael")
+KOKORO_SPEED = float(os.environ.get("KOKORO_SPEED", "1.0"))
+_kokoro = None
+
+
+def _synth_kokoro(text, out):
+    """Kokoro-82M on CPU. Punctuation drives its phrasing: '...' gives a pause,
+    '?' lifts the pitch, short sentences land with emphasis."""
+    global _kokoro
+    import numpy as np
+    import soundfile as sf
+    if _kokoro is None:
+        from kokoro import KPipeline
+        _kokoro = KPipeline(lang_code="a")
+    audio = np.concatenate([a for _, _, a in _kokoro(text, voice=KOKORO_VOICE, speed=KOKORO_SPEED)])
+    sf.write(str(out), audio, 24000)
+
+
 def _ok(path):
     return Path(path).exists() and Path(path).stat().st_size > 1000
 
@@ -72,13 +96,15 @@ def _ok(path):
 def synth(text, out_stem, retries=2):
     """Speak `text` to a file starting with `out_stem`.
 
-    Tries Riva (if NVIDIA_TTS_FUNCTION_ID is set), then edge-tts. Returns the
+    Tries Kokoro, then Riva (if NVIDIA_TTS_FUNCTION_ID is set), then edge-tts. Returns the
     written path, or None if every backend failed.
     """
     if not text:
         return None
     stem = str(out_stem)
     backends = []
+    if os.environ.get("VOICE_ENGINE", "kokoro") == "kokoro":
+        backends.append(("kokoro", ".wav", _synth_kokoro))
     if os.environ.get("NVIDIA_TTS_FUNCTION_ID") and os.environ.get("NIM_API_KEY"):
         backends.append(("riva", ".wav", _synth_riva))
     backends.append(("edge-tts", ".mp3", lambda t, o: asyncio.run(_synth(t, o))))
