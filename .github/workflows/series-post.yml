@@ -65,7 +65,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add images
           git diff --cached --quiet || git commit -m "preview: series dry run"
-          git push
+          git pull --rebase origin "${{ github.ref_name }}" && git push
       - name: persist state
         if: always() && !inputs.dry
         run: |
