@@ -6,18 +6,28 @@ on:
 # reach Veo before any of this is wired into the real posting pipeline.
 # Safe to delete once Veo integration lands in daily-post.yml for real.
 
+permissions:
+  contents: write
+
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -q google-auth requests
-      - name: probe Veo access
+      - run: pip install -q -r requirements.txt
+      - name: audition voices
         env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          GCP_PROJECT: yt-post-502319
-        run: python veo_probe.py
+          NIM_API_KEY: x
+        run: python voice_audition.py
+      - name: commit audition to this branch
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add audition
+          git commit -m 'audition: voice samples' && git push || true
