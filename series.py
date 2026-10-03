@@ -142,20 +142,50 @@ def fetch_facts(entry):
             "topics": d.get("topics") or [], "readme": readme, "extra": ""}
 
 
-# Rotating openings: A/B test which one sounds better. Chosen by day so every run
-# is deterministic and the choice is recorded in series_state.json.
-OPENINGS = [
-    "Did you know you can now {usp}?",
-    "Quick question... would you like to {usp}?",
-    "Okay, here's something cool. You can {usp}.",
-    "Stop scrolling... you can {usp}.",
-    "Imagine if you could {usp}. Well... you can.",
-]
+# Hook rotation: which opening sounds better is an A/B test across days. The type
+# is chosen by day and recorded in series_state.json.
+HOOK_TEMPLATES = {
+    "did_you_know":   "Did you know you can now {usp}?",
+    "quick_question": "Quick question... would you like to {usp}?",
+    "something_cool": "Okay, here's something cool. You can {usp}.",
+    "stop_scrolling": "Stop scrolling... you can {usp}.",
+    "imagine":        "Imagine if you could {usp}. Well... you can.",
+    # needs a named alternative in the repo's own words + a licence; see pick_hook()
+    "stop_using":     "Stop using {alt}... this GitHub developer {just}made {feature} free.",
+}
+HOOK_CYCLE = ["did_you_know", "stop_using", "quick_question", "something_cool",
+              "stop_using", "stop_scrolling", "imagine"]
+
+_GENERIC = {"open", "source", "self", "free", "local", "privacy", "private", "the", "a",
+            "an", "this", "that", "best", "new", "better", "simple", "powerful", "modern",
+            "fast", "lightweight", "official", "ai", "llm", "python", "javascript"}
 
 
-def opening_for(day):
-    i = (day - 1) % len(OPENINGS)
-    return i, OPENINGS[i]
+def detect_alternative(text):
+    """The product this repo says it is an alternative to, only if its own text says
+    so ('Perplexity alternative', 'alternative to OpusClip'). Never guessed."""
+    t = text or ""
+    pats = (r"\b(?:alternative|replacement)s? (?:to|for) ([A-Z][A-Za-z0-9.+]*(?: [A-Z][A-Za-z0-9.+]*)?)",
+            r"\b([A-Z][A-Za-z0-9.+]*) alternative\b",
+            r"\b([A-Z][A-Za-z0-9.+]*)-style\b")
+    for pat in pats:
+        for m in re.finditer(pat, t):
+            name = m.group(1).strip()
+            if name.lower() not in _GENERIC and len(name) > 2:
+                return name
+    return None
+
+
+def pick_hook(day, alt, license_ok):
+    """(type_id, template). Skips 'stop_using' when the source gives no named
+    alternative or no licence, moving on to the next opening in the cycle."""
+    i = (day - 1) % len(HOOK_CYCLE)
+    for step in range(len(HOOK_CYCLE)):
+        t = HOOK_CYCLE[(i + step) % len(HOOK_CYCLE)]
+        if t == "stop_using" and not (alt and license_ok):
+            continue
+        return t, HOOK_TEMPLATES[t]
+    return "did_you_know", HOOK_TEMPLATES["did_you_know"]
 
 
 def series_line(day, total):
@@ -189,6 +219,9 @@ def series_note(day, total):
         "the repo lets a person do, restated in plain words from the 'Description:' "
         "line (e.g. 'run AI models like DeepSeek and Gemma on your own computer'). "
         "Only ideas that are in the description or README.\n"
+        "    hook.feature = a short noun phrase, max 8 words, naming the capability "
+        "the repo gives people, from the description or README (e.g. 'AI answers with "
+        "cited sources'). Used only for the 'stop using' hook.\n"
         "    hook.headline = the on-screen version, max 8 words.\n"
         "    every content slide gets a \"say\" string: what is spoken for that slide.\n"
         "  The 4 content slides, in this order:\n"
@@ -276,9 +309,22 @@ def finalize(p, story):
         hook["headline"] = fallback_hook(story)
     usp = (hook.get("usp") or "").strip().rstrip(".?!")
     usp = re.sub(r"^(to|you can)\s+", "", usp, flags=re.I)
-    idx, tmpl = opening_for(day)
-    s["opening"] = idx
-    if usp and hook_grounded(usp, src, min_overlap=0.4):
+    lic = (s.get("license") or "").strip()
+    alt = s.get("alt")
+    feature = (hook.get("feature") or "").strip().rstrip(".?!")
+    feature_ok = bool(feature) and hook_grounded(feature, src, min_overlap=0.4)
+    htype, tmpl = pick_hook(day, alt if feature_ok else None,
+                            bool(lic) and lic.upper() not in ("NOASSERTION", "OTHER"))
+    s["opening"] = htype
+    if htype == "stop_using":
+        age_days = 9999
+        try:
+            age_days = (datetime.date.today() - datetime.date.fromisoformat(s["created"])).days
+        except Exception:
+            pass
+        hook["say"] = tmpl.format(alt=alt, feature=feature,
+                                  just="just " if age_days <= 180 else "")
+    elif usp and hook_grounded(usp, src, min_overlap=0.4):
         hook["say"] = tmpl.format(usp=usp)
     else:
         print(f"[series] usp not grounded ({usp!r}), using the description")
@@ -327,7 +373,11 @@ def build_story(entry, facts, day, total):
             "all_headlines": [headline], "runners_up": [],
             "sources_ok": ["GitHub"], "sources_failed": [], "source_count": 1,
             "degraded": False, "score": 0,
-            "series": {"repo": entry["repo"], "day": day, "total": total}}
+            "series": {"repo": entry["repo"], "day": day, "total": total,
+                       "license": facts.get("license", ""), "created": facts.get("created", ""),
+                       "alt": detect_alternative(
+                           f"{facts['description']} {entry.get('note', '')} "
+                           f"{(facts.get('readme') or '')[:1200]}")}}
 
 
 def pick_story(repos=None, state=None):
