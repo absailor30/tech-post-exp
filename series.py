@@ -282,13 +282,20 @@ def series_line(day, total):
             "finding the best GitHub repo for you.")
 
 
+# "bio": the DM funnel is blocked until the app has Advanced Access, so point at the bio link.
+# Set SERIES_CTA=dm to go back to "comment REPO" once comment->DM works for strangers.
+CTA_MODE = os.environ.get("SERIES_CTA", "bio")
+
+
 def cta_say(day, total):
     left = total - day
     more = (f"Follow for the next {left} repos" if left > 1 else
             "Follow for the last repo" if left == 1 else "Follow for what comes next")
+    tail = ("Comment REPO, and I'll send you the full list, with install commands and similar repos."
+            if CTA_MODE == "dm" else
+            "The full list, with install commands and similar repos, is in my bio.")
     return ("Loved it? Save this, and send it to a friend. "
-            f"{more}... or you might not see us again. "
-            "Comment REPO, and I'll send you the full list, with install commands and similar repos.")
+            f"{more}... or you might not see us again. {tail}")
 
 
 def series_note(day, total):
@@ -518,7 +525,7 @@ def finalize(p, story):
         if not sl.get("say"):
             sl["say"] = f"{sl.get('headline', '')}. {sl.get('body', '')}".strip(". ")
 
-    p["cta"] = {"headline": "Save · Share · Follow", "body": "Comment REPO for the full list",
+    p["cta"] = {"headline": "Save · Share · Follow", "body": ("Comment REPO for the full list" if CTA_MODE == "dm" else "Full list: link in bio"),
                 "say": cta_say(day, total)}
 
     # the name stays out of every word and caption (the recording shows it)

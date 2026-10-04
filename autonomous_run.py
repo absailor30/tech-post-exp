@@ -908,7 +908,9 @@ def main(dry=False, force=False, series=False):
         except Exception as e:
             print(f"[series] PDF build failed (non-fatal): {e!r}")
         post_seed_comment(result["id"], p["topic"], p["caption"],
-                          fixed="Comment REPO and I'll DM you the full list of every repo in this series.")
+                          fixed=("Comment REPO and I'll DM you the full list of every repo in this series."
+                                 if os.environ.get("SERIES_CTA", "bio") == "dm" else
+                                 "The full list of every repo in this series so far is in my bio 🔗"))
     else:
         post_seed_comment(result["id"], p["topic"], p["caption"])
 
