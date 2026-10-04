@@ -64,7 +64,7 @@ def main():
     state = json.loads(STATE.read_text()) if STATE.exists() else {"replied": []}
     me = call(f"{IG_API}/me", {"fields": "username", "access_token": ig_token()}) or {}
     own = (me.get("username") or "").lower()
-    media = call(f"{IG_API}/me/media", {"fields": "id,caption",
+    media = call(f"{IG_API}/me/media", {"fields": "id,caption,comments_count,timestamp,permalink",
                                         "limit": "15", "access_token": ig_token()})
     if not media:
         return
@@ -74,7 +74,8 @@ def main():
                         {"fields": "id,text,username", "access_token": ig_token()})
         if not comments:
             continue
-        print(f"  media {m['id']}: {len(comments.get('data', []))} comments")
+        print(f"  media {m['id']} {m.get('timestamp', '')[:16]} comments_count={m.get('comments_count')} "
+              f"returned={len(comments.get('data', []))} {m.get('permalink', '')}")
         for c in comments.get("data", []):
             if c["id"] in state["replied"]:
                 continue
