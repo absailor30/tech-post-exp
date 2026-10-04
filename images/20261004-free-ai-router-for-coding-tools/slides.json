@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Connect tools to free AI",
+      "kicker": "Repo 2 of 100",
+      "say": "I found a GitHub project that lets you connect coding tools to free AI models. This is Day 2 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "Routes coding assistants to providers",
+      "body": "Sends requests from Cursor, Claude Code and others to 40-plus AI services with automatic fallback.",
+      "say": "This tool sits between your coding assistant and dozens of AI providers. When one hits a limit it quietly switches to the next so you keep working.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Local dashboard and token saver",
+      "body": "Runs a dashboard on your machine, compresses tool output to save 20 to 40 percent of tokens, supports multiple accounts per provider.",
+      "say": "You open a local dashboard in your browser. It trims the verbose tool results that normally eat your token budget and lets you add several accounts for each provider.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "30,273 GitHub stars",
+      "body": "MIT licence \u00b7 Written in JavaScript \u00b7 Since January 2026",
+      "say": "It has over 30 thousand stars on GitHub and uses the MIT licence. It's written in JavaScript and it's been around since January 2026.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Free tiers have monthly caps",
+      "body": "Kiro AI limits free use to 50 credits a month. OpenCode free models change without notice. Vertex free credits no longer cover Gemini API calls.",
+      "say": "Before you rely on it, know the free tiers come with catches. Kiro caps at fifty credits monthly. OpenCode's free model list shifts. Vertex credits stopped covering the Gemini API in March.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 98 repos... or you might not see us again. The full list, with install commands and similar repos, is in my bio."
+    }
+  ]
+}
