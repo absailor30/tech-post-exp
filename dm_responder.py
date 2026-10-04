@@ -74,10 +74,12 @@ def main():
                         {"fields": "id,text,username", "access_token": ig_token()})
         if not comments:
             continue
+        print(f"  media {m['id']}: {len(comments.get('data', []))} comments")
         for c in comments.get("data", []):
             if c["id"] in state["replied"]:
                 continue
             if own and (c.get("username") or "").lower() == own:
+                print(f"  skipping comment by our own account: {c.get('text', '')[:40]!r}")
                 continue                      # never answer our own seed comment
             text = c.get("text", "")
             if wants(text, SERIES_KEYWORD):
@@ -88,10 +90,13 @@ def main():
                 continue
             r = call(f"{IG_API}/me/messages",
                      {"recipient": json.dumps({"comment_id": c["id"]}),
-                      "message": json.dumps({"text": msg})},
+                      "message": json.dumps({"text": msg}),
+                      "access_token": ig_token()},
                      "POST")
-            state["replied"].append(c["id"])
+            print(f"  comment {c['id']} by {c.get('username', '?')}: {text[:40]!r} -> "
+                  f"{'DM sent' if r else 'DM FAILED (will retry next run)'}")
             if r:
+                state["replied"].append(c["id"])      # only after success, so failures retry
                 sent += 1
                 log("dm_sent", comment_id=c["id"], user=c.get("username", "?"))
     STATE.write_text(json.dumps(state))
