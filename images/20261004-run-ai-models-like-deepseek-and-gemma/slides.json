@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run models like DeepSeek and Gemma",
+      "kicker": "Repo 1 of 100",
+      "say": "Did you know you can now get up and running with models like DeepSeek and Gemma? This is Day 1 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "Runs many AI models",
+      "body": "Supports Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma",
+      "say": "This tool helps you get up and running with models like DeepSeek, Gemma, and others. You install it and begin chatting right away.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Works with many apps",
+      "body": "Connects to Claude Code, Copilot, Open WebUI, and more",
+      "say": "It connects with coding assistants like Claude Code and Copilot. It also works with chat interfaces like Open WebUI. Desktop and mobile apps exist too.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "182,134 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Go \u00b7 Since June 2023",
+      "say": "It has over 180 thousand stars on GitHub and uses the MIT licence. It's written in Go and it's been around since June 2023.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Read the docs first",
+      "body": "Check the README and licence before you begin",
+      "say": "Before using this, read the README and the MIT licence. Many integrations are community projects, not official releases. Verify each integration works for you.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Comment REPO for the full list",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 99 repos... or you might not see us again. Comment REPO, and I'll send you the full list, with install commands and similar repos."
+    }
+  ]
+}
