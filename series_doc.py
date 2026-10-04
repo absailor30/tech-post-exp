@@ -46,7 +46,7 @@ def build_html(state):
 <style>
  body{{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#15171c;margin:0;padding:0;line-height:1.45}}
  header{{background:#0d1117;color:#fff;padding:36px 40px}} header h1{{margin:0 0 6px;font-size:30px}}
- header p{{margin:0;color:#c9d1d9}} .wrap{{padding:20px 40px}}
+ header p{{margin:0;color:#c9d1d9}} header .rule{{margin-top:10px;color:#ffc400;font-weight:600}} .wrap{{padding:20px 40px}}
  .card{{border:1px solid #e3e6ea;border-radius:14px;padding:16px 20px;margin:14px 0;page-break-inside:avoid}}
  .day{{display:inline-block;background:#ffc400;color:#141414;font-weight:800;font-size:12px;border-radius:20px;padding:3px 12px}}
  h2{{margin:8px 0 4px;font-size:21px}} h2 a{{color:#0b57d0;text-decoration:none}}
@@ -57,7 +57,8 @@ def build_html(state):
  .rel{{margin-top:8px;font-size:13px;color:#586069}} footer{{padding:10px 40px 30px;color:#6a737d;font-size:12px}}
 </style></head><body>
 <header><h1>100 AI Repos Worth Knowing</h1>
-<p>Days 1&ndash;{n} so far &middot; updated {today} &middot; a new repo every day, in plain words</p></header>
+<p>Days 1&ndash;{n} so far &middot; updated {today} &middot; a new repo every day, in plain words</p>
+<p class="rule">Repos are added to this list on the day they are revealed &mdash; check back daily.</p></header>
 <div class="wrap">{''.join(cards) or '<p>The first repo goes live soon.</p>'}</div>
 <footer>Facts (stars, licence) are from GitHub on the day each repo was posted. Always read a project's own README and licence before relying on it. Not financial advice for any trading-related project.</footer>
 </body></html>"""
