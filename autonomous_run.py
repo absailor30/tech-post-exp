@@ -699,7 +699,7 @@ def publish_carousel(urls, caption):
 # passed in from the workflow, so a manual/backfill run just works from
 # whatever time it actually runs at, and adding a third slot later is a
 # one-line change here with no workflow plumbing required.
-SLOTS = (("morning", 5, 13), ("series-window", 13, 21), ("night", 21, 23))   # 12 PM / 8 PM(series) / 4 AM IST
+SLOTS = (("series-window", 0, 9), ("news", 9, 24))   # series 12 PM IST (06:30 UTC), news 4 PM IST (10:30 UTC)
 
 
 def current_slot():

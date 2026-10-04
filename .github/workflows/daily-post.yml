@@ -6,9 +6,9 @@ on:
     # primary + backup + last-resort — already_posted_in_slot() no-ops any
     # extra firing within the same window, and a slot's retries never touch
     # the other slot's post.
-    - cron: "30 21 * * *"       # 21:30 UTC = 03:00 IST (night; target 04:00 IST, GitHub cron runs late)
-    - cron: "0 22 * * *"        # night backup — no-ops if already posted
-    - cron: "30 22 * * *"       # night last-resort
+    - cron: "30 10 * * *"       # 10:30 UTC = 16:00 IST (news primary)
+    - cron: "15 11 * * *"       # backup — no-ops if already posted
+    - cron: "30 12 * * *"       # last resort
   workflow_dispatch:
     inputs:
       force:
