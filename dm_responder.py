@@ -74,6 +74,15 @@ def main():
                         {"fields": "id,text,username", "access_token": ig_token()})
         if not comments:
             continue
+        if m.get("comments_count") and not comments.get("data"):
+            # comments exist but the edge returned none: show the raw reply for each variant
+            for flds in ("id,text", "id,text,username,timestamp", ""):
+                alt = call(f"{IG_API}/{m['id']}/comments",
+                           {**({"fields": flds} if flds else {}), "access_token": ig_token()})
+                print(f"  [diag] fields={flds!r} -> {json.dumps(alt)[:300]}")
+            nested = call(f"{IG_API}/{m['id']}", {"fields": "comments{id,text,username}",
+                                                   "access_token": ig_token()})
+            print(f"  [diag] nested -> {json.dumps(nested)[:300]}")
         print(f"  media {m['id']} {m.get('timestamp', '')[:16]} comments_count={m.get('comments_count')} "
               f"returned={len(comments.get('data', []))} {m.get('permalink', '')}")
         for c in comments.get("data", []):
