@@ -667,13 +667,41 @@ def wait_finished(container_id, tries=25, delay=15):
     sys.exit("container never finished")
 
 
-def publish_reel(video_url, caption):
-    c = ig_call(f"{IG_API}/me/media",
-                {"media_type": "REELS", "video_url": video_url,
-                 "caption": caption, "access_token": ig_token()})
-    wait_finished(c["id"])
-    return ig_call(f"{IG_API}/me/media_publish",
-                   {"creation_id": c["id"], "access_token": ig_token()})
+def wait_cdn(url, tries=24, delay=10):
+    """jsDelivr needs a moment before a just-pushed commit's file is servable. Instagram
+    fetches the URL once, so a 404 at that instant fails the container with a bare ERROR."""
+    import urllib.request
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, method="HEAD")
+            with urllib.request.urlopen(req, timeout=20) as r:
+                if r.status == 200 and "video" in (r.headers.get("Content-Type") or ""):
+                    print(f"  CDN ready after {i * delay}s")
+                    return True
+        except Exception as e:
+            if i == 0:
+                print(f"  waiting for the CDN ({str(e)[:60]})")
+        time.sleep(delay)
+    print("  CDN never confirmed the file; trying anyway")
+    return False
+
+
+def publish_reel(video_url, caption, attempts=3):
+    wait_cdn(video_url)
+    for n in range(attempts):
+        c = ig_call(f"{IG_API}/me/media",
+                    {"media_type": "REELS", "video_url": video_url,
+                     "caption": caption, "access_token": ig_token()})
+        try:
+            wait_finished(c["id"])
+        except SystemExit as e:
+            print(f"  container attempt {n + 1}/{attempts} failed: {e}")
+            if n == attempts - 1:
+                raise
+            time.sleep(45)
+            continue
+        return ig_call(f"{IG_API}/me/media_publish",
+                       {"creation_id": c["id"], "access_token": ig_token()})
 
 
 def publish_carousel(urls, caption):
