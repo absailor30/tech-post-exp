@@ -15,6 +15,22 @@
       "category": "local",
       "note": "",
       "quickstart": "ollama"
+    },
+    {
+      "repo": "decolua/9router",
+      "day": 2,
+      "media_id": "18025673639879701",
+      "opening": "found_this",
+      "date": "2026-10-05",
+      "name": "decolua/9router",
+      "url": "https://github.com/decolua/9router",
+      "description": "Unlimited FREE AI coding. Connect Claude Code, Codex, Cursor, Cline, Copilot, Antigravity to FREE Claude/GPT/Gemini via 40+ providers. Auto-fallback, RTK -40% tokens, never hit limits.",
+      "stars": 30304,
+      "license": "MIT",
+      "language": "JavaScript",
+      "category": "router",
+      "note": "Free local AI router connecting coding agents to 40+ LLM providers with fallback",
+      "quickstart": "npm install -g 9router\n9router"
     }
   ],
   "skipped": []
