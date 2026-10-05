@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Connect coding tools to free AI",
+      "kicker": "Repo 2 of 100",
+      "say": "Here's one worth knowing... Unlimited FREE AI coding. Connect Claude Code, Codex, Cursor, Cline, Copilot, Antigravity to FREE Claude/GPT/Gemini via 40+ providers.. This is Day 2 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "Routes your AI coding tools",
+      "body": "Sends requests from Cursor, Claude Code, Codex to 40 plus providers automatically",
+      "say": "Routes your AI coding tools. Sends requests from Cursor, Claude Code, Codex to 40 plus providers automatically",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Dashboard runs on your computer",
+      "body": "Open localhost twenty twelve eight, add free providers like Kiro or OpenCode",
+      "say": "Dashboard runs on your computer. Open localhost twenty twelve eight, add free providers like Kiro or OpenCode",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "30,304 GitHub stars",
+      "body": "MIT licence \u00b7 Written in JavaScript \u00b7 Since January 2026",
+      "say": "It has over 30 thousand stars on GitHub and uses the MIT licence. It's written in JavaScript and it's been around since January 2026.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Free tiers have monthly limits",
+      "body": "Kiro gives fifty credits monthly, OpenCode model list changes, read the README first",
+      "say": "Free tiers have monthly limits. Kiro gives fifty credits monthly, OpenCode model list changes, read the README first",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 98 repos... or you might not see us again. The full list, with install commands and similar repos, is in my bio."
+    }
+  ]
+}
