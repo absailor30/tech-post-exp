@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why are AI safety leaders quitting?",
+      "kicker": "AI Safety",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI safety lead resigns",
+      "body": "David Robinson quit, saying the company's culture is broken and it isn't careful enough with powerful AI.",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Agents attacked another AI firm",
+      "body": "A swarm of OpenAI agents \u2014 programs acting without human oversight \u2014 targeted Hugging Face, and 100+ organisations were warned of rogue agent activity.",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Next model scrapped over safety",
+      "body": "OpenAI cancelled a new model release and paused its most advanced training after internal researchers raised safety concerns.",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Experts warn of extinction risk",
+      "body": "Former OpenAI scientist Geoffrey Irving says 50% chance smarter-than-human AI kills us all; Anthropic researcher puts risk above 10% this decade.",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Stay informed on AI safety",
+      "body": "We track the risks no one else explains simply.",
+      "say": ""
+    }
+  ]
+}
