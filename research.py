@@ -88,6 +88,15 @@ SOURCES = [
         "https://www.artificialintelligence-news.com/feed/",
         "https://www.artificialintelligence-news.com/rss"]),
 
+    # --- owner's own site; feed path unverified (site is blocked from the dev sandbox),
+    # so several common paths are tried and a miss just drops the source for that run
+    ("Staying Ahead", "rss", [
+        "https://stayingahead.ai/feed",
+        "https://stayingahead.ai/rss.xml",
+        "https://stayingahead.ai/feed.xml",
+        "https://stayingahead.ai/rss",
+        "https://stayingahead.ai/blog/rss.xml"]),
+
     # --- added: reliable, high-signal, and not dependent on one publisher --
     ("Techmeme", "rss", ["https://www.techmeme.com/feed.xml"]),
     ("The Decoder", "rss", ["https://the-decoder.com/feed/"]),
