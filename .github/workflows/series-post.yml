@@ -4,9 +4,12 @@ name: series-post
 # series_state.json, so the backup firings below just no-op after a success.
 on:
   schedule:
-    - cron: "30 6 * * *"        # 06:30 UTC = 12:00 IST primary (series, 100 repos)
-    - cron: "15 7 * * *"        # backup (no-ops if already posted today)
-    - cron: "30 8 * * *"        # last resort
+    # Fire EARLY; the gate job below waits until 06:30 UTC (12:00 IST) so the post lands on
+    # time even when GitHub starts the run hours late. Odd minutes dodge the :00/:30 rush.
+    - cron: "43 2 * * *"
+    - cron: "13 4 * * *"
+    - cron: "43 5 * * *"
+    - cron: "17 6 * * *"        # last chance; goes straight through if past 06:30
   workflow_dispatch:
     inputs:
       force:
@@ -21,14 +24,20 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: ig-agent               # shared with daily-post so two runs never race on main
-  cancel-in-progress: false
-
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 wait_until.py 06:30
   post:
+    needs: gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    concurrency:
+      group: ig-agent           # shared with daily-post so two runs never race on main
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

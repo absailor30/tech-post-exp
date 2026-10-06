@@ -6,9 +6,11 @@ on:
     # primary + backup + last-resort — already_posted_in_slot() no-ops any
     # extra firing within the same window, and a slot's retries never touch
     # the other slot's post.
-    - cron: "30 10 * * *"       # 10:30 UTC = 16:00 IST (news primary)
-    - cron: "15 11 * * *"       # backup — no-ops if already posted
-    - cron: "30 12 * * *"       # last resort
+    # Fire EARLY; the gate job waits until 10:30 UTC (4 PM IST) so the post lands on time.
+    - cron: "43 6 * * *"
+    - cron: "13 8 * * *"
+    - cron: "43 9 * * *"
+    - cron: "17 10 * * *"       # last chance; goes straight through if past 10:30
   workflow_dispatch:
     inputs:
       force:
@@ -23,14 +25,20 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: ig-agent
-  cancel-in-progress: false
-
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 wait_until.py 10:30
   post:
+    needs: gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    concurrency:
+      group: ig-agent
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
