@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "See AI's Hidden Instructions",
+      "kicker": "Repo 3 of 100",
+      "say": "I found a GitHub project that lets you see the hidden instructions that shape AI answers. This is Day 3 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "Collects leaked system prompts from ChatGPT, Claude, Gemini, Grok, Perplexity, Cursor and more",
+      "say": "This repo gathers the secret system prompts that tell major AI products how to behave \u2014 the hidden rules behind every answer you get.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "What's inside",
+      "body": "Full extracted prompts and guidelines showing how AI labs shape model behavior with unseen prompt scaffolds",
+      "say": "You get the actual prompt scaffolds \u2014 the massive instruction sets that force personas, decide refusals, and bake in ethical frames before you even ask a question.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "50,985 GitHub stars",
+      "body": "AGPL-3.0 licence \u00b7 Since March 2025",
+      "say": "It has over 50 thousand stars on GitHub and uses the AGPL-3.0 licence. It's been around since March 2025.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "Prompts are leaked or reverse-engineered, not official; read the licence first",
+      "say": "These prompts are leaked or reverse-engineered, not released by the companies. Read the licence and README before relying on them.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 97 repos... or you might not see us again. The full list, with install commands and similar repos, is in my bio."
+    }
+  ]
+}
