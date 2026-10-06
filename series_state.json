@@ -31,6 +31,22 @@
       "category": "router",
       "note": "Free local AI router connecting coding agents to 40+ LLM providers with fallback",
       "quickstart": "npm install -g 9router\n9router"
+    },
+    {
+      "repo": "elder-plinius/CL4R1T4S",
+      "day": 3,
+      "media_id": "17985712290077641",
+      "opening": "found_this",
+      "date": "2026-10-06",
+      "name": "elder-plinius/CL4R1T4S",
+      "url": "https://github.com/elder-plinius/CL4R1T4S",
+      "description": "LEAKED SYSTEM PROMPTS FOR CHATGPT, CLAUDE, GEMINI, GROK, PERPLEXITY, CURSOR, LOVABLE, REPLIT, AND MORE! - AI SYSTEMS TRANSPARENCY FOR ALL! \ud83d\udc50",
+      "stars": 50985,
+      "license": "AGPL-3.0",
+      "language": "",
+      "category": "prompts",
+      "note": "Collection of leaked/extracted system prompts from major AI products",
+      "quickstart": ""
     }
   ],
   "skipped": []
