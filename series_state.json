@@ -47,6 +47,22 @@
       "category": "prompts",
       "note": "Collection of leaked/extracted system prompts from major AI products",
       "quickstart": ""
+    },
+    {
+      "repo": "ChatGPTNextWeb/NextChat",
+      "day": 4,
+      "media_id": "18127534219845157",
+      "opening": "proof_stars",
+      "date": "2026-10-07",
+      "name": "ChatGPTNextWeb/NextChat",
+      "url": "https://github.com/ChatGPTNextWeb/NextChat",
+      "description": "\u2728 Zero-config AI chat assistant. No API key needed \u2014 sign up and instantly chat with GPT-5, Claude 4, Gemini 2.5, DeepSeek & 100+ top models. Pay-as-you-go saves you more. Available on Web, iOS, macOS, Android, Linux, Windows.",
+      "stars": 88837,
+      "license": "MIT",
+      "language": "TypeScript",
+      "category": "chatui",
+      "note": "",
+      "quickstart": "docker pull yidadaa/chatgpt-next-web\n\ndocker run -d -p 3000:3000 \\\n   -e OPENAI_API_KEY=sk-xxxx \\\n   -e CODE=your-password \\\n   yidadaa/chatgpt-next-web"
     }
   ],
   "skipped": []
