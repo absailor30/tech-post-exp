@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Chat with top AI models instantly",
+      "kicker": "Repo 4 of 100",
+      "say": "Over 80 thousand people starred this GitHub project. It lets you chat with top AI models without an API key. This is Day 4 of our exclusive 100-day series, finding the best GitHub repo for you."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "\u2728 Zero-config AI chat assistant. No API key needed \u2014 sign up and instantly chat with GPT-5, Claude 4, Gemini",
+      "say": "In the project's own words... \u2728 Zero-config AI chat assistant. No API key needed \u2014 sign up and instantly chat with GPT-5, Claude 4, Gemini 2.5, DeepSeek & 100+.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Runs locally, keeps your chats private",
+      "body": "Data stays in your browser; deploy free on Vercel in a minute.",
+      "say": "Runs locally, keeps your chats private. Data stays in your browser; deploy free on Vercel in a minute",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "88,837 GitHub stars",
+      "body": "MIT licence \u00b7 Written in TypeScript \u00b7 Since March 2023",
+      "say": "It has over 80 thousand stars on GitHub and uses the MIT licence. It's written in TypeScript and it's been around since March 2023.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Self-hosting needs your own API keys",
+      "body": "The hosted version handles keys; running it yourself requires OpenAI or other keys.",
+      "say": "Self-hosting needs your own API keys. The hosted version handles keys; running it yourself requires OpenAI or other keys",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "Loved it? Save this, and send it to a friend. Follow for the next 96 repos... or you might not see us again. The full list, with install commands and similar repos, is in my bio."
+    }
+  ]
+}
