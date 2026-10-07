@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Agents that think in code",
+      "kicker": "Repo 5 of 100",
+      "say": "Stop scrolling... you can run agents that think in code."
+    },
+    {
+      "kind": "content",
+      "headline": "Run agents in few lines",
+      "body": "Library runs powerful agents with minimal code",
+      "say": "This tool lets you run powerful agents in just a few lines of code.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "29,722 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since December 2024",
+      "say": "It has over 20 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Local executor is not secure",
+      "body": "Use sandboxed execution for untrusted code",
+      "say": "The local executor is not a security sandbox, so use a cloud sandbox for untrusted code.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 5 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
