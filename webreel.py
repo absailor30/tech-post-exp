@@ -193,8 +193,15 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
         for si, (spec, n) in enumerate(zip(specs, counts)):
             # hook: hold on the page header; content scenes: ease down; CTA: hold
             span = max_y - start_y
-            y0 = start_y if si == 0 else start_y + span * ((si - 1) / max(1, n_scenes - 2)) * 0.98
-            y1 = start_y if si == 0 else start_y + span * (si / max(1, n_scenes - 2)) * 0.98
+            # scroll from the very first frame: the hook drifts ~8% down, then the content
+            # scenes carry on from there to ~98%; the call to action holds at the end
+            body = max(1, n_scenes - 2)
+            def pos(i):          # scroll fraction at the START of scene i
+                if i <= 0:
+                    return 0.0
+                return 0.08 + 0.90 * ((i - 1) / body)
+            y0 = start_y + span * pos(si)
+            y1 = start_y + span * pos(si + 1)
             if spec["kind"] == "cta":
                 y0 = y1 = start_y + span * 0.98
             for k in range(n):

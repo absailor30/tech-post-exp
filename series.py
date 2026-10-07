@@ -285,10 +285,19 @@ def series_line(day, total):
 # "bio": the DM funnel is blocked until the app has Advanced Access, so point at the bio link.
 # Set SERIES_CTA=dm to go back to "comment REPO" once comment->DM works for strangers.
 CTA_MODE = os.environ.get("SERIES_CTA", "bio")
+# Short cut (~30s): watch time was 2-4s on ~50s reels, so the reel opens on the repo's own
+# promise, drops the "what's inside" slide, and moves the Day-N line to the closing call
+# to action. SERIES_CUT=long restores the old ~50s flow.
+SHORT_CUT = os.environ.get("SERIES_CUT", "short") != "long"
 
 
 def cta_say(day, total):
     left = total - day
+    if SHORT_CUT:
+        tail = ("Comment REPO for the full list." if CTA_MODE == "dm"
+                else "The full list is in my bio.")
+        return (f"That was Day {day} of {total}. Save this, send it to a friend, "
+                f"and follow, or you might not see us again. {tail}")
     more = (f"Follow for the next {left} repos" if left > 1 else
             "Follow for the last repo" if left == 1 else "Follow for what comes next")
     tail = ("Comment REPO, and I'll send you the full list, with install commands and similar repos."
@@ -309,9 +318,10 @@ def series_note(day, total):
         "headline, body, spoken lines or caption. Say 'this tool' or 'this repo'.\n"
         "  The reel is spoken aloud by a warm, playful voice, like a clever friend "
         "sharing a find. Short sentences, '...' for a beat. Keep the WHOLE reel "
-        "about 50 seconds: about 20 words for hook.usp's sentence and 24-28 "
-        "spoken words per content slide (two or three short sentences). Slide 1 must "
-        "add detail beyond the hook, never repeat it.\n"
+        "about 30 seconds: hook.usp at most 14 words, and at most 20 spoken words "
+        "per content slide (one or two short sentences). Slide 1 must add detail "
+        "beyond the hook, never repeat it. Slide 2 is cut from the final video, so "
+        "keep it to one short sentence.\n"
         "  JSON additions (required):\n"
         "    hook.usp = ONE verb phrase, max 14 words, no leading 'to', saying what "
         "the repo lets a person do, restated in plain words from the 'Description:' "
@@ -424,7 +434,7 @@ def facts_slide(story):
     say = ("It has " + " and uses ".join(first) + ".") if first else ""
     extra = " and ".join(x for x in ((f"it's written in {lang}" if lang else ""),
                                      (f"it's been around since {when}" if when else "")) if x)
-    if extra:
+    if extra and not SHORT_CUT:
         say = (say + " " if say else "") + extra[0].upper() + extra[1:] + "."
     return {"headline": head, "body": body or "Facts straight from GitHub", "say": say or head}
 
@@ -517,7 +527,8 @@ def finalize(p, story):
         hook["say"] = "Here's one worth knowing... " + " ".join(d[:18]).rstrip(",;:- ") + "."
     else:
         hook["say"] = tmpl.format(**slots)
-    hook["say"] += " " + series_line(day, total)
+    if not SHORT_CUT:
+        hook["say"] += " " + series_line(day, total)
 
     if len(p.get("slides", [])) >= 3:
         p["slides"][2] = facts_slide(story)       # the proof slide is never model-written
@@ -535,8 +546,12 @@ def finalize(p, story):
         for k in ("headline", "body", "say"):
             sl[k] = scrub_name(sl.get(k, ""), repo)
 
+    if SHORT_CUT and len(p.get("slides", [])) >= 4:
+        del p["slides"][1]                        # "what's inside": cut for the 30s reel
     cap = scrub_name(p.get("caption", ""), repo).rstrip()
-    cap += "\n\nSave this and share it with a friend. Comment REPO and I'll DM you the full list.\n#100AIRepos"
+    cap += ("\n\nSave this and share it with a friend. Comment REPO and I'll DM you the full list.\n#100AIRepos"
+            if CTA_MODE == "dm" else
+            "\n\nSave this and share it with a friend. The full list is in my bio.\n#100AIRepos")
     p["caption"] = cap
     return p
 
