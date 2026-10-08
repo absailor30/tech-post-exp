@@ -1,0 +1,90 @@
+name: clip-post
+# A clip reel: you supply the video link and the text, this adds headline, captions, credit.
+# The source video is downloaded to a temp folder and never committed.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Direct link to the video file (Drive 'anyone with link', Dropbox, .mp4). Not YouTube/TikTok/X/Instagram."
+        required: true
+      headline:
+        description: "Headline shown above the clip, e.g. Alex Karp says AI has to work for the warfighter"
+        required: true
+      highlight:
+        description: "Name to colour in the headline, e.g. Alex Karp"
+        required: false
+        default: ""
+      source:
+        description: "Who owns the footage (credited on screen and in the caption), e.g. CNBC"
+        required: false
+        default: ""
+      source_url:
+        description: "Link to the original (in the caption)"
+        required: false
+        default: ""
+      start:
+        description: "Start second within the video"
+        required: false
+        default: "0"
+      end:
+        description: "End second (blank = until the end, max 90s of clip)"
+        required: false
+        default: ""
+      note:
+        description: "1-2 lines of context for the caption"
+        required: false
+        default: ""
+      dry:
+        description: "Preview only: render, publish nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ig-agent
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q openai python-dotenv pillow numpy imageio-ffmpeg faster-whisper gdown
+      - name: make the clip reel
+        env:
+          NIM_API_KEY: ${{ secrets.NIM_API_KEY }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          REPO_DIR: ${{ github.workspace }}
+          GIT_NAME: github-actions[bot]
+          GIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          IN_URL: ${{ inputs.url }}
+          IN_HEADLINE: ${{ inputs.headline }}
+          IN_HIGHLIGHT: ${{ inputs.highlight }}
+          IN_SOURCE: ${{ inputs.source }}
+          IN_SOURCE_URL: ${{ inputs.source_url }}
+          IN_START: ${{ inputs.start }}
+          IN_END: ${{ inputs.end }}
+          IN_NOTE: ${{ inputs.note }}
+          IN_DRY: ${{ inputs.dry }}
+        run: |
+          args=(--url "$IN_URL" --headline "$IN_HEADLINE" --highlight "$IN_HIGHLIGHT" \
+                --source "$IN_SOURCE" --source-url "$IN_SOURCE_URL" --start "${IN_START:-0}" \
+                --note "$IN_NOTE")
+          [ -n "$IN_END" ] && args+=(--end "$IN_END")
+          [ "$IN_DRY" = "true" ] && args+=(--dry)
+          python clip_run.py "${args[@]}"
+      - name: save preview to this branch (dry runs only)
+        if: success() && inputs.dry && github.ref_name != 'main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images
+          git diff --cached --quiet || git commit -m "preview: clip dry run"
+          git stash --include-untracked || true
+          git pull --rebase origin "${{ github.ref_name }}" && git push

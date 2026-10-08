@@ -10,3 +10,5 @@ playwright
 torch
 kokoro
 soundfile
+faster-whisper
+gdown
