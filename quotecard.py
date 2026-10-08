@@ -42,10 +42,17 @@ def outlet(story):
     return names.get(host, host or "the original report")
 
 
+# Aggregators only link to someone else's reporting: the "article" is not the publication, so
+# a credit to them would be wrong. Quote cards need the real outlet's own page.
+AGGREGATORS = ("techmeme.com", "news.ycombinator.com", "reddit.com", "huggingface.co",
+               "news.google.com", "github.com")
+
+
 def find_quote(story, call_llm):
     """Ask the model for ONE quote; accept it only if verify() passes. Returns dict or None."""
     article = story.get("article", "")
-    if len(article) < 400:
+    host = urllib.parse.urlsplit(story.get("url", "")).netloc.lower().removeprefix("www.")
+    if len(article) < 400 or any(host.endswith(a) for a in AGGREGATORS):
         return None
     raw = call_llm(
         "From the ARTICLE below, pick the single most striking DIRECT QUOTE spoken or written "

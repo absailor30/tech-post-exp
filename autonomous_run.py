@@ -590,7 +590,9 @@ def plan(series_story=None):
             q = quotecard.find_quote(story, call_llm)
             if q:
                 qp = quotecard.build_plan(story, q)
-                mat = "\n".join([story["headline"], story.get("summary", ""), story.get("article", "")])
+                mat = "\n".join([story["headline"], story.get("summary", ""), story.get("article", ""),
+                                 f"Source: {quotecard.outlet(story)} ({story.get('url', '')})",
+                                 f"Quote: {q['quote']} — {q['speaker']}, {q.get('role', '')}"])
                 bad = fact_check(qp, mat)
                 if bad == []:
                     print(f"[quote] quote card: {q['speaker']}: {q['quote'][:70]!r}")
