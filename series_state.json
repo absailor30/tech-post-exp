@@ -63,6 +63,22 @@
       "category": "chatui",
       "note": "",
       "quickstart": "docker pull yidadaa/chatgpt-next-web\n\ndocker run -d -p 3000:3000 \\\n   -e OPENAI_API_KEY=sk-xxxx \\\n   -e CODE=your-password \\\n   yidadaa/chatgpt-next-web"
+    },
+    {
+      "repo": "huggingface/smolagents",
+      "day": 5,
+      "media_id": "18150487273547359",
+      "opening": "stop_scrolling",
+      "date": "2026-10-08",
+      "name": "huggingface/smolagents",
+      "url": "https://github.com/huggingface/smolagents",
+      "description": "\ud83e\udd17 smolagents: a barebones library for agents that think in code.",
+      "stars": 29729,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "agents",
+      "note": "",
+      "quickstart": "pip install \"smolagents[toolkit]\""
     }
   ],
   "skipped": []
