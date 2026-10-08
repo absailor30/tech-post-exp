@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Agents That Write Code",
+      "kicker": "Repo 5 of 100",
+      "say": "Stop scrolling... you can run AI agents that think in code."
+    },
+    {
+      "kind": "content",
+      "headline": "Agents act by writing Python",
+      "body": "Runs agents that write code instead of JSON",
+      "say": "This tool lets you run AI agents that think by writing Python code instead of JSON.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "29,729 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since December 2024",
+      "say": "It has over 20 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Local runner is not a sandbox",
+      "body": "Built-in executor can be bypassed, use proper sandboxes for safety",
+      "say": "The built-in local runner is not a real sandbox and can be bypassed, so use a proper sandbox for untrusted code.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 5 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
