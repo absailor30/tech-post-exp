@@ -68,7 +68,15 @@ def transcribe(audio_path):
         from faster_whisper import WhisperModel
         model = WhisperModel(_fetch_model(Path(tempfile.gettempdir()) / "whisper-base-en"),
                              device="cpu", compute_type="int8")
-        segs, _ = model.transcribe(str(audio_path), word_timestamps=True, vad_filter=True)
+        # Hand over the samples, not a path: faster-whisper then decodes with PyAV, whose
+        # open() rejected the 'metadata_errors' option on the runner (the real cause of the
+        # earlier failure). The wav is already 16 kHz mono, so reading it directly is exact.
+        import wave
+        import numpy as np
+        with wave.open(str(audio_path), "rb") as wf:
+            pcm = np.frombuffer(wf.readframes(wf.getnframes()), dtype=np.int16)
+        audio = pcm.astype(np.float32) / 32768.0
+        segs, _ = model.transcribe(audio, word_timestamps=True, vad_filter=True)
         return [(w.word.strip(), w.start, w.end) for s in segs for w in s.words if w.word.strip()]
     except Exception as e:
         print(f"  [clip] captions unavailable ({e!r:.160})")
