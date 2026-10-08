@@ -129,7 +129,7 @@ def tighten(path, text, target=None):
 # Needs the ELEVENLABS_API_KEY secret. Characters are counted in eleven_usage.json and the
 # backend stops at ELEVENLABS_BUDGET (default 9,000) so a month's credits are never overrun;
 # past that, or on any error (including out of credits), the next backend takes over.
-ELEVEN_VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "pNInz6obpgDQGcFmaJgB")   # "Adam" (premade); override with your pick
+ELEVEN_VOICE = os.environ.get("ELEVENLABS_VOICE_ID") or "pNInz6obpgDQGcFmaJgB"   # "Adam" (premade); override with your pick
 ELEVEN_MODEL = os.environ.get("ELEVENLABS_MODEL", "eleven_flash_v2_5")
 ELEVEN_BUDGET = int(os.environ.get("ELEVENLABS_BUDGET", "9000"))
 ELEVEN_USAGE = Path(__file__).parent / "eleven_usage.json"
