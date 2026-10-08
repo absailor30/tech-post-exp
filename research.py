@@ -495,9 +495,15 @@ def research():
         "coverage_count": len(top["sources"]),
         "score": top["score"],
         "all_headlines": [f"[{i['source']}] {i['title']}" for i in top["items"][:12]],
-        "runners_up": [{"headline": g["items"][0]["title"],
+        # Everything needed to swap in a runner-up AS A WHOLE. It used to carry only the
+        # headline, so a swap kept the old story's url/summary/article and the post was
+        # written about the story that had just been rejected as a repeat.
+        "runners_up": [{"headline": (lead_g := max(g["items"], key=lambda i: (i["engagement"], -i["age_h"])))["title"],
+                        "url": lead_g["url"], "summary": lead_g.get("summary", ""),
+                        "items": [{"url": i["url"], "engagement": i["engagement"]} for i in g["items"][:6]],
+                        "all_headlines": [f"[{i['source']}] {i['title']}" for i in g["items"][:12]],
                         "sources": g["sources"], "score": g["score"]}
-                       for g in groups[1:5]],
+                       for g in groups[1:6]],
         "sources_ok": ok,
         "sources_failed": failed,
         "source_count": len(ok),

@@ -327,6 +327,48 @@ def posted_story_keys():
     return out
 
 
+def norm_url(u):
+    """Same article, however the link was written (query string, trailing slash, www)."""
+    import urllib.parse as up
+    if not u:
+        return ""
+    x = up.urlsplit(u.strip().lower())
+    return f"{x.netloc.removeprefix('www.')}{x.path.rstrip('/')}"
+
+
+def posted_urls():
+    """Source URL of every story still live on the account (log.jsonl + research cache)."""
+    out = set()
+    logf = BASE / "log.jsonl"
+    gone = set()
+    if logf.exists():
+        lines = logf.read_text(encoding="utf-8").splitlines()
+        for line in lines:
+            if '"post_deleted"' in line:
+                try:
+                    gone.add(json.loads(line).get("media_id"))
+                except json.JSONDecodeError:
+                    pass
+        for line in lines:
+            if '"autonomous_post"' in line:
+                try:
+                    d = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if d.get("media_id") not in gone and d.get("story_url"):
+                    out.add(norm_url(d["story_url"]))
+    cache = BASE / "research.jsonl"
+    if cache.exists():
+        for line in cache.read_text(encoding="utf-8").splitlines():
+            try:
+                d = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if d.get("url"):
+                out.add(norm_url(d["url"]))
+    return out
+
+
 # Weighted-overlap score above which two headlines are the same story.
 # Tuned against the real repeats this account shipped: the two GPT-6 Astra
 # reruns and the two German-wiki reruns must be caught, while genuinely
@@ -493,23 +535,31 @@ def plan(series_story=None):
           f"-> {story['coverage_count']} outlets on: {story['headline']}")
     if story["degraded"]:
         print(f"[research] WARNING degraded: {', '.join(story['sources_failed'])}")
-    if not override and already_covered(story["headline"]):
+    seen_urls = posted_urls()
+
+    def covered(st_):
+        return (norm_url(st_.get("url", "")) in seen_urls) or already_covered(st_["headline"])
+
+    if not override and covered(story):
+        from research import fetch_article
         for alt in story["runners_up"]:
-            if not already_covered(alt["headline"]):
-                print(f"[research] top story already covered, using: {alt['headline']}")
-                story["headline"] = alt["headline"]
-                story["all_headlines"] = [alt["headline"]]
-                story["sources_covering"] = alt["sources"]
-                story["coverage_count"] = len(alt["sources"])
-                break
+            if covered(alt):
+                continue
+            print(f"[research] top story already covered, using: {alt['headline']}")
+            # swap the WHOLE story: headline, link, blurb and article text together
+            story.update({
+                "headline": alt["headline"], "url": alt.get("url", ""),
+                "summary": alt.get("summary", ""),
+                "article": fetch_article(sorted(alt.get("items", []),
+                                                key=lambda i: -i.get("engagement", 0))),
+                "all_headlines": alt.get("all_headlines") or [alt["headline"]],
+                "sources_covering": alt["sources"], "coverage_count": len(alt["sources"]),
+                "score": alt.get("score", 0)})
+            break
         else:
-            # Not a failure: the dedup floor correctly declined to repost,
-            # it's just that every candidate happened to overlap something
-            # recent today. This resolves itself as soon as new stories
-            # break, exactly like already_posted_in_slot()'s no-op below --
-            # it used to sys.exit(1) here, which failed the Actions run and
-            # sent a scary "FAILED" Telegram ping for a day the system did
-            # the right thing by posting nothing.
+            # Not a failure: the dedup floor correctly declined to repost, it just means
+            # every candidate overlaps something already live. It resolves itself as soon
+            # as new stories break, so it posts nothing instead of failing the run.
             return None
 
     st = strategy()
@@ -592,6 +642,12 @@ def plan(series_story=None):
     hit = [b for b in banned if b in blob]
     if hit and not series_story:       # series is owner-approved; "git" would match "github"
         sys.exit(f"plan violates mandate (banned: {', '.join(hit)}): {p['topic']}")
+
+    if not series_story and not override and already_covered(p["topic"]):
+        print(f"[dedup] the finished post's topic repeats an earlier one ({p['topic']!r}) "
+              "— skipping instead of posting a rerun")
+        log("dedup_blocked_topic", topic=p["topic"], url=story.get("url", ""))
+        return None
 
     p["theme"] = pick_theme(p, story)
     p["_story"] = story
