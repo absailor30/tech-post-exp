@@ -39,16 +39,39 @@ def probe(path):
     return (int(s[1]), int(s[2]), secs) if s else (0, 0, secs)
 
 
+MODEL_REPO = "Systran/faster-whisper-base.en"
+MODEL_FILES = ("config.json", "model.bin", "tokenizer.json", "vocabulary.txt")
+
+
+def _fetch_model(dest):
+    """Plain HTTPS download of the Whisper model files. The huggingface_hub client raised
+    'open() got an unexpected keyword argument metadata_errors' on the runner, and the model is
+    only four files, so the library is not needed."""
+    import urllib.request
+    dest = Path(dest)
+    dest.mkdir(parents=True, exist_ok=True)
+    for name in MODEL_FILES:
+        f = dest / name
+        if f.exists() and f.stat().st_size > 0:
+            continue
+        url = f"https://huggingface.co/{MODEL_REPO}/resolve/main/{name}"
+        with urllib.request.urlopen(url, timeout=300) as r, open(f, "wb") as out:
+            while chunk := r.read(1 << 20):
+                out.write(chunk)
+    return str(dest)
+
+
 def transcribe(audio_path):
     """[(word, start, end)] with Whisper (CPU, int8). [] if unavailable: the reel is then
     posted without captions rather than not at all."""
     try:
         from faster_whisper import WhisperModel
-        model = WhisperModel("base.en", device="cpu", compute_type="int8")
+        model = WhisperModel(_fetch_model(Path(tempfile.gettempdir()) / "whisper-base-en"),
+                             device="cpu", compute_type="int8")
         segs, _ = model.transcribe(str(audio_path), word_timestamps=True, vad_filter=True)
         return [(w.word.strip(), w.start, w.end) for s in segs for w in s.words if w.word.strip()]
     except Exception as e:
-        print(f"  [clip] captions unavailable ({e!r:.120})")
+        print(f"  [clip] captions unavailable ({e!r:.160})")
         return []
 
 
