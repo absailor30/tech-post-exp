@@ -125,6 +125,45 @@ def tighten(path, text, target=None):
     return out, secs, wpm
 
 
+# ElevenLabs (paid-quality voices; free plan = 10,000 credits a month, no commercial licence).
+# Needs the ELEVENLABS_API_KEY secret. Characters are counted in eleven_usage.json and the
+# backend stops at ELEVENLABS_BUDGET (default 9,000) so a month's credits are never overrun;
+# past that, or on any error (including out of credits), the next backend takes over.
+ELEVEN_VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "pNInz6obpgDQGcFmaJgB")   # "Adam" (premade); override with your pick
+ELEVEN_MODEL = os.environ.get("ELEVENLABS_MODEL", "eleven_flash_v2_5")
+ELEVEN_BUDGET = int(os.environ.get("ELEVENLABS_BUDGET", "9000"))
+ELEVEN_USAGE = Path(__file__).parent / "eleven_usage.json"
+
+
+def _eleven_used():
+    import datetime
+    import json
+    month = datetime.date.today().strftime("%Y-%m")
+    try:
+        d = json.loads(ELEVEN_USAGE.read_text())
+        return month, (d["chars"] if d.get("month") == month else 0)
+    except Exception:
+        return month, 0
+
+
+def _synth_eleven(text, out):
+    import json
+    import urllib.request
+    month, used = _eleven_used()
+    if used + len(text) > ELEVEN_BUDGET:
+        raise RuntimeError(f"ElevenLabs budget reached ({used}/{ELEVEN_BUDGET} chars this month)")
+    req = urllib.request.Request(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{ELEVEN_VOICE}?output_format=mp3_44100_128",
+        data=json.dumps({"text": text, "model_id": ELEVEN_MODEL,
+                         "voice_settings": {"stability": 0.4, "similarity_boost": 0.8,
+                                            "style": 0.35, "use_speaker_boost": True}}).encode(),
+        headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"],
+                 "Content-Type": "application/json", "Accept": "audio/mpeg"})
+    with urllib.request.urlopen(req, timeout=120) as r, open(out, "wb") as f:
+        f.write(r.read())
+    ELEVEN_USAGE.write_text(json.dumps({"month": month, "chars": used + len(text)}))
+
+
 def _ok(path):
     return Path(path).exists() and Path(path).stat().st_size > 1000
 
@@ -139,6 +178,8 @@ def synth(text, out_stem, retries=2):
         return None
     stem = str(out_stem)
     backends = []
+    if os.environ.get("ELEVENLABS_API_KEY") and os.environ.get("VOICE_ENGINE", "kokoro") in ("kokoro", "eleven"):
+        backends.append(("elevenlabs", ".mp3", _synth_eleven))
     if os.environ.get("VOICE_ENGINE", "kokoro") == "kokoro":
         backends.append(("kokoro", ".wav", _synth_kokoro))
     if os.environ.get("NVIDIA_TTS_FUNCTION_ID") and os.environ.get("NIM_API_KEY"):
