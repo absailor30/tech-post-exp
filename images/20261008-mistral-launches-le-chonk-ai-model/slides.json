@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Europe just built a cybersecurity AI anyone can own",
+      "kicker": "AI News",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "What is Le Chonk",
+      "body": "Mistral's new 1-trillion-parameter AI model, trained in Europe on 3,800 advanced chips, now in public preview",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Why open weights matter",
+      "body": "You download and run it yourself \u2014 no company can revoke access or block legitimate security research",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Beats closed models on security",
+      "body": "Ranks top 5 globally for finding and fixing real software flaws, leading all non-Chinese open models",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "The catch: still early",
+      "body": "Preview only; full weights release end of month. Red-teaming with governments ongoing \u2014 not yet for casual use",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Want AI you control?",
+      "body": "Follow for plain-English AI news that affects your privacy and wallet",
+      "say": ""
+    }
+  ]
+}
