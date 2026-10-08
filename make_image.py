@@ -364,6 +364,21 @@ def frame_content(headline, body, idx, total, progress, reveal=REVEAL):
     return img.convert("RGB")
 
 
+def frame_quote(speaker, quote, progress, reveal=REVEAL):
+    """The quote is the star: big white text between gold quote marks, speaker credited below."""
+    img = base_cached().convert("RGBA")
+    d = ImageDraw.Draw(img)
+    d.text((MARGIN - 6, 190), "\u201c", font=font(260, "black"), fill=ACCENT)
+    qf, qlines = fit(quote.strip("\u201c\u201d\" "), 66, "bold", max_lines=9, min_size=38)
+    who_f, wlines = fit("\u2014 " + speaker, 46, "bold", max_lines=2, min_size=34)
+    n = sum(len(l) for l in qlines) + sum(len(l) for l in wlines)
+    y, drawn = draw_letters(img, qlines, qf, MARGIN, 470, FG,
+                            int(qf.size * 1.28), progress, 0, n, reveal)
+    draw_letters(img, wlines, who_f, MARGIN, y + 40, ACCENT,
+                 int(who_f.size * 1.3), progress, drawn, n, reveal)
+    return img.convert("RGB")
+
+
 def frame_cta(headline, body, progress, reveal=REVEAL):
     img = base_cached().convert("RGBA")
     head_f, hlines = fit(headline, 88, "black", max_lines=3)
@@ -432,6 +447,8 @@ def render_slide_frames(spec, outdir, n_frames, start_index, reveal=REVEAL):
                              progress, reveal)
         elif kind == "cta":
             img = frame_cta(spec["headline"], spec["body"], progress, reveal)
+        elif kind == "quote":
+            img = frame_quote(spec["headline"], spec["body"], progress, reveal)
         else:
             img = frame_content(spec["headline"], spec["body"], spec["idx"],
                                 spec["total"], progress, reveal)

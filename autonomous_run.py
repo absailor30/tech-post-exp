@@ -327,6 +327,24 @@ def posted_story_keys():
     return out
 
 
+def last_news_style():
+    """'quote' or 'news': the style of the most recent NEWS post (series posts are skipped)."""
+    logf = BASE / "log.jsonl"
+    if not logf.exists():
+        return "news"
+    for line in reversed(logf.read_text(encoding="utf-8").splitlines()):
+        if '"autonomous_post"' not in line:
+            continue
+        try:
+            d = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if "github.com" in (d.get("story_url") or ""):
+            continue
+        return d.get("style", "news")
+    return "news"
+
+
 def norm_url(u):
     """Same article, however the link was written (query string, trailing slash, www)."""
     import urllib.parse as up
@@ -561,6 +579,26 @@ def plan(series_story=None):
             # every candidate overlaps something already live. It resolves itself as soon
             # as new stories break, so it posts nothing instead of failing the run.
             return None
+
+    # Quote card: when the story has a real, verifiable quote from a named person, and the last
+    # news post was not one, post that instead (alternating keeps the feed varied and lets the
+    # numbers compare the formats). Any failure falls straight back to the normal news plan.
+    if (not series_story and not override and os.environ.get("QUOTE_CARDS", "1") == "1"
+            and last_news_style() != "quote"):
+        try:
+            import quotecard
+            q = quotecard.find_quote(story, call_llm)
+            if q:
+                qp = quotecard.build_plan(story, q)
+                mat = "\n".join([story["headline"], story.get("summary", ""), story.get("article", "")])
+                bad = fact_check(qp, mat)
+                if bad == []:
+                    print(f"[quote] quote card: {q['speaker']}: {q['quote'][:70]!r}")
+                    qp["_story"] = story
+                    return qp
+                print(f"[quote] fact-check said {bad!r}; using the normal news plan")
+        except Exception as e:
+            print(f"[quote] skipped ({e!r:.150})")
 
     st = strategy()
     hooks = json.loads((BASE / "hooks.json").read_text(encoding="utf-8"))
@@ -921,7 +959,7 @@ def main(dry=False, force=False, series=False):
     web_url = None
     if series:      # real-video reel: a Chrome scroll through the repo's own page
         web_url = p["_story"]["url"]    # the recording shows the name; we never print or say it
-    specs += [{"kind": "content", "headline": s["headline"], "body": s["body"],
+    specs += [{"kind": s.get("kind", "content"), "headline": s["headline"], "body": s["body"],
                "say": s.get("say", ""), "idx": i + 1, "total": total}
               for i, s in enumerate(p["slides"], 1)]
     specs.append({"kind": "cta", "headline": p["cta"]["headline"],
@@ -976,6 +1014,7 @@ def main(dry=False, force=False, series=False):
     story = p.get("_story", {})
     log("autonomous_post", media_id=result["id"], topic=p["topic"], format=kind,
         slides=len(p["slides"]) + 2, caption=p["caption"], theme=theme,
+        style=p.get("style", "news"),
         story_headline=story.get("headline", ""), story_url=story.get("url", ""),
         sources_covering=story.get("sources_covering", []),
         source_count=story.get("source_count", 0))
