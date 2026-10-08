@@ -191,6 +191,7 @@ def synth(text, out_stem, retries=2):
             try:
                 fn(text, out)
                 if _ok(out):
+                    print(f"  [voiceover] voice: {name}")
                     return Path(out)
             except Exception as e:  # network, blocked endpoint, bad id, no package
                 print(f"  [voiceover] {name} attempt {attempt + 1} failed: {e!r:.200}")
