@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "This tool is an agentic coding tool that lives in your\u2026",
+      "kicker": "Repo 6 of 100",
+      "say": "Send this to a friend who'd love to speed up coding by handling routine tasks through plain English commands."
+    },
+    {
+      "kind": "content",
+      "headline": "AI writes code from plain English",
+      "body": "Handles routine tasks, explains complex code, and manages git workflows when you describe what you need.",
+      "say": "It handles routine coding tasks, explains tricky code, and manages git workflows when you just describe what you need.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "149,792 GitHub stars",
+      "body": "Written in TypeScript \u00b7 Since February 2025",
+      "say": "It has over 140 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "Read the README and check the licence first",
+      "say": "One last thing... read the README, and check the licence, before you rely on it.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 6 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
