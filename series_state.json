@@ -79,6 +79,22 @@
       "category": "agents",
       "note": "",
       "quickstart": "pip install \"smolagents[toolkit]\""
+    },
+    {
+      "repo": "anthropics/claude-code",
+      "day": 6,
+      "media_id": "18176215156450414",
+      "opening": "send_friend",
+      "date": "2026-10-09",
+      "name": "anthropics/claude-code",
+      "url": "https://github.com/anthropics/claude-code",
+      "description": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.",
+      "stars": 149792,
+      "license": "",
+      "language": "TypeScript",
+      "category": "coding",
+      "note": "",
+      "quickstart": "curl -fsSL https://claude.ai/install.sh | bash"
     }
   ],
   "skipped": []
