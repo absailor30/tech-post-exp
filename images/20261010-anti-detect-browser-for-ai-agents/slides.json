@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Anti-detect browser for AI agents",
+      "kicker": "Repo 7 of 100",
+      "say": "What if I told you... you could run an anti-detect browser for scraping and AI agents?"
+    },
+    {
+      "kind": "content",
+      "headline": "What this tool does",
+      "body": "A Firefox fork that hides automation from websites",
+      "say": "This tool is a Firefox fork that hides automation from websites.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "12,437 GitHub stars",
+      "body": "MPL-2.0 licence \u00b7 Written in Python \u00b7 Since July 2024",
+      "say": "It has over 10 thousand stars on GitHub and uses the MPL-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you try it",
+      "body": "Still in development not ready for stable production use",
+      "say": "The README warns it is still in development and not ready for stable production use.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 7 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
