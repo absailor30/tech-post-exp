@@ -95,6 +95,22 @@
       "category": "coding",
       "note": "",
       "quickstart": "curl -fsSL https://claude.ai/install.sh | bash"
+    },
+    {
+      "repo": "daijro/camoufox",
+      "day": 7,
+      "media_id": "18341314798258957",
+      "opening": "what_if",
+      "date": "2026-10-10",
+      "name": "daijro/camoufox",
+      "url": "https://github.com/daijro/camoufox",
+      "description": "\ud83e\udd8a Anti-detect browser",
+      "stars": 12437,
+      "license": "MPL-2.0",
+      "language": "Python",
+      "category": "scraping",
+      "note": "Anti-detect Firefox fork built for web scraping and AI agents",
+      "quickstart": "git clone --depth 1 https://github.com/daijro/camoufox\ncd camoufox"
     }
   ],
   "skipped": []
