@@ -111,6 +111,22 @@
       "category": "scraping",
       "note": "Anti-detect Firefox fork built for web scraping and AI agents",
       "quickstart": "git clone --depth 1 https://github.com/daijro/camoufox\ncd camoufox"
+    },
+    {
+      "repo": "OpenBB-finance/OpenBB",
+      "day": 8,
+      "media_id": "18019640078927976",
+      "opening": "wait_what",
+      "date": "2026-10-11",
+      "name": "openbq-org/OpenBB",
+      "url": "https://github.com/openbq-org/OpenBB",
+      "description": "Open Data Platform for analysts, quants and AI agents.",
+      "stars": 74088,
+      "license": "NOASSERTION",
+      "language": "Python",
+      "category": "trading",
+      "note": "",
+      "quickstart": "pip install openbb"
     }
   ],
   "skipped": []
