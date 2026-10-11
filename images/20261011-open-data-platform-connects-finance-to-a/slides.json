@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Financial data for AI agents",
+      "kicker": "Repo 8 of 100",
+      "say": "Wait... you can connect financial data to AI agents and research tools? Yes. You really can."
+    },
+    {
+      "kind": "content",
+      "headline": "Connects financial data to AI tools",
+      "body": "One platform links your data sources to Python, Excel, dashboards, and AI agents at the same time",
+      "say": "This tool lets you connect financial data once, then use it in Python, Excel, dashboards, and AI agents all at once.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "74,088 GitHub stars",
+      "body": "Written in Python \u00b7 Since December 2020",
+      "say": "It has over 70 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Data may be wrong, not advice",
+      "body": "The platform warns its data is not guaranteed accurate and trading carries high risk of total loss",
+      "say": "The README warns that the data is not guaranteed accurate and that trading carries a high risk of losing your money. This is for research, not financial advice.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 8 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
