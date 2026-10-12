@@ -127,6 +127,22 @@
       "category": "trading",
       "note": "",
       "quickstart": "pip install openbb"
+    },
+    {
+      "repo": "unslothai/unsloth",
+      "day": 9,
+      "media_id": "18107277536621275",
+      "opening": "wait_what",
+      "date": "2026-10-12",
+      "name": "unslothai/unsloth",
+      "url": "https://github.com/unslothai/unsloth",
+      "description": "Local UI to run and train LLMs and diffusion models. Supports GGUF, MLX, Qwen3.8, DeepSeek-V4, MiniMax-H3, Gemma 4, FLUX and more.",
+      "stars": 77840,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "training",
+      "note": "",
+      "quickstart": "git clone https://github.com/unslothai/unsloth\ncd unsloth\n./install.sh --local\nunsloth studio -p 8888"
     }
   ],
   "skipped": []
