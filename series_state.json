@@ -143,6 +143,22 @@
       "category": "training",
       "note": "",
       "quickstart": "git clone https://github.com/unslothai/unsloth\ncd unsloth\n./install.sh --local\nunsloth studio -p 8888"
+    },
+    {
+      "repo": "google-gemini/gemini-cli",
+      "day": 10,
+      "media_id": "18118090570995510",
+      "opening": "one_project",
+      "date": "2026-10-13",
+      "name": "google-gemini/gemini-cli",
+      "url": "https://github.com/google-gemini/gemini-cli",
+      "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
+      "stars": 107308,
+      "license": "Apache-2.0",
+      "language": "TypeScript",
+      "category": "coding",
+      "note": "",
+      "quickstart": "npm install -g @google/gemini-cli"
     }
   ],
   "skipped": []
