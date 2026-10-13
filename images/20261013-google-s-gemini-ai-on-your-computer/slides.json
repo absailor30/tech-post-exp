@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run Gemini AI on your computer",
+      "kicker": "Repo 10 of 100",
+      "say": "One GitHub project, and it lets you run Google's Gemini AI on your own computer."
+    },
+    {
+      "kind": "content",
+      "headline": "Ask, search, and work with files",
+      "body": "Type a question and Gemini answers, searches the web, or reads your documents.",
+      "say": "Type a question and Gemini answers, searches the web, or reads your documents.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "107,308 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in TypeScript \u00b7 Since April 2025",
+      "say": "It has over 100 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Free tier limited to daily requests",
+      "body": "You get 1,000 requests per day on the free plan.",
+      "say": "The free tier gives you 1,000 requests per day, so heavy use may hit limits.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 10 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
