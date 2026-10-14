@@ -159,6 +159,22 @@
       "category": "coding",
       "note": "",
       "quickstart": "npm install -g @google/gemini-cli"
+    },
+    {
+      "repo": "chopratejas/headroom",
+      "day": 11,
+      "media_id": "18079459457391290",
+      "opening": "one_project",
+      "date": "2026-10-14",
+      "name": "headroomlabs-ai/headroom",
+      "url": "https://github.com/headroomlabs-ai/headroom",
+      "description": "Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 20% fewer tokens for coding agents, 60-95% fewer tokens for JSON, same answers. Library, proxy, MCP server.",
+      "stars": 75299,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "tokens",
+      "note": "Compresses tool outputs/logs/RAG chunks before reaching the LLM to save tokens",
+      "quickstart": "uv tool install --python 3.13 \"headroom-ai[all]\"  # CLI, isolated app env\npip install \"headroom-ai[all]\"                    # Python, everything \u2014 includes the CLI\nnpm install headroom-ai                           # TypeScript SDK (library only)\ndocker pull ghcr.io/headroomlabs-ai/headroom:latest"
     }
   ],
   "skipped": []
