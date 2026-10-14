@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "2 months vs 18: AI speeds up critical materials",
+      "kicker": "AI in Manufacturing",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "Bengaluru startup raises $25M",
+      "body": "Hitachi Ventures leads round valuing Scimplify at $250M, total funding now $80M",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI platform coordinates 500+ factories",
+      "body": "Scinode uses specialized agents for research, manufacturing, and quality control across partner facilities",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Production time drops from 18 months to 2",
+      "body": "In some cases, customer requirements to finished material in two months instead of over a year",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "US revenue jumps 6x to $60M",
+      "body": "Non-India customers now over half of revenue, targeting semiconductors, defense, energy to reduce China reliance",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI impact news",
+      "body": "We explain how AI changes your job, money, and world \u2014 no code required",
+      "say": ""
+    }
+  ]
+}
