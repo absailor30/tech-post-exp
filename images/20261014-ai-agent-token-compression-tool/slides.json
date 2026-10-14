@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What if your AI read less but knew more?",
+      "kicker": "Repo 11 of 100",
+      "say": "One GitHub project, and it lets you compress what AI agents read before they process it."
+    },
+    {
+      "kind": "content",
+      "headline": "Shrinks AI reading material",
+      "body": "Compresses tool outputs, logs, and files before the AI sees them.",
+      "say": "This tool compresses what your AI reads \u2014 tool outputs, logs, files \u2014 before the model sees it. Same answers, fewer tokens.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "75,299 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since January 2026",
+      "say": "It has over 70 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Savings vary by content type",
+      "body": "Best for repetitive JSON and logs. Prose compresses little. Read the licence first.",
+      "say": "Savings depend on content. Repetitive JSON and logs shrink ninety percent. Prose barely compresses. Read the README and licence first.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 11 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
