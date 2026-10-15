@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Why is OpenAI hunting spies inside its own offices?",
+      "kicker": "Security Alert",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI warns staff of spies",
+      "body": "Executives told employees to watch for honey pots and insider threats",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Engineer arrested for planting bug",
+      "body": "FBI caught Saudi employee using a chatbot to hide a recorder at headquarters",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Apple says OpenAI stole secrets",
+      "body": "Lawsuit claims former Apple hires brought iPhone trade secrets to OpenAI's hardware team",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Court orders hiring records released",
+      "body": "Judge gave Apple access to interview files of ex-Apple staff now at OpenAI",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI security news",
+      "body": "We explain what AI chaos means for your privacy and devices",
+      "say": ""
+    }
+  ]
+}
