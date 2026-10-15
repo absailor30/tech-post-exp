@@ -175,6 +175,22 @@
       "category": "tokens",
       "note": "Compresses tool outputs/logs/RAG chunks before reaching the LLM to save tokens",
       "quickstart": "uv tool install --python 3.13 \"headroom-ai[all]\"  # CLI, isolated app env\npip install \"headroom-ai[all]\"                    # Python, everything \u2014 includes the CLI\nnpm install headroom-ai                           # TypeScript SDK (library only)\ndocker pull ghcr.io/headroomlabs-ai/headroom:latest"
+    },
+    {
+      "repo": "the-agency-ai/the-agency",
+      "day": 12,
+      "media_id": "18080632898427624",
+      "opening": "since_year",
+      "date": "2026-10-15",
+      "name": "the-agency-ai/the-agency",
+      "url": "https://github.com/the-agency-ai/the-agency",
+      "description": "The Agency monorepo - framework development, MockAndMark, services",
+      "stars": 68,
+      "license": "NOASSERTION",
+      "language": "Shell",
+      "category": "agents",
+      "note": "Multi-agent development framework/monorepo for Claude Code",
+      "quickstart": ""
     }
   ],
   "skipped": []
