@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run multiple AI agents that collaborate",
+      "kicker": "Repo 12 of 100",
+      "say": "This GitHub project has been around since 2026, and it lets you run multiple AI agents that collaborate on a project."
+    },
+    {
+      "kind": "content",
+      "headline": "Multiple AI agents work as a team",
+      "body": "Specialized roles like captain, reviewer, and designer collaborate on a shared project with persistent memory",
+      "say": "This framework lets you run several AI agents at once, each with a special role like captain or reviewer, all sharing context on one project.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "68 GitHub stars",
+      "body": "Written in Shell \u00b7 Since January 2026",
+      "say": "It has over 0 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Read the license before commercial use",
+      "body": "App workstreams like Mock and Mark carry reference-source licenses that limit redistribution",
+      "say": "The core framework uses an MIT license, but the included apps like Mock and Mark have restrictive reference-source licenses that limit commercial redistribution.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 12 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
