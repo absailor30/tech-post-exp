@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Would you wear a $75 device that remembers every conversation?",
+      "kicker": "Question",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "Two new devices, under $100",
+      "body": "Bee Frontier wristband at $75, Bee Eclipse phone clip at $100 \u2014 first hardware since Amazon bought the company.",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Turns talk into to-dos automatically",
+      "body": "Records conversations, summarizes them, creates calendar invites and action items \u2014 works with Gmail, Outlook, Google Calendar.",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Privacy claim: audio deleted instantly",
+      "body": "Company says raw audio is processed then erased; transcripts encrypted with keys only your device holds.",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Real cost is $12 a month",
+      "body": "Free tier keeps 14 days of summaries; unlimited memory, Alexa shopping, and proactive to-dos require Bee Pro subscription.",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI that matters",
+      "body": "We explain new AI gear in plain language \u2014 no code, no hype.",
+      "say": ""
+    }
+  ]
+}
