@@ -26,16 +26,19 @@ LOG = BASE / "log.jsonl"
 
 # NIM retires models without warning (qwen3-next EOL'd 2026-07-27 mid-service)
 # and free-tier endpoints intermittently hang. Try in order, fail fast, move on.
-MODEL = os.environ.get("NIM_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
+# Probed on 2026-10-16 (llm_probe.py): nemotron-3-ultra-550b hangs for 136s+, nemotron-3-nano-30b is
+# retired (410), many others 404. These answered in 0.6-3s. Re-run the llm-probe workflow when it breaks again.
+MODEL = os.environ.get("NIM_MODEL", "nvidia/nemotron-3-super-120b-a12b")
 FALLBACKS = [
-    "nvidia/nemotron-3-super-120b-a12b",
-    "deepseek-ai/deepseek-v4-pro",
-    "nvidia/nemotron-3-nano-30b-a3b",
+    "z-ai/glm-5.3",
+    "openai/gpt-oss-20b",
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "nvidia/nemotron-3-ultra-550b-a55b",     # slowest; last resort only
 ]
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
     api_key=os.environ["NIM_API_KEY"],
-    timeout=180.0,
+    timeout=75.0,
 )
 
 SYSTEM = (
@@ -60,7 +63,7 @@ def save_queue(q):
     QUEUE.write_text(json.dumps(q, indent=2), encoding="utf-8")
 
 
-def call_llm(prompt, max_tokens=900, tries=2):
+def call_llm(prompt, max_tokens=900, tries=1):
     """Try each model in turn, twice each. One hung or retired model can never
     cost a whole day's post."""
     import time as _time
