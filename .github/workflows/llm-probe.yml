@@ -1,0 +1,16 @@
+name: llm-probe
+on:
+  workflow_dispatch: {}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q openai
+      - run: python llm_probe.py
+        env:
+          NIM_API_KEY: ${{ secrets.NIM_API_KEY }}
