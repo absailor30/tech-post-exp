@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Free, best\u2011benchmarked AI memory system",
+      "kicker": "Repo 13 of 100",
+      "say": "Here's one worth knowing... The best-benchmarked open-source AI memory system. And it's free."
+    },
+    {
+      "kind": "content",
+      "headline": "Stores conversations verbatim, no summarizing",
+      "body": "Keeps every word exactly as typed, then finds it using smart search across organized rooms and drawers.",
+      "say": "Stores conversations verbatim, no summarizing. Keeps every word exactly as typed, then finds it using smart search across organized rooms and drawers",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "59,596 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since April 2026",
+      "say": "It has over 50 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Watch out for fake sites",
+      "body": "Only the GitHub repo, PyPI, and mempalaceofficial.com are safe. Other domains may host malware.",
+      "say": "Watch out for fake sites. Only the GitHub repo, PyPI, and mempalaceofficial.com are safe. Other domains may host malware",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 13 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
