@@ -78,7 +78,16 @@ def call_llm(prompt, max_tokens=900, tries=2):
                 u = r.usage
                 log("llm_call", model=model, prompt=prompt[:200],
                     input_tokens=u.prompt_tokens, output_tokens=u.completion_tokens)
-                return r.choices[0].message.content
+                text = r.choices[0].message.content
+                if text and text.strip():
+                    return text
+                # A reasoning model can spend the whole token budget thinking and hand back
+                # content=None. That used to crash the run later (extract_plan on None);
+                # treat it as a failed model and move on to the next one.
+                last = RuntimeError(f"{model} returned no content "
+                                    f"(finish_reason={r.choices[0].finish_reason})")
+                print(f"  [llm] {last}; trying the next model")
+                break
             except Exception as e:                 # timeout / 410 EOL / 5xx
                 last = e
                 if "410" in str(e):                # retired: skip retry
