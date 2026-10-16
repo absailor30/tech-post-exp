@@ -191,6 +191,22 @@
       "category": "agents",
       "note": "Multi-agent development framework/monorepo for Claude Code",
       "quickstart": ""
+    },
+    {
+      "repo": "mempalace/mempalace",
+      "day": 13,
+      "media_id": "18153817351554953",
+      "opening": "imagine",
+      "date": "2026-10-16",
+      "name": "MemPalace/mempalace",
+      "url": "https://github.com/MemPalace/mempalace",
+      "description": "The best-benchmarked open-source AI memory system. And it's free.",
+      "stars": 59596,
+      "license": "MIT",
+      "language": "Python",
+      "category": "memory",
+      "note": "Local-first open-source AI memory system storing conversations verbatim",
+      "quickstart": "npx skills add MemPalace/mempalace"
     }
   ],
   "skipped": []
