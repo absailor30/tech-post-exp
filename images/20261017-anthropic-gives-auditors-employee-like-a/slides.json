@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Six auditors get employee\u2011like access",
+      "kicker": "AI Audit",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "Anthropic gives auditors deep access",
+      "body": "Six METR researchers will use Anthropic hardware and office space to review models.",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Access matches internal risk teams",
+      "body": "Auditors can use internal tools and systems similar to Anthropic\u2019s own risk assessment staff.",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "METR will publish findings",
+      "body": "All results will be released; Anthropic can only withhold sensitive data.",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Why it matters",
+      "body": "External audits may help identify safety risks, but some information remains hidden.",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Share your thoughts",
+      "body": "Do you trust external audits to keep AI safe?",
+      "say": ""
+    }
+  ]
+}
