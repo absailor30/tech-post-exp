@@ -207,6 +207,22 @@
       "category": "memory",
       "note": "Local-first open-source AI memory system storing conversations verbatim",
       "quickstart": "npx skills add MemPalace/mempalace"
+    },
+    {
+      "repo": "myshell-ai/OpenVoice",
+      "day": 14,
+      "media_id": "18129510886877076",
+      "opening": "save_this",
+      "date": "2026-10-17",
+      "name": "myshell-ai/OpenVoice",
+      "url": "https://github.com/myshell-ai/OpenVoice",
+      "description": "Instant voice cloning by MIT and MyShell. Audio foundation model.",
+      "stars": 37908,
+      "license": "MIT",
+      "language": "Python",
+      "category": "voice",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
