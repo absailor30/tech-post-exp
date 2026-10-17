@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Instant Voice Cloning",
+      "kicker": "Repo 14 of 100",
+      "say": "Save this one. It lets you clone a voice instantly."
+    },
+    {
+      "kind": "content",
+      "headline": "Clones voices instantly",
+      "body": "Upload a short audio clip and the tool creates speech in that voice across many languages.",
+      "say": "Clones voices instantly. Upload a short audio clip and the tool creates speech in that voice across many languages",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "37,908 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since November 2023",
+      "say": "It has over 30 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you try",
+      "body": "Check the README and licence for usage details and terms.",
+      "say": "Before you try. Check the README and licence for usage details and terms",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 14 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
