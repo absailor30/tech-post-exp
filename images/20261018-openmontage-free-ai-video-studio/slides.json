@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Turn AI assistant into a full video studio",
+      "kicker": "Repo 15 of 100",
+      "say": "Here's one worth knowing... World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files.."
+    },
+    {
+      "kind": "content",
+      "headline": "Creates videos from prompts or clips",
+      "body": "Use your AI coding assistant to script, edit, and produce videos automatically.",
+      "say": "Creates videos from prompts or clips. Use your AI coding assistant to script, edit, and produce videos automatically",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "69,277 GitHub stars",
+      "body": "AGPL-3.0 licence \u00b7 Written in Python \u00b7 Since March 2026",
+      "say": "It has over 60 thousand stars on GitHub and uses the AGPL-3.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "API keys optional, costs low",
+      "body": "You can start for free, but adding keys unlocks more tools; read license first.",
+      "say": "API keys optional, costs low. You can start for free, but adding keys unlocks more tools; read license first",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 15 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
