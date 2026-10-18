@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "I feared Meta scraping my site. Now they say no.",
+      "kicker": "Before After",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "Meta added broad AI training clause",
+      "body": "It said Meta could use any content from business account sites to train AI.",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Experts warned it allowed site scraping",
+      "body": "Legal experts said this let Meta scrape publisher websites for AI model training.",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Meta said crawling didn't change",
+      "body": "A spokesperson insisted the updated terms didn't reflect a change in how Meta crawls the web.",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Verge reports clause removed",
+      "body": "The Verge says Meta deleted the language and clarified it applied only to ads and business products.",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI news",
+      "body": "Get simple updates on what AI means for your life.",
+      "say": ""
+    }
+  ]
+}
