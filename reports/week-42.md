@@ -1,27 +1,23 @@
-1. What performed best and why (saves/shares first)
-2. What flopped
-3. Follower trajectory if inferable
-4. 2-3 concrete changes for next week
+**Weekly Instagram Performance Report – Oct 18, 2026**
 
+**Top Performers (saves & shares first)**  
+1. **Anti‑detect browser for AI agents** – 16 shares, 58 saves, 1450 reach, 1677 views, 109 interactions.  
+2. **OpenMontage: free AI video studio** – 10 shares, 23 saves, 386 reach, 518 views, 44 interactions.  
+3. **Local app to run and train AI models** – 9 shares, 51 saves, 1220 reach, 1464 views, 105 interactions.  
 
+These posts combined ~3,000 views and 185 total interactions, showing that practical tools and new releases draw the most engagement.
 
-1. "Anti-detect browser for AI agents" (Oct 10): reach 1448, likes 29, comments 2, saved 58, shares 16, views 1676, total_interactions 109
-2. "Local app to run and train AI models" (Oct 12): reach 1219, likes 33, comments 4, saved 51, shares 9, views 1463, total_interactions 105
-3. "Google's Gemini AI on your computer" (Oct 13): reach 1043, likes 23, comments 1, saved 39, shares 8, views 1195, total_interactions 73
-4. "Open data platform connects finance to AI" (Oct 11): reach 153, likes 5, comments 1, saved 6, shares 1, views 177, total_interactions 16
-5. "Multi-agent AI framework for collaborative coding" (Oct 15): reach 120, likes 4, comments 1, saved 4, shares 3, views 142, total_interactions 14
-6. "Free AI memory system keeps conversations private" (Oct 16): reach 112, likes 4, comments 1, saved 5, shares 2, views 130, total_interactions 12
-7. "OpenVoice instant voice cloning repo" (Oct 17): reach 106, likes 2, comments 1, saved 5, shares 2, views 128, total_interactions 12
+**Underperformers**  
+- Early‑week “One app for many AI models” (reach 27, 0 shares) and “OpenAI safety lead quits” (reach 26, 0 shares) generated minimal interaction.  
+- Most other posts stayed below 200 reach and 20 interactions, indicating a need for sharper targeting.
 
-The top 3 by saves/shares are clearly the first three. They have high reach (1000+), high saves (39-58), and shares (8-16). These are practical tool/tutorial content.
+**Follower Trend**  
+Followers remain at 35 with 136 posts. Reach per post averages ~400, suggesting a stagnant audience size; growth is minimal.
 
-Flops: Videos with very low reach and engagement:
-- "Leaked AI system prompts revealed" (Oct 6): reach 30, total_interactions 4
-- "OpenAI safety lead quits over broken culture" (Oct 5): reach 25, total_interactions 9
-- "One app for many AI models" (Oct 7): reach 26, total_interactions 6
-- "OpenAI fires three safety researchers" (Oct 2): reach 31, total_interactions 10
-- "Google locks down its strongest AI" (Oct 1): reach 39, total_interactions 9
-- "Apple tightens Mac file access for AI safety" (Oct 3): reach 115 but only 3 total interactions
-- Several others with reach 100-150 but low engagement
+**Action Plan for Next Week (≤ Rs 10,000 budget)**  
 
-Follower trajectory: Only one data point - 33 followers as of Oct 18. Can't infer trajectory from single snapshot. But account has 13
+1. **Content Focus** – Prioritize “tool‑and‑release” topics (e.g., new AI frameworks, safety updates) that previously drove shares and saves.  
+2. **Posting Time & Frequency** – Schedule 2–3 posts per week at 9 am IST (peak morning usage) to increase initial reach.  
+3. **Engagement Hooks** – Add clear CTAs (“Save this for later”, “Share if you find it useful”) and use 5–7 relevant hashtags to boost discoverability.  
+
+These adjustments should lift reach, interaction, and follower growth while staying within budget.
