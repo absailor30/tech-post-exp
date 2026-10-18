@@ -223,6 +223,22 @@
       "category": "voice",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "calesthio/OpenMontage",
+      "day": 15,
+      "media_id": "17934460422142588",
+      "opening": "quick_question",
+      "date": "2026-10-18",
+      "name": "calesthio/OpenMontage",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "description": "World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assistant into a full video production studio.",
+      "stars": 69277,
+      "license": "AGPL-3.0",
+      "language": "Python",
+      "category": "video",
+      "note": "Open-source agentic video production system turning coding assistants into video studios",
+      "quickstart": "git clone https://github.com/calesthio/OpenMontage.git\ncd OpenMontage\nmake setup"
     }
   ],
   "skipped": []
