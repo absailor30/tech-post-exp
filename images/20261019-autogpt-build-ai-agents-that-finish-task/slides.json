@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Build AI agents that finish tasks",
+      "kicker": "Repo 16 of 100",
+      "say": "Here's one worth knowing... This tool is the vision of accessible AI for everyone, to use and to build on. Our mission is."
+    },
+    {
+      "kind": "content",
+      "headline": "Build AI agents that finish tasks",
+      "body": "Describe what you want in English; the tool turns it into an agent that runs on demand, schedule, or trigger.",
+      "say": "Build AI agents that finish tasks. Describe what you want in English; the tool turns it into an agent that runs on demand, schedule, or trigger",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "187,648 GitHub stars",
+      "body": "Written in Python \u00b7 Since March 2023",
+      "say": "It has over 180 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Choose your hosting",
+      "body": "Self-hosting is free but requires your own infrastructure and keys; managed platform costs per run.",
+      "say": "Choose your hosting. Self-hosting is free but requires your own infrastructure and keys; managed platform costs per run",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 16 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
