@@ -239,6 +239,22 @@
       "category": "video",
       "note": "Open-source agentic video production system turning coding assistants into video studios",
       "quickstart": "git clone https://github.com/calesthio/OpenMontage.git\ncd OpenMontage\nmake setup"
+    },
+    {
+      "repo": "Significant-Gravitas/AutoGPT",
+      "day": 16,
+      "media_id": "18014448902974793",
+      "opening": "fresh_update",
+      "date": "2026-10-19",
+      "name": "Significant-Gravitas/AutoGPT",
+      "url": "https://github.com/Significant-Gravitas/AutoGPT",
+      "description": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.",
+      "stars": 187648,
+      "license": "NOASSERTION",
+      "language": "Python",
+      "category": "agents",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
