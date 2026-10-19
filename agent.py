@@ -28,17 +28,17 @@ LOG = BASE / "log.jsonl"
 # and free-tier endpoints intermittently hang. Try in order, fail fast, move on.
 # Probed on 2026-10-16 (llm_probe.py): nemotron-3-ultra-550b hangs for 136s+, nemotron-3-nano-30b is
 # retired (410), many others 404. These answered in 0.6-3s. Re-run the llm-probe workflow when it breaks again.
-MODEL = os.environ.get("NIM_MODEL", "nvidia/nemotron-3-super-120b-a12b")
+MODEL = os.environ.get("NIM_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
 FALLBACKS = [
+    "nvidia/nemotron-3-super-120b-a12b",     # fast backup (answers in 1-3s)
     "z-ai/glm-5.3",
     "openai/gpt-oss-20b",
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
-    "nvidia/nemotron-3-ultra-550b-a55b",     # slowest; last resort only
 ]
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
     api_key=os.environ["NIM_API_KEY"],
-    timeout=75.0,
+    timeout=240.0,
 )
 
 SYSTEM = (
