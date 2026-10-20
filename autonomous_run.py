@@ -839,6 +839,25 @@ def cmd_forget(media_id):
           f"dropped); its story can be picked again")
 
 
+NEWS_WEB = os.environ.get("NEWS_WEB", "1") != "0"
+AGGREGATORS = ("techmeme.com", "news.ycombinator.com", "reddit.com")
+
+
+def render_reel(specs, web_url, out, theme, series):
+    """Article/repo scroll when there is a page to film; text-slide reel otherwise. A news
+    capture that fails (site blocks the headless browser) falls back, a series one must not."""
+    if web_url:
+        from webreel import build_web_reel
+        try:
+            return build_web_reel(specs, web_url, out)
+        except Exception as e:
+            if series:
+                raise
+            print(f"  [reel] article capture failed ({e!r:.140}); using text slides")
+    from reel_maker import build_animated
+    return build_animated(specs, out, theme=theme)
+
+
 def main(dry=False, force=False, series=False):
     sstate = None
     if series:
@@ -921,6 +940,16 @@ def main(dry=False, force=False, series=False):
     web_url = None
     if series:      # real-video reel: a Chrome scroll through the repo's own page
         web_url = p["_story"]["url"]    # the recording shows the name; we never print or say it
+    elif NEWS_WEB:  # news too: scroll the real article, narrate the slides as a script
+        web_url = (p.get("_story") or {}).get("url")
+        host = (web_url or "").split("/")[2] if (web_url or "").startswith("http") else ""
+        if any(a in host for a in AGGREGATORS):
+            web_url = None              # a link-list page is not a story to film
+    if web_url and not series:
+        for sl in p["slides"]:
+            sl.setdefault("say", f"{sl['headline'].rstrip('.')}. {sl['body']}")
+        specs[0]["say"] = specs[0]["say"] or p["hook"]["headline"]
+        p["cta"].setdefault("say", f"{p['cta']['headline'].rstrip('.')}. {p['cta']['body']}")
     specs += [{"kind": "content", "headline": s["headline"], "body": s["body"],
                "say": s.get("say", ""), "idx": i + 1, "total": total}
               for i, s in enumerate(p["slides"], 1)]
@@ -931,24 +960,14 @@ def main(dry=False, force=False, series=False):
 
     print(f"topic: {p['topic']}\nslides: {len(files)}\ncaption:\n{p['caption']}\n")
     if dry:
-        if web_url:
-            from webreel import build_web_reel
-            build_web_reel(specs, web_url, outdir / "reel.mp4")
-        else:
-            from reel_maker import build_animated
-            build_animated(specs, outdir / "reel.mp4", theme=theme)
+        render_reel(specs, web_url, outdir / "reel.mp4", theme, series)
         print(f"[dry run] rendered to {outdir}, nothing pushed or published")
         return
 
     # Reels only. Carousels reached 1-3 accounts each for the whole of August
     # and earned zero saves and zero shares — Instagram had stopped
     # distributing them entirely, so there is nothing to salvage there.
-    if web_url:
-        from webreel import build_web_reel
-        build_web_reel(specs, web_url, outdir / "reel.mp4")
-    else:
-        from reel_maker import build_animated
-        build_animated(specs, outdir / "reel.mp4", theme=theme)
+    render_reel(specs, web_url, outdir / "reel.mp4", theme, series)
     rel_paths.append((outdir / "reel.mp4").relative_to(REPO_DIR).as_posix())
 
     if (REPO_DIR / "story_override.txt").exists():
