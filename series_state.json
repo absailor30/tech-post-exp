@@ -255,6 +255,22 @@
       "category": "agents",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "IceWhaleTech/CasaOS",
+      "day": 17,
+      "media_id": "18095886713145773",
+      "opening": "bet_you_didnt",
+      "date": "2026-10-20",
+      "name": "IceWhaleTech/CasaOS",
+      "url": "https://github.com/IceWhaleTech/CasaOS",
+      "description": "CasaOS - A simple, easy-to-use, elegant open-source Personal Cloud system.",
+      "stars": 37335,
+      "license": "Apache-2.0",
+      "language": "Go",
+      "category": "infra",
+      "note": "Simple open-source personal cloud/homeserver OS",
+      "quickstart": "curl -fsSL https://get.icewhale.io/casaos-uninstall.sh | sudo bash"
     }
   ],
   "skipped": []
