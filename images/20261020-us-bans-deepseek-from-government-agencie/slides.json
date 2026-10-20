@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The Chinese AI Washington just banned",
+      "kicker": "FORBIDDEN",
+      "say": "The Chinese AI Washington just banned"
+    },
+    {
+      "kind": "content",
+      "headline": "DHS orders full removal",
+      "body": "Department of Homeland Security told all civilian agencies to delete DeepSeek from their systems",
+      "say": "DHS orders full removal. Department of Homeland Security told all civilian agencies to delete DeepSeek from their systems",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Data could reach China",
+      "body": "DHS warns DeepSeek may send sensitive government employee data to the Chinese government",
+      "say": "Data could reach China. DHS warns DeepSeek may send sensitive government employee data to the Chinese government",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Malware risk cited",
+      "body": "The order says DeepSeek models could contain malware or security vulnerabilities",
+      "say": "Malware risk cited. The order says DeepSeek models could contain malware or security vulnerabilities",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Timing follows new release",
+      "body": "Ban came days after DeepSeek launched V4.1-Flash-1017, a cheaper rival to ChatGPT",
+      "say": "Timing follows new release. Ban came days after DeepSeek launched V4.1-Flash-1017, a cheaper rival to ChatGPT",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI reality checks",
+      "body": "We explain what AI news means for your privacy, wallet, and phone",
+      "say": "Follow for AI reality checks. We explain what AI news means for your privacy, wallet, and phone"
+    }
+  ]
+}
