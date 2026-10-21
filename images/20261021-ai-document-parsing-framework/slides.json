@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Parse Documents For AI Apps",
+      "kicker": "Repo 18 of 100",
+      "say": "Real quick. Want to parse and index documents for AI? Here's the project."
+    },
+    {
+      "kind": "content",
+      "headline": "Parses Documents For AI Use",
+      "body": "Turns PDFs, scans, and 130+ formats into clean data that AI models can understand and search.",
+      "say": "This tool turns PDFs, scans, and over 130 file types into clean data that AI can actually read and search.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "52,590 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since November 2022",
+      "say": "It has over 50 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Check Docs For Latest Details",
+      "body": "The README may lag behind; the cloud parsing features need an account and API key to use.",
+      "say": "The readme can be outdated, so check the official docs first, and the cloud parsing needs an account and key.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 18 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
