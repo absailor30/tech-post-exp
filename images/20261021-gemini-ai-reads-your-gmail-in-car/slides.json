@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Your car now knows your calendar and emails",
+      "kicker": "If you drive",
+      "say": "Your car now knows your calendar and emails"
+    },
+    {
+      "kind": "content",
+      "headline": "Rolling out today on Android Auto",
+      "body": "Gemini Personal Intelligence connects to Gmail, Calendar, Maps, Photos, YouTube, Search while you drive",
+      "say": "Rolling out today on Android Auto. Gemini Personal Intelligence connects to Gmail, Calendar, Maps, Photos, YouTube, Search while you drive",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Ask about flights, appointments, photos",
+      "body": "Say 'take me to my doctor appointment' or 'find the car wash from last week's photo' \u2014 it pulls details from your apps",
+      "say": "Ask about flights, appointments, photos. Say 'take me to my doctor appointment' or 'find the car wash from last week's photo' \u2014 it pulls details from your apps",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Opt-in only, phone must be connected",
+      "body": "Enable Personal Intelligence setting; works only when your phone links to the car. Basic nav, music, calls still work without it",
+      "say": "Opt-in only, phone must be connected. Enable Personal Intelligence setting; works only when your phone links to the car. Basic nav, music, calls still work without it",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Privacy trade-off: Google sees more of your day",
+      "body": "Convenience means Google reads your email, calendar, location, photos in real time. Decide if the help is worth the access",
+      "say": "Privacy trade-off: Google sees more of your day. Convenience means Google reads your email, calendar, location, photos in real time. Decide if the help is worth the access",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI that changes daily life",
+      "body": "We explain new AI features and what they mean for your phone, car, privacy \u2014 no code required",
+      "say": "Follow for AI that changes daily life. We explain new AI features and what they mean for your phone, car, privacy \u2014 no code required"
+    }
+  ]
+}
