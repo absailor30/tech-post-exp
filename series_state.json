@@ -271,6 +271,22 @@
       "category": "infra",
       "note": "Simple open-source personal cloud/homeserver OS",
       "quickstart": "curl -fsSL https://get.icewhale.io/casaos-uninstall.sh | sudo bash"
+    },
+    {
+      "repo": "run-llama/llama_index",
+      "day": 18,
+      "media_id": "17912823720475332",
+      "opening": "real_quick",
+      "date": "2026-10-21",
+      "name": "run-llama/llama_index",
+      "url": "https://github.com/run-llama/llama_index",
+      "description": "LlamaIndex is the document processing platform for AI",
+      "stars": 52590,
+      "license": "MIT",
+      "language": "Python",
+      "category": "rag",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
