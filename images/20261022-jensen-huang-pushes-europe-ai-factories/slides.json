@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What nobody tells you about Europe's AI factories",
+      "kicker": "Insider Secret",
+      "say": ""
+    },
+    {
+      "kind": "content",
+      "headline": "Huang pressures UK cloud to fix delays",
+      "body": "Nvidia CEO told Nscale to work nonstop on data centers as investors question its IPO.",
+      "say": "",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Modular AI factories launch in 14 days",
+      "body": "Nvidia's DSX Pod ships pre-assembled with latest chips, cutting build time from years to weeks.",
+      "say": "",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Humanoid robots named Europe's next big industry",
+      "body": "Nvidia says Europe's factory skills position it to lead in physical AI and robotics.",
+      "say": "",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI agents will drive massive chip demand",
+      "body": "Every company will mix custom open and closed models, increasing need for Nvidia GPUs.",
+      "say": "",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI news that matters",
+      "body": "We explain how AI shifts affect your job, money, and daily life.",
+      "say": ""
+    }
+  ]
+}
