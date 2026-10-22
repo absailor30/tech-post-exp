@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Model Context Protocol this tool",
+      "kicker": "Repo 19 of 100",
+      "say": "Okay, here's something cool. You can connect AI assistants to your files and tools."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "Reference this tool that let AI assistants securely access files, web pages, databases, and more.",
+      "say": "This repo holds reference this tool that let AI assistants securely reach your files, the web, databases, and more.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "91,470 GitHub stars",
+      "body": "Written in TypeScript \u00b7 Since November 2024",
+      "say": "It has over 90 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "These are reference examples, not production ready \u2014 review security needs first.",
+      "say": "Remember, these are reference examples, not production ready, so review your security needs before real use.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 19 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
