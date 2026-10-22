@@ -287,6 +287,22 @@
       "category": "rag",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "modelcontextprotocol/servers",
+      "day": 19,
+      "media_id": "18412287019088670",
+      "opening": "something_cool",
+      "date": "2026-10-22",
+      "name": "modelcontextprotocol/servers",
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "description": "Model Context Protocol Servers",
+      "stars": 91470,
+      "license": "NOASSERTION",
+      "language": "TypeScript",
+      "category": "mcp",
+      "note": "",
+      "quickstart": "npx -y @modelcontextprotocol/server-memory"
     }
   ],
   "skipped": []
