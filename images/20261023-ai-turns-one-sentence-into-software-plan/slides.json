@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "One prompt, full software plan",
+      "kicker": "Repo 20 of 100",
+      "say": "In under a minute, I'll show you a GitHub project that lets you turn a one-line idea into a full software plan with AI teammates."
+    },
+    {
+      "kind": "content",
+      "headline": "One sentence becomes a software plan",
+      "body": "Give it one line, get user stories, specs, APIs, and docs",
+      "say": "You type one sentence and it returns user stories, specs, APIs and documents.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "70,978 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since June 2023",
+      "say": "It has over 70 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Needs Python, Node and command line",
+      "body": "Setup requires Python 3.9 to 3.11, Node, pnpm and comfort with the terminal",
+      "say": "You will need Python 3.9 to 3.11, Node, pnpm and comfort with the command line.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 20 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
