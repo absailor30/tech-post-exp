@@ -1,0 +1,49 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The one AI that decides not writes",
+      "kicker": "AI Launch",
+      "say": "The one AI that decides not writes"
+    },
+    {
+      "kind": "content",
+      "headline": "OpenAI opened its Decisions API to everyone",
+      "body": "Announced Sept 29, widely available Thursday per TechCrunch",
+      "say": "OpenAI opened its Decisions API to everyone. Announced Sept 29, widely available Thursday per TechCrunch",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "It picks options fast instead of writing essays",
+      "body": "Answers in 100-180 milliseconds at ten cents per million input tokens",
+      "say": "It picks options fast instead of writing essays. Answers in 100-180 milliseconds at ten cents per million input tokens",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Language tutor Speak cut wait from 1.4s to 0.13s",
+      "body": "Real users see ten times faster replies in live apps",
+      "say": "Language tutor Speak cut wait from 1.4s to 0.13s. Real users see ten times faster replies in live apps",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Benchmarks rank rivals higher on decision quality",
+      "body": "Liquid and Base Lab models beat OpenAI on independent tests",
+      "say": "Benchmarks rank rivals higher on decision quality. Liquid and Base Lab models beat OpenAI on independent tests",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI that saves time",
+      "body": "We translate launches into what changes for you",
+      "say": "Follow for AI that saves time. We translate launches into what changes for you"
+    }
+  ]
+}
