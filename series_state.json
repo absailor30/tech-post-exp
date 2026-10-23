@@ -303,6 +303,22 @@
       "category": "mcp",
       "note": "",
       "quickstart": "npx -y @modelcontextprotocol/server-memory"
+    },
+    {
+      "repo": "FoundationAgents/MetaGPT",
+      "day": 20,
+      "media_id": "17924454006441754",
+      "opening": "under_a_minute",
+      "date": "2026-10-23",
+      "name": "FoundationAgents/MetaGPT",
+      "url": "https://github.com/FoundationAgents/MetaGPT",
+      "description": "\ud83c\udf1f The Multi-Agent Framework: First AI Software Company, Towards Natural Language Programming",
+      "stars": 70978,
+      "license": "MIT",
+      "language": "Python",
+      "category": "agents",
+      "note": "",
+      "quickstart": "pip install --upgrade metagpt\n# or `pip install --upgrade git+https://github.com/geekan/MetaGPT.git`\n# or `git clone https://github.com/geekan/MetaGPT && cd MetaGPT && pip install --upgrade -e .`"
     }
   ],
   "skipped": []
