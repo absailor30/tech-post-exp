@@ -319,6 +319,22 @@
       "category": "agents",
       "note": "",
       "quickstart": "pip install --upgrade metagpt\n# or `pip install --upgrade git+https://github.com/geekan/MetaGPT.git`\n# or `git clone https://github.com/geekan/MetaGPT && cd MetaGPT && pip install --upgrade -e .`"
+    },
+    {
+      "repo": "anthropics/anthropic-cookbook",
+      "day": 21,
+      "media_id": "18111695075087511",
+      "opening": "did_you_know",
+      "date": "2026-10-24",
+      "name": "anthropics/claude-cookbooks",
+      "url": "https://github.com/anthropics/claude-cookbooks",
+      "description": "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude.",
+      "stars": 53719,
+      "license": "MIT",
+      "language": "Jupyter Notebook",
+      "category": "skills",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
