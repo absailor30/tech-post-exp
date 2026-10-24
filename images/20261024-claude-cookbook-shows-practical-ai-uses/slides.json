@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Fun ways to use Claude",
+      "kicker": "Repo 21 of 100",
+      "say": "Did you know you can now show fun effective ways to use Claude?"
+    },
+    {
+      "kind": "content",
+      "headline": "Ready-to-copy Claude recipes",
+      "body": "Notebooks cover classification, search, summaries, tools, vision, and sub-agents.",
+      "say": "It gives you ready-to-copy notebooks for classification, search, summaries, tools, vision, and sub-agents.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "53,719 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Jupyter Notebook \u00b7 Since August 2023",
+      "say": "It has over 50 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Needs a free API key",
+      "body": "Examples use Python but work in any language; beginners should try the fundamentals course first.",
+      "say": "You need a free Claude API key; examples use Python but adapt to any language, and beginners should try the fundamentals course first.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 21 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
