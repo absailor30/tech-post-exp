@@ -335,6 +335,22 @@
       "category": "skills",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "TauricResearch/TradingAgents",
+      "day": 22,
+      "media_id": "18115791664835246",
+      "opening": "found_this",
+      "date": "2026-10-25",
+      "name": "TauricResearch/TradingAgents",
+      "url": "https://github.com/TauricResearch/TradingAgents",
+      "description": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+      "stars": 113800,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "trading",
+      "note": "Multi-agent LLM framework simulating a trading firm for research",
+      "quickstart": "git clone https://github.com/TauricResearch/TradingAgents.git\ncd TradingAgents"
     }
   ],
   "skipped": []
