@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI payoff that never arrived for most companies",
+      "kicker": "AI Reality Check",
+      "say": "The AI payoff that never arrived for most companies"
+    },
+    {
+      "kind": "content",
+      "headline": "Big tech gains, rest flat",
+      "body": "Revenue per worker up for 7 giants, unchanged for 493 other big firms",
+      "say": "Big tech gains, rest flat. Revenue per worker up for 7 giants, unchanged for 493 other big firms",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Productivity not budging",
+      "body": "No sign AI lifted overall productivity growth despite massive spending",
+      "say": "Productivity not budging. No sign AI lifted overall productivity growth despite massive spending",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI now seen as cost center",
+      "body": "Mainstream firms pull back, treat token spending as margin-hurting expense",
+      "say": "AI now seen as cost center. Mainstream firms pull back, treat token spending as margin-hurting expense",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Business needs judgment, not calculation",
+      "body": "AI handles math but misses accountability, trust, culture that drive real profit",
+      "say": "Business needs judgment, not calculation. AI handles math but misses accountability, trust, culture that drive real profit",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for honest AI reality",
+      "body": "We cut hype, show what AI actually changes for your money and job",
+      "say": "Follow for honest AI reality. We cut hype, show what AI actually changes for your money and job"
+    }
+  ]
+}
