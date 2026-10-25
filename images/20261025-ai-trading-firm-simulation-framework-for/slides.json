@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Simulate a trading firm with AI agents",
+      "kicker": "Repo 22 of 100",
+      "say": "I found a GitHub project that lets you simulate a trading firm with AI agents for research."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "Multi-agent framework that simulates a trading firm using AI agents for research",
+      "say": "This tool lets you run a full trading firm simulation with AI agents doing research, analysis, and trading decisions.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "113,800 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since December 2024",
+      "say": "It has over 110 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Important caveat",
+      "body": "For research only, not financial advice; performance varies by models and data",
+      "say": "This is for research only, not financial advice. Results depend on the models and data you use.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 22 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
