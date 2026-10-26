@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "What AI companies hide about training data",
+      "kicker": "Insider Secret",
+      "say": "What AI companies hide about training data"
+    },
+    {
+      "kind": "content",
+      "headline": "Elvis estate sues Anthropic",
+      "body": "Authentic Brands Group filed suit over 274 Presley songs used without permission",
+      "say": "Elvis estate sues Anthropic. Authentic Brands Group filed suit over 274 Presley songs used without permission",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Can't Help Falling in Love included",
+      "body": "Hit songs like Can't Help Falling in Love allegedly fed to AI models",
+      "say": "Can't Help Falling in Love included. Hit songs like Can't Help Falling in Love allegedly fed to AI models",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Training without a license",
+      "body": "Lawsuit claims Anthropic used copyrighted music to teach its AI systems",
+      "say": "Training without a license. Lawsuit claims Anthropic used copyrighted music to teach its AI systems",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Precedent for every creator",
+      "body": "Outcome could decide if AI must pay musicians for training data",
+      "say": "Precedent for every creator. Outcome could decide if AI must pay musicians for training data",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Follow for AI rights updates",
+      "body": "We track lawsuits that shape what AI can use",
+      "say": "Follow for AI rights updates. We track lawsuits that shape what AI can use"
+    }
+  ]
+}
