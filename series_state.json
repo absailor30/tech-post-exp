@@ -351,6 +351,22 @@
       "category": "trading",
       "note": "Multi-agent LLM framework simulating a trading firm for research",
       "quickstart": "git clone https://github.com/TauricResearch/TradingAgents.git\ncd TradingAgents"
+    },
+    {
+      "repo": "Aider-AI/aider",
+      "day": 23,
+      "media_id": "17894445387437820",
+      "opening": "found_this",
+      "date": "2026-10-26",
+      "name": "Aider-AI/aider",
+      "url": "https://github.com/Aider-AI/aider",
+      "description": "aider is AI pair programming in your terminal",
+      "stars": 49756,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "coding",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
