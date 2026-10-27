@@ -367,6 +367,22 @@
       "category": "coding",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "crewAIInc/crewAI",
+      "day": 24,
+      "media_id": "18126869281856404",
+      "opening": "proof_stars",
+      "date": "2026-10-27",
+      "name": "crewAIInc/crewAI",
+      "url": "https://github.com/crewAIInc/crewAI",
+      "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks.",
+      "stars": 60154,
+      "license": "MIT",
+      "language": "Python",
+      "category": "agents",
+      "note": "",
+      "quickstart": "curl -LsSf https://astral.sh/uv/install.sh | sh"
     }
   ],
   "skipped": []
