@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI agents that work together on autopilot",
+      "kicker": "Repo 24 of 100",
+      "say": "Over 60 thousand people starred this GitHub project. It lets you orchestrate autonomous AI agents that collaborate on complex tasks."
+    },
+    {
+      "kind": "content",
+      "headline": "Teams of AI agents collaborate autonomously",
+      "body": "Role-based agents tackle complex tasks together without constant supervision",
+      "say": "This tool lets you build teams of AI agents that work together on their own, each with a specific role, to handle complicated jobs.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "60,154 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since October 2023",
+      "say": "It has over 60 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Needs Python 3.10 plus; enterprise features paid",
+      "body": "Advanced control plane and observability require a subscription",
+      "say": "You will need Python 3.10 or newer to run it, and the advanced enterprise features come with a paid subscription.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 24 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
