@@ -383,6 +383,22 @@
       "category": "agents",
       "note": "",
       "quickstart": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+    },
+    {
+      "repo": "d4vinci/Scrapling",
+      "day": 25,
+      "media_id": "18134004622718833",
+      "opening": "stop_scrolling",
+      "date": "2026-10-28",
+      "name": "D4Vinci/Scrapling",
+      "url": "https://github.com/D4Vinci/Scrapling",
+      "description": "\ud83d\udd77\ufe0f The BEST Web Scraping framework that handles everything from a single request to a full-scale crawl! Don't be shy, join here: https://discord.gg/EMgGbDceNQ and follow here for daily tips and tricks: https://x.com/Scrapling_dev",
+      "stars": 90117,
+      "license": "BSD-3-Clause",
+      "language": "Python",
+      "category": "scraping",
+      "note": "",
+      "quickstart": "pip install scrapling"
     }
   ],
   "skipped": []
