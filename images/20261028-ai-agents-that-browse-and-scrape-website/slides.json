@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI agents that browse the web",
+      "kicker": "Repo 25 of 100",
+      "say": "Stop scrolling... you can let AI agents browse and extract web data."
+    },
+    {
+      "kind": "content",
+      "headline": "Fetches and renders any page",
+      "body": "Handles JavaScript, Cloudflare, and API calls behind the scenes.",
+      "say": "It fetches pages, renders JavaScript, and handles Cloudflare challenges automatically.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "90,117 GitHub stars",
+      "body": "BSD-3-Clause licence \u00b7 Written in Python \u00b7 Since October 2024",
+      "say": "It has over 90 thousand stars on GitHub and uses the BSD-3-Clause licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Base install needs extra steps",
+      "body": "Fetchers and browsers require separate installation commands.",
+      "say": "The base install lacks fetchers and browsers; you must add them separately.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 25 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
