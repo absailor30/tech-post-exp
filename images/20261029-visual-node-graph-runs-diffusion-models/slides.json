@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run AI models on your computer",
+      "kicker": "Repo 26 of 100",
+      "say": "Send this to a friend who'd love to run diffusion models locally with a visual node graph."
+    },
+    {
+      "kind": "content",
+      "headline": "Build workflows by connecting nodes",
+      "body": "Create images, video, 3D, audio without writing any code",
+      "say": "You build workflows by connecting nodes on a canvas, no coding required.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "143,866 GitHub stars",
+      "body": "GPL-3.0 licence \u00b7 Written in Python \u00b7 Since January 2023",
+      "say": "It has over 140 thousand stars on GitHub and uses the GPL-3.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "GPL license requires sharing changes",
+      "body": "Cloud version is paid; core runs fully offline by default",
+      "say": "The GPL license means you must share modifications, and the cloud version costs money.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 26 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
