@@ -399,6 +399,22 @@
       "category": "scraping",
       "note": "",
       "quickstart": "pip install scrapling"
+    },
+    {
+      "repo": "comfy-org/comfyui",
+      "day": 26,
+      "media_id": "18078654395651303",
+      "opening": "send_friend",
+      "date": "2026-10-29",
+      "name": "Comfy-Org/ComfyUI",
+      "url": "https://github.com/Comfy-Org/ComfyUI",
+      "description": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface. The fastest local inference engine in the world.",
+      "stars": 143866,
+      "license": "GPL-3.0",
+      "language": "Python",
+      "category": "image",
+      "note": "Modular node-graph GUI/backend for diffusion model image/video generation",
+      "quickstart": "pip install comfy-cli\ncomfy install"
     }
   ],
   "skipped": []
