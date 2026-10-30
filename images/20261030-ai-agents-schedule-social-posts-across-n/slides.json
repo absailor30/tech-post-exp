@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI agents schedule your social posts",
+      "kicker": "Repo 27 of 100",
+      "say": "What if I told you... you could schedule social posts with AI agents across 30+ channels?"
+    },
+    {
+      "kind": "content",
+      "headline": "AI agents plan and post",
+      "body": "AI agents write, schedule, and publish to 30+ networks from one calendar",
+      "say": "AI agents plan and post. AI agents write, schedule, and publish to 30+ networks from one calendar",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "40,158 GitHub stars",
+      "body": "AGPL-3.0 licence \u00b7 Written in TypeScript \u00b7 Since July 2023",
+      "say": "It has over 40 thousand stars on GitHub and uses the AGPL-3.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Self-hosting needs technical setup",
+      "body": "You handle infrastructure and platform approvals; cloud version avoids this",
+      "say": "Self-hosting needs technical setup. You handle infrastructure and platform approvals; cloud version avoids this",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 27 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
