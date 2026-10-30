@@ -415,6 +415,22 @@
       "category": "image",
       "note": "Modular node-graph GUI/backend for diffusion model image/video generation",
       "quickstart": "pip install comfy-cli\ncomfy install"
+    },
+    {
+      "repo": "gitroomhq/postiz-app",
+      "day": 27,
+      "media_id": "18110562968235010",
+      "opening": "what_if",
+      "date": "2026-10-30",
+      "name": "gitroomhq/postiz-app",
+      "url": "https://github.com/gitroomhq/postiz-app",
+      "description": "\ud83d\udce8 The ultimate agentic social media scheduling tool \ud83e\udd16",
+      "stars": 40158,
+      "license": "AGPL-3.0",
+      "language": "TypeScript",
+      "category": "social",
+      "note": "Agentic social media scheduling tool across 28+ channels",
+      "quickstart": ""
     }
   ],
   "skipped": []
