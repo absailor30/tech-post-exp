@@ -431,6 +431,22 @@
       "category": "social",
       "note": "Agentic social media scheduling tool across 28+ channels",
       "quickstart": ""
+    },
+    {
+      "repo": "microsoft/autogen",
+      "day": 28,
+      "media_id": "18106950422203358",
+      "opening": "wait_what",
+      "date": "2026-10-31",
+      "name": "microsoft/autogen",
+      "url": "https://github.com/microsoft/autogen",
+      "description": "A programming framework for agentic AI",
+      "stars": 61644,
+      "license": "CC-BY-4.0",
+      "language": "Python",
+      "category": "agents",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
