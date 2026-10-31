@@ -1,0 +1,41 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "This AI agent tool is archived",
+      "kicker": "Repo 28 of 100",
+      "say": "Wait... you can build multi-agent AI apps that work on their own? Yes. You really can."
+    },
+    {
+      "kind": "content",
+      "headline": "Creates AI teams that collaborate",
+      "body": "Builds multi-agent apps that act alone or with people",
+      "say": "It lets you build AI teams that can work on their own or help you.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "61,644 GitHub stars",
+      "body": "CC-BY-4.0 licence \u00b7 Written in Python \u00b7 Since August 2023",
+      "say": "It has over 60 thousand stars on GitHub and uses the CC-BY-4.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Archived \u2014 no fixes or support",
+      "body": "Microsoft warns against production use; migrate to new framework",
+      "say": "But it is archived. Microsoft gives no fixes, no support, and says do not use it in production.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 28 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
