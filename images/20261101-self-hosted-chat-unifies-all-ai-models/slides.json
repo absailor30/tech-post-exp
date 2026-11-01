@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "One chat for every AI model you use",
+      "kicker": "Repo 29 of 100",
+      "say": "Wait... you can chat with many AI models on your own server? Yes. You really can."
+    },
+    {
+      "kind": "content",
+      "headline": "One interface for all AI chats",
+      "body": "Connects Anthropic, OpenAI, Google, local models, plus agents, code tools, and web search.",
+      "say": "It puts every AI model you use into one chat window, with agents that can run code and search the web.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "46,596 GitHub stars",
+      "body": "MIT licence \u00b7 Written in TypeScript \u00b7 Since February 2023",
+      "say": "It has over 40 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Many features experimental, self-host required",
+      "body": "Agent workspaces and management API are beta; you must host it yourself.",
+      "say": "Key features like agent workspaces are still experimental, and you need to host it yourself.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 29 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
