@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Open-source financial AI models for everyone",
+      "kicker": "Repo 30 of 100",
+      "say": "One GitHub project, and it lets you get open-source financial AI models for research."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "Open-source financial large language models fine-tuned for sentiment analysis and forecasting.",
+      "say": "What it does. Open-source financial large language models fine-tuned for sentiment analysis and forecasting",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "21,510 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Jupyter Notebook \u00b7 Since February 2023",
+      "say": "It has over 20 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "Demo only \u2014 not financial advice. Always consult a professional before trading.",
+      "say": "Before you use it. Demo only \u2014 not financial advice. Always consult a professional before trading",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 30 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
