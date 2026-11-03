@@ -479,6 +479,22 @@
       "category": "trading",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "letta-ai/letta",
+      "day": 31,
+      "media_id": "18057214499656803",
+      "opening": "one_project",
+      "date": "2026-11-03",
+      "name": "letta-ai/letta",
+      "url": "https://github.com/letta-ai/letta",
+      "description": "Platform for stateful agents: AI with advanced memory that can learn and self-improve over time.",
+      "stars": 25325,
+      "license": "Apache-2.0",
+      "language": "",
+      "category": "memory",
+      "note": "",
+      "quickstart": "npm install -g @letta-ai/letta-code"
     }
   ],
   "skipped": []
