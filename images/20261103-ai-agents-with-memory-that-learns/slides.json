@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI agents that remember and learn",
+      "kicker": "Repo 31 of 100",
+      "say": "One GitHub project, and it lets you build AI agents with memory that learns and improves."
+    },
+    {
+      "kind": "content",
+      "headline": "Agents that remember and improve",
+      "body": "Build AI agents with memory that learns from every conversation",
+      "say": "This tool lets you build AI agents that remember everything and get smarter each time you talk to them.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "25,325 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Since October 2023",
+      "say": "It has over 20 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Read the docs before starting",
+      "body": "The README notes active development and points to current source elsewhere",
+      "say": "The README says development is active and the current code lives in a different repository, so read the docs and licence first.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 31 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
