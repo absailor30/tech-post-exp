@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Give your AI agent eyes to see the entire internet. Read\u2026",
+      "kicker": "Repo 32 of 100",
+      "say": "This GitHub project has been around since 2026, and it lets you let your AI agent search the whole internet."
+    },
+    {
+      "kind": "content",
+      "headline": "Reads Twitter, Reddit, YouTube, more",
+      "body": "This tool lets your AI agent search and read Twitter, Reddit, YouTube, GitHub, Bilibili, and XiaoHongShu without API fees.",
+      "say": "It gives your AI agent eyes to see the whole internet \u2014 Twitter, Reddit, YouTube, GitHub, Bilibili, and XiaoHongShu \u2014 all without API fees.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "108,614 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since February 2026",
+      "say": "It has over 100 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Read-only, uses your browser",
+      "body": "It only reads \u2014 never posts or logs in for you \u2014 and runs in a dedicated browser on your computer.",
+      "say": "It only reads, never posts or logs in for you, and runs in a dedicated browser on your machine.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 32 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
