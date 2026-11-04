@@ -140,6 +140,42 @@ def overlay(frame, spec, alpha, t=0.0, scene_dur=1.0):
     return subtitle(frame, spec.get("headline", ""), label)
 
 
+_BANNER_JS = r"""
+(() => {
+  const sel = ['#onetrust-consent-sdk','#onetrust-banner-sdk','#CybotCookiebotDialog','#truste-consent-track',
+    '#didomi-host','.didomi-popup-container','#usercentrics-root','#cmpbox','.cmp-container','.qc-cmp2-container',
+    '[id*="cookie" i]','[class*="cookie" i]','[id*="consent" i]','[class*="consent" i]','[aria-label*="cookie" i]',
+    '[id*="gdpr" i]','[class*="gdpr" i]','.osano-cm-window','#cookie-law-info-bar','.fc-consent-root'];
+  const words = /(reject|decline|deny|only necessary|necessary only|accept|agree|allow|got it|ok|i understand|continue)/i;
+  for (const b of document.querySelectorAll('button, a[role=button], [role=button]')) {
+    const box = b.closest(sel.join(','));
+    if (box && words.test((b.innerText || '').trim()) && (b.innerText || '').length < 40) { try { b.click(); } catch (e) {} break; }
+  }
+  const css = sel.map(s => s + '{display:none!important;visibility:hidden!important}').join('\n');
+  const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+  // anything pinned to the viewport edge whose text is about cookies / privacy choices
+  for (const el of document.querySelectorAll('body *')) {
+    const cs = getComputedStyle(el);
+    if ((cs.position === 'fixed' || cs.position === 'sticky') && /cookie|consent|privacy choices|gdpr/i.test(el.innerText || '')
+        && el.getBoundingClientRect().height < window.innerHeight * 0.6) el.style.setProperty('display', 'none', 'important');
+  }
+  document.documentElement.style.setProperty('overflow', 'auto', 'important');
+})();
+"""
+
+
+def clear_banners(page):
+    """Cookie / consent banners are filmed along with the page unless removed: click the
+    accept/reject button inside a consent box, then hide whatever is left."""
+    for _ in range(2):
+        try:
+            page.evaluate(_BANNER_JS)
+        except Exception as e:
+            print(f"  [webreel] banner clear skipped ({e!r:.100})")
+            return
+        page.wait_for_timeout(500)
+
+
 def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scroll_cap=SCROLL_CAP):
     """specs: slide dicts (kind/headline/body/kicker/idx/total) in order."""
     from playwright.sync_api import sync_playwright
@@ -178,6 +214,7 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
                                         "access denied", "just a moment")):
             raise RuntimeError(f"web capture hit an error page: {page.title()!r}")
         page.wait_for_timeout(1200)
+        clear_banners(page)
         page_h = page.evaluate("document.documentElement.scrollHeight")
         # Open on the README (logo + description), not the file tree above it.
         readme_y = page.evaluate(
