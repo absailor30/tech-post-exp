@@ -495,6 +495,22 @@
       "category": "memory",
       "note": "",
       "quickstart": "npm install -g @letta-ai/letta-code"
+    },
+    {
+      "repo": "Panniantong/Agent-Reach",
+      "day": 32,
+      "media_id": "18100188551434705",
+      "opening": "since_year",
+      "date": "2026-11-04",
+      "name": "Panniantong/Agent-Reach",
+      "url": "https://github.com/Panniantong/Agent-Reach",
+      "description": "Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu \u2014 one CLI, zero API fees.",
+      "stars": 108614,
+      "license": "MIT",
+      "language": "Python",
+      "category": "agents",
+      "note": "CLI giving AI agents read/search access to Twitter, Reddit, YouTube, GitHub, etc.",
+      "quickstart": ""
     }
   ],
   "skipped": []
