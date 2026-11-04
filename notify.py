@@ -15,6 +15,7 @@ import json
 import os
 import sys
 import urllib.parse
+import time
 import urllib.request
 from pathlib import Path
 
@@ -29,9 +30,16 @@ def send(text):
         return
     data = urllib.parse.urlencode({"chat_id": CHAT, "text": text[:4000],
                                    "disable_web_page_preview": "true"}).encode()
-    urllib.request.urlopen(urllib.request.Request(
-        f"https://api.telegram.org/bot{TOKEN}/sendMessage", data=data))
-    print("telegram sent")
+    # A Telegram hiccup (504 on 2026-11-03) must not turn a successful post into a red run.
+    for n in range(3):
+        try:
+            urllib.request.urlopen(urllib.request.Request(
+                f"https://api.telegram.org/bot{TOKEN}/sendMessage", data=data), timeout=30)
+            print("telegram sent")
+            return
+        except Exception as e:
+            print(f"telegram attempt {n + 1} failed: {e!r:.120}")
+            time.sleep(3)
 
 
 def post_summary():

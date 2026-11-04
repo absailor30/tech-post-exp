@@ -703,12 +703,21 @@ def git_out(*args):
 
 
 def git(*args):
-    r = subprocess.run(["git", "-C", str(REPO_DIR), "-c", f"user.name={GIT_NAME}",
-                        "-c", f"user.email={GIT_EMAIL}", *args],
-                       capture_output=True)
-    if r.returncode != 0:   # surface git's own reason, not just "exit status 1"
+    # A push is retried: GitHub answers the odd "Internal Server Error" (a whole rendered
+    # series post was lost to one on 2026-11-04) and the second attempt goes through.
+    attempts = 4 if args and args[0] == "push" else 1
+    for n in range(attempts):
+        r = subprocess.run(["git", "-C", str(REPO_DIR), "-c", f"user.name={GIT_NAME}",
+                            "-c", f"user.email={GIT_EMAIL}", *args],
+                           capture_output=True)
+        if r.returncode == 0:
+            return
+        # surface git's own reason, not just "exit status 1"
         print(f"git {' '.join(args)} failed:\n{r.stderr.decode(errors='replace')}")
-        raise subprocess.CalledProcessError(r.returncode, args)
+        if n < attempts - 1:
+            import time as _t
+            _t.sleep(5 * 2 ** n)
+    raise subprocess.CalledProcessError(r.returncode, args)
 
 
 def wait_finished(container_id, tries=25, delay=15):
