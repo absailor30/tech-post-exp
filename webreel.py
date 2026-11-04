@@ -145,7 +145,9 @@ _BANNER_JS = r"""
   const sel = ['#onetrust-consent-sdk','#onetrust-banner-sdk','#CybotCookiebotDialog','#truste-consent-track',
     '#didomi-host','.didomi-popup-container','#usercentrics-root','#cmpbox','.cmp-container','.qc-cmp2-container',
     '[id*="cookie" i]','[class*="cookie" i]','[id*="consent" i]','[class*="consent" i]','[aria-label*="cookie" i]',
-    '[id*="gdpr" i]','[class*="gdpr" i]','.osano-cm-window','#cookie-law-info-bar','.fc-consent-root'];
+    '[id*="gdpr" i]','[class*="gdpr" i]','.osano-cm-window','#cookie-law-info-bar','.fc-consent-root',
+    'iframe[id*="sp_message" i]','iframe[title*="privacy" i]','iframe[title*="consent" i]','iframe[title*="cookie" i]',
+    'iframe[src*="consent" i]','iframe[src*="privacy-mgmt" i]','iframe[src*="sourcepoint" i]','div[id^="sp_message_container"]'];
   const words = /(reject|decline|deny|only necessary|necessary only|accept|agree|allow|got it|ok|i understand|continue)/i;
   for (const b of document.querySelectorAll('button, a[role=button], [role=button]')) {
     const box = b.closest(sel.join(','));
@@ -156,7 +158,7 @@ _BANNER_JS = r"""
   // anything pinned to the viewport edge whose text is about cookies / privacy choices
   for (const el of document.querySelectorAll('body *')) {
     const cs = getComputedStyle(el);
-    if ((cs.position === 'fixed' || cs.position === 'sticky') && /cookie|consent|privacy choices|gdpr/i.test(el.innerText || '')
+    if ((cs.position === 'fixed' || cs.position === 'sticky') && /cookie|consent|privacy|gdpr/i.test((el.innerText || '') + ' ' + (el.id || '') + ' ' + (el.title || '') + ' ' + (el.getAttribute('src') || ''))
         && el.getBoundingClientRect().height < window.innerHeight * 0.6) el.style.setProperty('display', 'none', 'important');
   }
   document.documentElement.style.setProperty('overflow', 'auto', 'important');
@@ -164,16 +166,17 @@ _BANNER_JS = r"""
 """
 
 
-def clear_banners(page):
+def clear_banners(page, once=False):
     """Cookie / consent banners are filmed along with the page unless removed: click the
     accept/reject button inside a consent box, then hide whatever is left."""
-    for _ in range(2):
+    for _ in range(1 if once else 2):
         try:
             page.evaluate(_BANNER_JS)
         except Exception as e:
             print(f"  [webreel] banner clear skipped ({e!r:.100})")
             return
-        page.wait_for_timeout(500)
+        if not once:
+            page.wait_for_timeout(500)
 
 
 def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scroll_cap=SCROLL_CAP):
@@ -244,6 +247,8 @@ def build_web_reel(specs, url, out="reel.mp4", workdir=None, narrate=True, scrol
             for k in range(n):
                 t = k / max(1, n - 1)
                 y = y0 + (y1 - y0) * _smooth(min(1.0, t * 1.15))
+                if k % 24 == 0:       # banners that load late (consent iframes) get caught too
+                    clear_banners(page, once=True)
                 page.evaluate(f"window.scrollTo(0,{y:.1f})")
                 shot = Image.open(io.BytesIO(page.screenshot(type="jpeg", quality=92)))
                 frame = overlay(shot, spec, 1.0, t=k / rm.FPS, scene_dur=n / rm.FPS)
