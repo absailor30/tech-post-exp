@@ -15,6 +15,11 @@ import webreel
 
 STORIES = [
     {"url": "https://www.sec.gov/Archives/edgar/data/0002130357/000162828026068676/anthropicpbc-sx1ax1.htm",
+     "alt": ["https://www.cnbc.com/2026/11/02/anthropic-ant-s-1-quarter-financials.html",
+             "https://qz.com/anthropic-amended-ipo-filing-revenue-growth-110226"],
+     "source": "Anthropic amended S-1, filed Nov 2 (SEC)",
+     "facts": ["Q3 revenue: about $17 billion", "Q3 net loss: $23.29 billion",
+               "Purchase commitments: about $895 billion"],
      "kicker": "Anthropic IPO",
      "lines": ["Anthropic's amended IPO filing is out, and the numbers are huge.",
                "It reports about seventeen billion dollars of revenue in the third quarter, "
@@ -22,12 +27,20 @@ STORIES = [
                "It also lists about eight hundred ninety-five billion dollars in compute and "
                "infrastructure commitments."]},
     {"url": "https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits",
+     "alt": ["https://openai.com/business/pricing/", "https://developers.openai.com/codex/pricing"],
+     "source": "OpenAI Help Center",
+     "facts": ["From December: one shared allowance for ChatGPT and Codex",
+               "Applies to Plus, Pro and Business plans", "Counted in tokens"],
      "kicker": "OpenAI",
      "lines": ["OpenAI is changing its usage limits.",
                "From December, Plus, Pro and Business plans share one allowance across "
                "ChatGPT and Codex, counted in tokens.",
                "How fast it runs down depends on the model and the task you choose."]},
-    {"url": "https://www.sec.gov/Archives/edgar/data/0001321655/000132165526000045/a2026q3ex991pressrelease.htm",
+    {"url": "https://www.businesswire.com/news/home/20261101396214/en/Palantir-Reports-Q3-2026-U.S.-Comm-Revenue-Growth-of-148-YY-and-Revenue-Growth-of-96-YY-Raises-FY-2026-Revenue-Guidance-to-91-YY-Growth-and-U.S.-Comm-Revenue-Guidance-to-143-YY-Crushing-Consensus-Expectations",
+     "alt": ["https://www.sec.gov/Archives/edgar/data/0001321655/000132165526000045/a2026q3ex991pressrelease.htm"],
+     "source": "Palantir Q3 2026 results (press release, SEC 8-K)",
+     "facts": ["Revenue: $2.313 billion, up 96%", "U.S. commercial revenue: $984 million, up 148%",
+               "FY2026 revenue guidance: $8.530-8.534 billion"],
      "kicker": "Palantir",
      "lines": ["Palantir just reported its third quarter.",
                "Revenue was two point three billion dollars, up ninety-six percent. "
@@ -51,6 +64,18 @@ STORIES = [
 OUTRO = "These were the five AI stories this week, checked against the original sources. Follow for more."
 
 
+def card_url(story, tmp):
+    """Last resort when every page for a story blocks the capture: a plain source card."""
+    import html
+    rows = "".join(f"<li>{html.escape(f)}</li>" for f in story.get("facts", []))
+    p = Path(tmp) / f"card_{abs(hash(story['kicker']))}.html"
+    p.write_text(f"""<html><body style="margin:0;background:#0A0C10;color:#fff;font-family:Arial,sans-serif;padding:150px 36px 0">
+<ul style="font-size:30px;line-height:1.4;margin:0;padding-left:28px;font-weight:700">{rows}</ul>
+<div style="margin-top:50px;font-size:19px;color:#aaa">Source: {html.escape(story.get('source', ''))}</div>
+</body></html>""", encoding="utf-8")
+    return p.as_uri()
+
+
 def segment(story, i, out, last):
     lines = story["lines"]
     specs = [{"kind": "hook", "headline": lines[0].rstrip("."), "kicker": story["kicker"], "say": lines[0]}]
@@ -59,7 +84,18 @@ def segment(story, i, out, last):
         specs.append({"kind": "content", "headline": t, "body": "", "say": t, "idx": j + 1, "total": n + 2})
     if last:
         specs.append({"kind": "cta", "headline": "Follow", "body": "", "say": OUTRO})
-    webreel.build_web_reel(specs, story["url"], out, workdir=str(Path(out).with_suffix("")) + "_w")
+    tmp = Path(out).parent
+    for url in [story["url"], *story.get("alt", [])]:
+        try:
+            webreel.build_web_reel(specs, url, out, workdir=str(Path(out).with_suffix("")) + "_w")
+            return
+        except Exception as e:
+            print(f"[roundup] {story['kicker']}: {url[:70]} failed ({e!r:.90})")
+    if story.get("facts"):
+        print(f"[roundup] {story['kicker']}: every page blocked, using a source card")
+        webreel.build_web_reel(specs, card_url(story, tmp), out, workdir=str(Path(out).with_suffix("")) + "_w")
+    else:
+        raise RuntimeError("no page could be captured")
 
 
 def main(out):
