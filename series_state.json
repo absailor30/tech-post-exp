@@ -511,6 +511,22 @@
       "category": "agents",
       "note": "CLI giving AI agents read/search access to Twitter, Reddit, YouTube, GitHub, etc.",
       "quickstart": ""
+    },
+    {
+      "repo": "oobabooga/text-generation-webui",
+      "day": 33,
+      "media_id": "18116918132123196",
+      "opening": "imagine",
+      "date": "2026-11-05",
+      "name": "oobabooga/textgen",
+      "url": "https://github.com/oobabooga/textgen",
+      "description": "Open-source desktop app for local LLMs. Text, vision, tool-calling, OpenAI/Anthropic-compatible API. 100% private.",
+      "stars": 47734,
+      "license": "AGPL-3.0",
+      "language": "Python",
+      "category": "local",
+      "note": "",
+      "quickstart": "curl -sL \"https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh\" > \"Miniforge3.sh\"\nbash Miniforge3.sh"
     }
   ],
   "skipped": []
