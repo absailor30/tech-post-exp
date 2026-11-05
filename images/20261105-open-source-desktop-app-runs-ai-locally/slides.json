@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run Private AI Models Locally",
+      "kicker": "Repo 33 of 100",
+      "say": "Here's one worth knowing... Open-source desktop app for local LLMs. Text, vision, tool-calling, OpenAI/Anthropic-compatible API. 100% private."
+    },
+    {
+      "kind": "content",
+      "headline": "Runs AI models offline on your computer",
+      "body": "Text, vision, tool-calling, and API access \u2014 all private",
+      "say": "Runs AI models offline on your computer. Text, vision, tool-calling, and API access \u2014 all private",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "47,734 GitHub stars",
+      "body": "AGPL-3.0 licence \u00b7 Written in Python \u00b7 Since December 2022",
+      "say": "It has over 40 thousand stars on GitHub and uses the AGPL-3.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Full install needs ten gigabytes and PyTorch",
+      "body": "Portable version is simpler but lacks some advanced backends",
+      "say": "Full install needs ten gigabytes and PyTorch. Portable version is simpler but lacks some advanced backends",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 33 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
