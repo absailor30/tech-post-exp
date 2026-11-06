@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Run AI art in your browser",
+      "kicker": "Repo 34 of 100",
+      "say": "Save this one. It lets you run Stable Diffusion in a web browser."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "A web interface for Stable Diffusion using Gradio",
+      "say": "This tool puts Stable Diffusion in a browser window you can click.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "165,264 GitHub stars",
+      "body": "AGPL-3.0 licence \u00b7 Written in Python \u00b7 Since August 2022",
+      "say": "It has over 160 thousand stars on GitHub and uses the AGPL-3.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you start",
+      "body": "Requires Python, Git, and a compatible GPU; read the licence first",
+      "say": "You need Python, Git, and a supported graphics card; check the licence before starting.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 34 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
