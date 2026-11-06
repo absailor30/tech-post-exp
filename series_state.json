@@ -527,6 +527,22 @@
       "category": "local",
       "note": "",
       "quickstart": "curl -sL \"https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh\" > \"Miniforge3.sh\"\nbash Miniforge3.sh"
+    },
+    {
+      "repo": "AUTOMATIC1111/stable-diffusion-webui",
+      "day": 34,
+      "media_id": "18117767075010246",
+      "opening": "save_this",
+      "date": "2026-11-06",
+      "name": "AUTOMATIC1111/stable-diffusion-webui",
+      "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+      "description": "Stable Diffusion web UI",
+      "stars": 165264,
+      "license": "AGPL-3.0",
+      "language": "Python",
+      "category": "image",
+      "note": "",
+      "quickstart": ""
     }
   ],
   "skipped": []
