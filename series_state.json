@@ -543,6 +543,22 @@
       "category": "image",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "lobehub/lobe-chat",
+      "day": 35,
+      "media_id": "17912647653307584",
+      "opening": "quick_question",
+      "date": "2026-11-07",
+      "name": "lobehub/lobehub",
+      "url": "https://github.com/lobehub/lobehub",
+      "description": "\ud83e\udd2f LobeHub - Super-Agents on Your Team. Add super-agents to the chats your team already uses.They take on work by themselves and get better every week.",
+      "stars": 84282,
+      "license": "NOASSERTION",
+      "language": "TypeScript",
+      "category": "chatui",
+      "note": "",
+      "quickstart": "npx -y @lobehub/market-cli login\n  npx -y @lobehub/market-cli plugin submit https://github.com/OWNER/REPOSITORY"
     }
   ],
   "skipped": []
