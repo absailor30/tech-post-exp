@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Add super-agents to your team chats",
+      "kicker": "Repo 35 of 100",
+      "say": "Quick question... would you like to add super-agents to your team chats that work on their own?"
+    },
+    {
+      "kind": "content",
+      "headline": "Agents join chat and handle tasks",
+      "body": "Plug into Slack or Discord, they read history and start working alone",
+      "say": "Agents join chat and handle tasks. Plug into Slack or Discord, they read history and start working alone",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "84,282 GitHub stars",
+      "body": "Written in TypeScript \u00b7 Since May 2023",
+      "say": "It has over 80 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Still in active development",
+      "body": "README says features may shift, expect changes and rough edges",
+      "say": "Still in active development. README says features may shift, expect changes and rough edges",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 35 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
