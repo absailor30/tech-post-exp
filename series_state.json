@@ -559,6 +559,22 @@
       "category": "chatui",
       "note": "",
       "quickstart": "npx -y @lobehub/market-cli login\n  npx -y @lobehub/market-cli plugin submit https://github.com/OWNER/REPOSITORY"
+    },
+    {
+      "repo": "langchain-ai/langchain",
+      "day": 36,
+      "media_id": "18144108616722202",
+      "opening": "fresh_update",
+      "date": "2026-11-08",
+      "name": "langchain-ai/langchain",
+      "url": "https://github.com/langchain-ai/langchain",
+      "description": "The agent engineering platform.",
+      "stars": 149191,
+      "license": "MIT",
+      "language": "Python",
+      "category": "agents",
+      "note": "",
+      "quickstart": "uv add langchain"
     }
   ],
   "skipped": []
