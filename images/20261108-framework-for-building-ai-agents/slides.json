@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Build AI agents that plan",
+      "kicker": "Repo 36 of 100",
+      "say": "Updated this week... this GitHub project lets you build AI agents that plan and use tools."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "A framework for building AI agents that can plan, use tools, and access files.",
+      "say": "This tool lets you build AI agents that can plan, use tools, and access files.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "149,190 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since October 2022",
+      "say": "It has over 140 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "Read the README and licence first \u2014 it's a developer framework, not a ready-to-use app.",
+      "say": "Read the README and licence first \u2014 this is a developer framework, not a ready-to-use app.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 36 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
