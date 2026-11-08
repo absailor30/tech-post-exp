@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Build AI agents without starting from scratch",
+      "kicker": "Repo 36 of 100",
+      "say": "Updated this week... this GitHub project lets you build agents and LLM powered applications."
+    },
+    {
+      "kind": "content",
+      "headline": "Framework for AI agents",
+      "body": "Chains components together to simplify building LLM powered apps",
+      "say": "This tool lets you build AI agents by connecting ready made pieces instead of writing everything from scratch",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "149,191 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since October 2022",
+      "say": "It has over 140 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Read the license first",
+      "body": "MIT license allows commercial use but check the README",
+      "say": "The MIT license permits commercial use, still read the README and license before you start",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 36 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
