@@ -575,6 +575,22 @@
       "category": "agents",
       "note": "",
       "quickstart": "uv add langchain"
+    },
+    {
+      "repo": "janhq/jan",
+      "day": 37,
+      "media_id": "17911671558575845",
+      "opening": "bet_you_didnt",
+      "date": "2026-11-09",
+      "name": "janhq/jan",
+      "url": "https://github.com/janhq/jan",
+      "description": "Jan is an open source alternative to ChatGPT that runs 100% offline on your computer.",
+      "stars": 45621,
+      "license": "NOASSERTION",
+      "language": "Rust",
+      "category": "local",
+      "note": "",
+      "quickstart": "git clone https://github.com/janhq/jan\ncd jan\nmake dev"
     }
   ],
   "skipped": []
