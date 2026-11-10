@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Build AI agents with full context control",
+      "kicker": "Repo 38 of 100",
+      "say": "Real quick. Want to design modular AI pipelines and agents with control over retrieval routing memory and generation? Here's the project."
+    },
+    {
+      "kind": "content",
+      "headline": "Build AI agents and pipelines",
+      "body": "Control how AI retrieves, routes, remembers, and generates answers",
+      "say": "This tool lets you build AI agents that control how information is retrieved, routed, remembered, and generated.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "26,976 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since November 2019",
+      "say": "It has over 20 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Collects anonymous usage data",
+      "body": "Telemetry runs by default but can be disabled in settings",
+      "say": "The framework collects anonymous usage data by default, though you can opt out in the documentation.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 38 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
