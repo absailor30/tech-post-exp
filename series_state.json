@@ -591,6 +591,22 @@
       "category": "local",
       "note": "",
       "quickstart": "git clone https://github.com/janhq/jan\ncd jan\nmake dev"
+    },
+    {
+      "repo": "deepset-ai/haystack",
+      "day": 38,
+      "media_id": "18109156976624953",
+      "opening": "real_quick",
+      "date": "2026-11-10",
+      "name": "deepset-ai/haystack",
+      "url": "https://github.com/deepset-ai/haystack",
+      "description": "Open-source AI orchestration framework for building context-engineered, production-ready LLM applications. Design modular pipelines and agent workflows with explicit control over retrieval, routing, memory, and generation. Built for scalable agents, RAG, multimodal applications, semantic search, and conversational systems.",
+      "stars": 26976,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "rag",
+      "note": "",
+      "quickstart": "pip install haystack-ai"
     }
   ],
   "skipped": []
