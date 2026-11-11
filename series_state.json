@@ -607,6 +607,22 @@
       "category": "rag",
       "note": "",
       "quickstart": "pip install haystack-ai"
+    },
+    {
+      "repo": "TabbyML/tabby",
+      "day": 39,
+      "media_id": "18116303132124914",
+      "opening": "something_cool",
+      "date": "2026-11-11",
+      "name": "TabbyML/tabby",
+      "url": "https://github.com/TabbyML/tabby",
+      "description": "Self-hosted AI coding assistant",
+      "stars": 33935,
+      "license": "NOASSERTION",
+      "language": "Rust",
+      "category": "coding",
+      "note": "",
+      "quickstart": "docker run -it \\\n  --gpus all -p 8080:8080 -v $HOME/.tabby:/data \\\n  tabbyml/tabby \\\n  serve --model StarCoder-1B --device cuda --chat-model Qwen2-1.5B-Instruct"
     }
   ],
   "skipped": []

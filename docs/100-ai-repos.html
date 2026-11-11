@@ -13,7 +13,7 @@
  .rel{margin-top:8px;font-size:13px;color:#586069} footer{padding:10px 40px 30px;color:#6a737d;font-size:12px}
 </style></head><body>
 <header><h1>100 AI Repos Worth Knowing</h1>
-<p>Days 1&ndash;38 so far &middot; updated 10 Nov 2026 &middot; a new repo every day, in plain words</p>
+<p>Days 1&ndash;39 so far &middot; updated 11 Nov 2026 &middot; a new repo every day, in plain words</p>
 <p class="rule">Repos are added to this list on the day they are revealed &mdash; check back daily.</p></header>
 <div class="wrap"><section class="card">
   <div class="day">DAY 1</div>
@@ -56,7 +56,7 @@ docker run -d -p 3000:3000 \
   <h2><a href="https://github.com/anthropics/claude-code">anthropics/claude-code</a></h2>
   <p class="desc">Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.</p>
   <div class="meta">149,792 stars · TypeScript</div>
-  <div class="lbl">Quick start (from the README)</div><pre>curl -fsSL https://claude.ai/install.sh | bash</pre><div class="rel">Also in the series: google-gemini/gemini-cli, Aider-AI/aider</div>
+  <div class="lbl">Quick start (from the README)</div><pre>curl -fsSL https://claude.ai/install.sh | bash</pre><div class="rel">Also in the series: google-gemini/gemini-cli, Aider-AI/aider, TabbyML/tabby</div>
 </section><section class="card">
   <div class="day">DAY 7</div>
   <h2><a href="https://github.com/daijro/camoufox">daijro/camoufox</a></h2>
@@ -84,7 +84,7 @@ unsloth studio -p 8888</pre>
   <h2><a href="https://github.com/google-gemini/gemini-cli">google-gemini/gemini-cli</a></h2>
   <p class="desc">An open-source AI agent that brings the power of Gemini directly into your terminal.</p>
   <div class="meta">107,308 stars · Apache-2.0 · TypeScript</div>
-  <div class="lbl">Quick start (from the README)</div><pre>npm install -g @google/gemini-cli</pre><div class="rel">Also in the series: anthropics/claude-code, Aider-AI/aider</div>
+  <div class="lbl">Quick start (from the README)</div><pre>npm install -g @google/gemini-cli</pre><div class="rel">Also in the series: anthropics/claude-code, Aider-AI/aider, TabbyML/tabby</div>
 </section><section class="card">
   <div class="day">DAY 11</div>
   <h2><a href="https://github.com/headroomlabs-ai/headroom">headroomlabs-ai/headroom</a></h2>
@@ -170,7 +170,7 @@ cd TradingAgents</pre><div class="rel">Also in the series: openbq-org/OpenBB, AI
   <h2><a href="https://github.com/Aider-AI/aider">Aider-AI/aider</a></h2>
   <p class="desc">aider is AI pair programming in your terminal</p>
   <div class="meta">49,756 stars · Apache-2.0 · Python</div>
-  <div class="rel">Also in the series: anthropics/claude-code, google-gemini/gemini-cli</div>
+  <div class="rel">Also in the series: anthropics/claude-code, google-gemini/gemini-cli, TabbyML/tabby</div>
 </section><section class="card">
   <div class="day">DAY 24</div>
   <h2><a href="https://github.com/crewAIInc/crewAI">crewAIInc/crewAI</a></h2>
@@ -266,6 +266,15 @@ make dev</pre><div class="rel">Also in the series: ollama/ollama, oobabooga/text
   <p class="desc">Open-source AI orchestration framework for building context-engineered, production-ready LLM applications. Design modular pipelines and agent workflows with explicit control over retrieval, routing, memory, and generation. Built for scalable agents, RAG, multimodal applications, semantic search, and conversational systems.</p>
   <div class="meta">26,976 stars · Apache-2.0 · Python</div>
   <div class="lbl">Quick start (from the README)</div><pre>pip install haystack-ai</pre><div class="rel">Also in the series: run-llama/llama_index</div>
+</section><section class="card">
+  <div class="day">DAY 39</div>
+  <h2><a href="https://github.com/TabbyML/tabby">TabbyML/tabby</a></h2>
+  <p class="desc">Self-hosted AI coding assistant</p>
+  <div class="meta">33,935 stars · NOASSERTION · Rust</div>
+  <div class="lbl">Quick start (from the README)</div><pre>docker run -it \
+  --gpus all -p 8080:8080 -v $HOME/.tabby:/data \
+  tabbyml/tabby \
+  serve --model StarCoder-1B --device cuda --chat-model Qwen2-1.5B-Instruct</pre><div class="rel">Also in the series: anthropics/claude-code, google-gemini/gemini-cli, Aider-AI/aider</div>
 </section></div>
 <footer>Facts (stars, licence) are from GitHub on the day each repo was posted. Always read a project's own README and licence before relying on it. Not financial advice for any trading-related project.</footer>
 </body></html>
