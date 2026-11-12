@@ -623,6 +623,22 @@
       "category": "coding",
       "note": "",
       "quickstart": "docker run -it \\\n  --gpus all -p 8080:8080 -v $HOME/.tabby:/data \\\n  tabbyml/tabby \\\n  serve --model StarCoder-1B --device cuda --chat-model Qwen2-1.5B-Instruct"
+    },
+    {
+      "repo": "openai/whisper",
+      "day": 40,
+      "media_id": "18111129668257964",
+      "opening": "under_a_minute",
+      "date": "2026-11-12",
+      "name": "openai/whisper",
+      "url": "https://github.com/openai/whisper",
+      "description": "Robust Speech Recognition via Large-Scale Weak Supervision",
+      "stars": 112546,
+      "license": "MIT",
+      "language": "Python",
+      "category": "voice",
+      "note": "",
+      "quickstart": "pip install setuptools-rust"
     }
   ],
   "skipped": []
