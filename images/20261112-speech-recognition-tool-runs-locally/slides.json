@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Robust Speech Recognition via Large-Scale Weak Supervision",
+      "kicker": "Repo 40 of 100",
+      "say": "Here's one worth knowing... Robust Speech Recognition via Large-Scale Weak Supervision."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "Recognizes speech in many languages, translates to English, identifies language spoken",
+      "say": "It recognizes speech in many languages, translates to English, and identifies what language is being spoken.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "112,546 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since September 2022",
+      "say": "It has over 110 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "Turbo model does not translate; read README and licence first",
+      "say": "The turbo model does not translate, so read the README and licence first.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 40 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
