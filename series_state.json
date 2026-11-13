@@ -639,6 +639,22 @@
       "category": "voice",
       "note": "",
       "quickstart": "pip install setuptools-rust"
+    },
+    {
+      "repo": "apilayer",
+      "day": 41,
+      "media_id": "17996046801022005",
+      "opening": "did_you_know",
+      "date": "2026-11-13",
+      "name": "apilayer",
+      "url": "https://github.com/apilayer",
+      "description": "",
+      "stars": null,
+      "license": "",
+      "language": "",
+      "category": "apis",
+      "note": "Marketplace/org of 178+ production-ready APIs (currency, geolocation, weather, etc.)",
+      "quickstart": ""
     }
   ],
   "skipped": [],
