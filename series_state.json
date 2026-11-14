@@ -655,6 +655,22 @@
       "category": "apis",
       "note": "Marketplace/org of 178+ production-ready APIs (currency, geolocation, weather, etc.)",
       "quickstart": ""
+    },
+    {
+      "repo": "HKUDS/Vibe-Trading",
+      "day": 42,
+      "media_id": "17916383367519205",
+      "opening": "found_this",
+      "date": "2026-11-14",
+      "name": "HKUDS/Vibe-Trading",
+      "url": "https://github.com/HKUDS/Vibe-Trading",
+      "description": "\"Vibe-Trading: Your Personal Trading Agent\"",
+      "stars": 38193,
+      "license": "MIT",
+      "language": "Python",
+      "category": "trading",
+      "note": "Personal AI trading agent turning finance questions into research/backtests",
+      "quickstart": "pip install vibe-trading-ai\nvibe-trading init\nvibe-trading"
     }
   ],
   "skipped": [],
