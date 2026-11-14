@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Turn questions into trading research",
+      "kicker": "Repo 42 of 100",
+      "say": "Here's one worth knowing... \"this tool: Your Personal Trading Agent\"."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "Turns your finance questions into research and backtests using AI agents",
+      "say": "What it does. Turns your finance questions into research and backtests using AI agents",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "38,193 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since April 2026",
+      "say": "It has over 30 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "What to know",
+      "body": "Experimental tool for research only, not investment advice, live trading requires your broker authorization",
+      "say": "What to know. Experimental tool for research only, not investment advice, live trading requires your broker authorization",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 42 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
