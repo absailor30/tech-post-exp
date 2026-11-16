@@ -13,7 +13,7 @@
  .rel{margin-top:8px;font-size:13px;color:#586069} footer{padding:10px 40px 30px;color:#6a737d;font-size:12px}
 </style></head><body>
 <header><h1>100 AI Repos Worth Knowing</h1>
-<p>Days 1&ndash;43 so far &middot; updated 15 Nov 2026 &middot; a new repo every day, in plain words</p>
+<p>Days 1&ndash;44 so far &middot; updated 16 Nov 2026 &middot; a new repo every day, in plain words</p>
 <p class="rule">Repos are added to this list on the day they are revealed &mdash; check back daily.</p></header>
 <div class="wrap"><section class="card">
   <div class="day">DAY 1</div>
@@ -93,7 +93,7 @@ unsloth studio -p 8888</pre>
   <div class="note">Compresses tool outputs/logs/RAG chunks before reaching the LLM to save tokens</div><div class="lbl">Quick start (from the README)</div><pre>uv tool install --python 3.13 &quot;headroom-ai[all]&quot;  # CLI, isolated app env
 pip install &quot;headroom-ai[all]&quot;                    # Python, everything — includes the CLI
 npm install headroom-ai                           # TypeScript SDK (library only)
-docker pull ghcr.io/headroomlabs-ai/headroom:latest</pre>
+docker pull ghcr.io/headroomlabs-ai/headroom:latest</pre><div class="rel">Also in the series: ppgranger/token-saver</div>
 </section><section class="card">
   <div class="day">DAY 12</div>
   <h2><a href="https://github.com/the-agency-ai/the-agency">the-agency-ai/the-agency</a></h2>
@@ -301,6 +301,15 @@ vibe-trading</pre><div class="rel">Also in the series: openbq-org/OpenBB, Tauric
   <p class="desc">Your AI second brain. Self-hostable. Get answers from the web or your docs. Build custom agents, schedule automations, do deep research. Turn any online or local LLM into your personal, autonomous AI (gpt, claude, gemini, llama, qwen, mistral). Get started - free.</p>
   <div class="meta">38,129 stars · AGPL-3.0 · Python</div>
   
+</section><section class="card">
+  <div class="day">DAY 44</div>
+  <h2><a href="https://github.com/ppgranger/token-saver">ppgranger/token-saver</a></h2>
+  <p class="desc">Content-aware output compression for AI coding assistants. 36 specialized processors cut CLI output tokens by 60-99% (git, pytest, npm, terraform, kubectl, docker, and more) without losing errors, diffs, or stack traces.</p>
+  <div class="meta">166 stars · Apache-2.0 · Python</div>
+  <div class="note">Content-aware output compression tool reducing tokens for AI coding assistants</div><div class="lbl">Quick start (from the README)</div><pre>git clone https://github.com/ppgranger/token-saver.git &amp;&amp; cd token-saver
+python3 bin/token-saver benchmark &#x27;git log --oneline -50&#x27;
+python3 bin/token-saver benchmark &#x27;git diff&#x27; --show-removed
+python3 bin/token-saver explain &#x27;docker compose logs | grep error&#x27;</pre><div class="rel">Also in the series: headroomlabs-ai/headroom</div>
 </section></div>
 <footer>Facts (stars, licence) are from GitHub on the day each repo was posted. Always read a project's own README and licence before relying on it. Not financial advice for any trading-related project.</footer>
 </body></html>

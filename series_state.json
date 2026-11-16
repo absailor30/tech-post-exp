@@ -687,6 +687,22 @@
       "category": "search",
       "note": "",
       "quickstart": ""
+    },
+    {
+      "repo": "ppgranger/token-saver",
+      "day": 44,
+      "media_id": "18058079258815377",
+      "opening": "stop_scrolling",
+      "date": "2026-11-16",
+      "name": "ppgranger/token-saver",
+      "url": "https://github.com/ppgranger/token-saver",
+      "description": "Content-aware output compression for AI coding assistants. 36 specialized processors cut CLI output tokens by 60-99% (git, pytest, npm, terraform, kubectl, docker, and more) without losing errors, diffs, or stack traces.",
+      "stars": 166,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "tokens",
+      "note": "Content-aware output compression tool reducing tokens for AI coding assistants",
+      "quickstart": "git clone https://github.com/ppgranger/token-saver.git && cd token-saver\npython3 bin/token-saver benchmark 'git log --oneline -50'\npython3 bin/token-saver benchmark 'git diff' --show-removed\npython3 bin/token-saver explain 'docker compose logs | grep error'"
     }
   ],
   "skipped": [],
