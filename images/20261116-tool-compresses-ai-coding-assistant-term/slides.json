@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Compress AI coding output",
+      "kicker": "Repo 44 of 100",
+      "say": "Stop scrolling... you can compress terminal output for AI coding assistants."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "",
+      "say": "This tool compresses terminal output that AI coding assistants read \u2014 test results, git diffs, install logs \u2014 so more context fits in the conversation. It runs locally with no extra AI calls.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "166 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since February 2026",
+      "say": "It has over 0 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you use it",
+      "body": "",
+      "say": "Not every command compresses \u2014 some output is already dense or needed verbatim. The tool returns original text rather than risk losing important details. Read the README and licence first.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 44 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
