@@ -703,6 +703,22 @@
       "category": "tokens",
       "note": "Content-aware output compression tool reducing tokens for AI coding assistants",
       "quickstart": "git clone https://github.com/ppgranger/token-saver.git && cd token-saver\npython3 bin/token-saver benchmark 'git log --oneline -50'\npython3 bin/token-saver benchmark 'git diff' --show-removed\npython3 bin/token-saver explain 'docker compose logs | grep error'"
+    },
+    {
+      "repo": "huggingface/diffusers",
+      "day": 45,
+      "media_id": "18075082868497009",
+      "opening": "stop_scrolling",
+      "date": "2026-11-17",
+      "name": "huggingface/diffusers",
+      "url": "https://github.com/huggingface/diffusers",
+      "description": "\ud83e\udd17 Diffusers: State-of-the-art diffusion models for image, video, and audio generation in PyTorch.",
+      "stars": 34931,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "image",
+      "note": "",
+      "quickstart": "pip install --upgrade diffusers[torch]"
     }
   ],
   "skipped": [],
