@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI writes less code, ships safer",
+      "kicker": "Repo 46 of 100",
+      "say": "Send this to a friend who'd love to make AI agents write minimal senior-dev code."
+    },
+    {
+      "kind": "content",
+      "headline": "What it does",
+      "body": "A prompt that teaches AI coding agents to write only necessary code like a lazy senior developer",
+      "say": "This tool gives your AI agent a senior dev mindset \u2014 write only what the task needs, never cut validation or security.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "193,611 GitHub stars",
+      "body": "MIT licence \u00b7 Written in JavaScript \u00b7 Since June 2026",
+      "say": "It has over 190 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Before you try",
+      "body": "Only works with skill-capable AI hosts; read the license before using",
+      "say": "It only runs on agents that support skills \u2014 check the README and license first to see if your setup qualifies.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 46 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
