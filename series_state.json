@@ -719,6 +719,22 @@
       "category": "image",
       "note": "",
       "quickstart": "pip install --upgrade diffusers[torch]"
+    },
+    {
+      "repo": "DietrichGebert/ponytail",
+      "day": 46,
+      "media_id": "18107889817998154",
+      "opening": "send_friend",
+      "date": "2026-11-18",
+      "name": "DietrichGebert/ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "description": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "stars": 193611,
+      "license": "MIT",
+      "language": "JavaScript",
+      "category": "coding",
+      "note": "Ruleset making AI coding agents write minimal, lazy-senior-dev-style code",
+      "quickstart": ""
     }
   ],
   "skipped": [],
