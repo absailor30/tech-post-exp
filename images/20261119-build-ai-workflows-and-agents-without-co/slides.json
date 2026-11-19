@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Build AI workflows visually",
+      "kicker": "Repo 47 of 100",
+      "say": "What if I told you... you could build AI workflows and agents on a visual canvas?"
+    },
+    {
+      "kind": "content",
+      "headline": "Visual canvas for AI workflows",
+      "body": "Drag and drop to design agent workflows and RAG pipelines without writing code",
+      "say": "You drag blocks on a canvas to design AI workflows and RAG pipelines, no code needed.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "161,478 GitHub stars",
+      "body": "Written in Python \u00b7 Since April 2023",
+      "say": "It has over 160 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Needs Docker and 4GB RAM",
+      "body": "Self-hosting requires Docker Compose, two CPU cores and four gigabytes of memory",
+      "say": "To self-host you need Docker Compose, two CPU cores and four gigabytes of RAM.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 47 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
