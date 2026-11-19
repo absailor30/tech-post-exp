@@ -735,6 +735,22 @@
       "category": "coding",
       "note": "Ruleset making AI coding agents write minimal, lazy-senior-dev-style code",
       "quickstart": ""
+    },
+    {
+      "repo": "langgenius/dify",
+      "day": 47,
+      "media_id": "17914395516311112",
+      "opening": "what_if",
+      "date": "2026-11-19",
+      "name": "langgenius/dify",
+      "url": "https://github.com/langgenius/dify",
+      "description": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+      "stars": 161478,
+      "license": "NOASSERTION",
+      "language": "Python",
+      "category": "lowcode",
+      "note": "Production-ready platform for building agentic LLM workflows and apps",
+      "quickstart": "docker compose up -d\ndocker compose ps --all"
     }
   ],
   "skipped": [],
