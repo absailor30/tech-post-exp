@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "AI agents that never forget",
+      "kicker": "Repo 48 of 100",
+      "say": "A free, open-source GitHub project that lets you give AI agents persistent memory that lasts."
+    },
+    {
+      "kind": "content",
+      "headline": "Gives AI agents lasting memory",
+      "body": "Remembers preferences and history across conversations automatically",
+      "say": "This tool gives AI agents a memory layer remembering your preferences across conversations, making the AI more helpful over time.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "69,270 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Python \u00b7 Since June 2023",
+      "say": "It has over 60 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Needs an AI model to work",
+      "body": "Requires separate LLM and embedding model; self-hosted needs setup",
+      "say": "This tool needs a separate AI model to work, and the self-hosted version requires technical setup.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 48 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
