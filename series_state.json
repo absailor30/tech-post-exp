@@ -751,6 +751,22 @@
       "category": "lowcode",
       "note": "Production-ready platform for building agentic LLM workflows and apps",
       "quickstart": "docker compose up -d\ndocker compose ps --all"
+    },
+    {
+      "repo": "mem0ai/mem0",
+      "day": 48,
+      "media_id": "18141926563724238",
+      "opening": "free_open",
+      "date": "2026-11-20",
+      "name": "mem0ai/mem0",
+      "url": "https://github.com/mem0ai/mem0",
+      "description": "The Memory Layer for AI Agents - Drop-in memory infrastructure for AI agents and apps. Context that persists. Built for production.",
+      "stars": 69270,
+      "license": "Apache-2.0",
+      "language": "Python",
+      "category": "memory",
+      "note": "",
+      "quickstart": "pip install mem0ai"
     }
   ],
   "skipped": [],
