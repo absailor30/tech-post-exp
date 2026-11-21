@@ -767,6 +767,22 @@
       "category": "memory",
       "note": "",
       "quickstart": "pip install mem0ai"
+    },
+    {
+      "repo": "heygen-com/hyperframes",
+      "day": 49,
+      "media_id": "18076937570486982",
+      "opening": "wait_what",
+      "date": "2026-11-21",
+      "name": "heygen-com/hyperframes",
+      "url": "https://github.com/heygen-com/hyperframes",
+      "description": "AI video you can actually edit. HyperFrames is a free, open-source AI video editor. Describe any video and get a real project you can change down to the frame.",
+      "stars": 87620,
+      "license": "Apache-2.0",
+      "language": "TypeScript",
+      "category": "video",
+      "note": "Write HTML, render deterministic MP4 video, built for AI agents",
+      "quickstart": "npx skills add heygen-com/hyperframes"
     }
   ],
   "skipped": [],
