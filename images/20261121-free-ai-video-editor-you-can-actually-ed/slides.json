@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Describe it, edit it, own it",
+      "kicker": "Repo 49 of 100",
+      "say": "Wait... you can describe a video and get an editable project? Yes. You really can."
+    },
+    {
+      "kind": "content",
+      "headline": "Turn words into editable video",
+      "body": "Describe any video, get a full project you can tweak frame by frame",
+      "say": "You describe a video in plain words, and this tool gives you a complete project you can change down to the frame.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "87,620 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in TypeScript \u00b7 Since March 2026",
+      "say": "It has over 80 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Pro plan adds cloud AI models",
+      "body": "Free version renders locally with no watermark; Pro is $25 a month for hosted AI",
+      "say": "The free version renders on your computer with no watermark. The Pro plan at twenty-five dollars a month adds HeyGen's top AI video, image, and voice models in the cloud.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 49 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
