@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Coding agent for open models like Kimi",
+      "kicker": "Repo 50 of 100",
+      "say": "Here's one worth knowing... A coding agent for open models like Kimi K3.1 and GLM 5.3."
+    },
+    {
+      "kind": "content",
+      "headline": "Runs coding agent with open models",
+      "body": "This tool lets you use a coding agent with open models like Kimi K3, optimized for low-cost models with a Rust-based harness for speed.",
+      "say": "Runs coding agent with open models. This tool lets you use a coding agent with open models like Kimi K3, optimized for low-cost models with a Rust-based harness for speed",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "68,934 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Rust \u00b7 Since July 2023",
+      "say": "It has over 60 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "New Rust version, Python fork separate",
+      "body": "Note this is the new Rust version; the original Python project is a separate community fork, so check which one you need.",
+      "say": "New Rust version, Python fork separate. Note this is the new Rust version; the original Python project is a separate community fork, so check which one you need",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 50 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
