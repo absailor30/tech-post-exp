@@ -783,6 +783,22 @@
       "category": "video",
       "note": "Write HTML, render deterministic MP4 video, built for AI agents",
       "quickstart": "npx skills add heygen-com/hyperframes"
+    },
+    {
+      "repo": "OpenInterpreter/open-interpreter",
+      "day": 50,
+      "media_id": "18116062880112754",
+      "opening": "one_project",
+      "date": "2026-11-22",
+      "name": "openinterpreter/openinterpreter",
+      "url": "https://github.com/openinterpreter/openinterpreter",
+      "description": "A coding agent for open models like Kimi K3.1 and GLM 5.3",
+      "stars": 68934,
+      "license": "Apache-2.0",
+      "language": "Rust",
+      "category": "agents",
+      "note": "",
+      "quickstart": "curl -fsSL https://www.openinterpreter.com/install | sh"
     }
   ],
   "skipped": [],
