@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Turn files into Markdown instantly",
+      "kicker": "Repo 51 of 100",
+      "say": "One GitHub project, and it lets you convert files and office documents to Markdown."
+    },
+    {
+      "kind": "content",
+      "headline": "Handles PDFs, Word, Excel, more",
+      "body": "Converts office files, images, audio, and web pages to clean Markdown.",
+      "say": "It turns PDFs, Word docs, spreadsheets, slides, images, even audio into clean Markdown...",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "197,978 GitHub stars",
+      "body": "MIT licence \u00b7 Written in Python \u00b7 Since November 2024",
+      "say": "It has over 190 thousand stars on GitHub and uses the MIT licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Runs with your file permissions",
+      "body": "Image and audio features need internet; sanitize inputs in untrusted settings.",
+      "say": "Image and audio need the cloud, and it reads files with your permissions, so check inputs...",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 51 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
