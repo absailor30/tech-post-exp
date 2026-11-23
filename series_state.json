@@ -799,9 +799,31 @@
       "category": "agents",
       "note": "",
       "quickstart": "curl -fsSL https://www.openinterpreter.com/install | sh"
+    },
+    {
+      "repo": "microsoft/markitdown",
+      "day": 51,
+      "media_id": "17926119501449630",
+      "opening": "one_project",
+      "date": "2026-11-23",
+      "name": "microsoft/markitdown",
+      "url": "https://github.com/microsoft/markitdown",
+      "description": "Python tool for converting files and office documents to Markdown.",
+      "stars": 197978,
+      "license": "MIT",
+      "language": "Python",
+      "category": "rag",
+      "note": "",
+      "quickstart": "git clone git@github.com:microsoft/markitdown.git\ncd markitdown\npip install -e 'packages/markitdown[all]'"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "repo": "FlowiseAI/Flowise",
+      "reason": "archived",
+      "date": "2026-11-23"
+    }
+  ],
   "blocked": {
     "apilayer": 1
   }
