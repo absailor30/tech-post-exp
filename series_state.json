@@ -815,6 +815,22 @@
       "category": "rag",
       "note": "",
       "quickstart": "git clone git@github.com:microsoft/markitdown.git\ncd markitdown\npip install -e 'packages/markitdown[all]'"
+    },
+    {
+      "repo": "SYSTRAN/faster-whisper",
+      "day": 52,
+      "media_id": "18101876927544380",
+      "opening": "since_year",
+      "date": "2026-11-24",
+      "name": "SYSTRAN/faster-whisper",
+      "url": "https://github.com/SYSTRAN/faster-whisper",
+      "description": "Faster Whisper transcription with CTranslate2",
+      "stars": 26976,
+      "license": "MIT",
+      "language": "Python",
+      "category": "voice",
+      "note": "",
+      "quickstart": "pip install nvidia-cublas-cu12 nvidia-cudnn-cu12==9.*\n\nexport LD_LIBRARY_PATH=$(python3 -c 'import os, nvidia.cublas, nvidia.cudnn; print(os.path.dirname(nvidia.cublas.__path__[0]) + \"/cublas/lib:\" + os.path.dirname(nvidia.cudnn.__path__[0]) + \"/cudnn/lib\")')"
     }
   ],
   "skipped": [

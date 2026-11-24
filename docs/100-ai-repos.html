@@ -13,7 +13,7 @@
  .rel{margin-top:8px;font-size:13px;color:#586069} footer{padding:10px 40px 30px;color:#6a737d;font-size:12px}
 </style></head><body>
 <header><h1>100 AI Repos Worth Knowing</h1>
-<p>Days 1&ndash;51 so far &middot; updated 23 Nov 2026 &middot; a new repo every day, in plain words</p>
+<p>Days 1&ndash;52 so far &middot; updated 24 Nov 2026 &middot; a new repo every day, in plain words</p>
 <p class="rule">Repos are added to this list on the day they are revealed &mdash; check back daily.</p></header>
 <div class="wrap"><section class="card">
   <div class="day">DAY 1</div>
@@ -111,7 +111,7 @@ docker pull ghcr.io/headroomlabs-ai/headroom:latest</pre><div class="rel">Also i
   <h2><a href="https://github.com/myshell-ai/OpenVoice">myshell-ai/OpenVoice</a></h2>
   <p class="desc">Instant voice cloning by MIT and MyShell. Audio foundation model.</p>
   <div class="meta">37,908 stars · MIT · Python</div>
-  <div class="rel">Also in the series: openai/whisper</div>
+  <div class="rel">Also in the series: openai/whisper, SYSTRAN/faster-whisper</div>
 </section><section class="card">
   <div class="day">DAY 15</div>
   <h2><a href="https://github.com/calesthio/OpenMontage">calesthio/OpenMontage</a></h2>
@@ -280,7 +280,7 @@ make dev</pre><div class="rel">Also in the series: ollama/ollama, oobabooga/text
   <h2><a href="https://github.com/openai/whisper">openai/whisper</a></h2>
   <p class="desc">Robust Speech Recognition via Large-Scale Weak Supervision</p>
   <div class="meta">112,546 stars · MIT · Python</div>
-  <div class="lbl">Quick start (from the README)</div><pre>pip install setuptools-rust</pre><div class="rel">Also in the series: myshell-ai/OpenVoice</div>
+  <div class="lbl">Quick start (from the README)</div><pre>pip install setuptools-rust</pre><div class="rel">Also in the series: myshell-ai/OpenVoice, SYSTRAN/faster-whisper</div>
 </section><section class="card">
   <div class="day">DAY 41</div>
   <h2><a href="https://github.com/apilayer">apilayer</a></h2>
@@ -355,6 +355,14 @@ docker compose ps --all</pre>
   <div class="lbl">Quick start (from the README)</div><pre>git clone git@github.com:microsoft/markitdown.git
 cd markitdown
 pip install -e &#x27;packages/markitdown[all]&#x27;</pre><div class="rel">Also in the series: run-llama/llama_index, deepset-ai/haystack</div>
+</section><section class="card">
+  <div class="day">DAY 52</div>
+  <h2><a href="https://github.com/SYSTRAN/faster-whisper">SYSTRAN/faster-whisper</a></h2>
+  <p class="desc">Faster Whisper transcription with CTranslate2</p>
+  <div class="meta">26,976 stars · MIT · Python</div>
+  <div class="lbl">Quick start (from the README)</div><pre>pip install nvidia-cublas-cu12 nvidia-cudnn-cu12==9.*
+
+export LD_LIBRARY_PATH=$(python3 -c &#x27;import os, nvidia.cublas, nvidia.cudnn; print(os.path.dirname(nvidia.cublas.__path__[0]) + &quot;/cublas/lib:&quot; + os.path.dirname(nvidia.cudnn.__path__[0]) + &quot;/cudnn/lib&quot;)&#x27;)</pre><div class="rel">Also in the series: myshell-ai/OpenVoice, openai/whisper</div>
 </section></div>
 <footer>Facts (stars, licence) are from GitHub on the day each repo was posted. Always read a project's own README and licence before relying on it. Not financial advice for any trading-related project.</footer>
 </body></html>
