@@ -1,0 +1,36 @@
+name: refresh-ig-token
+
+# Instagram long-lived tokens last ~60 days and can be refreshed for
+# another ~60 days -- but only while still valid. Running this weekly
+# keeps us always well inside that window so the token never expires on
+# its own again. workflow_dispatch is there so a refresh can be forced
+# right after a brand-new token is pasted into the secret by hand.
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # every Monday
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pynacl
+      - name: refresh token and update secret
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          GH_SECRETS_PAT: ${{ secrets.GH_SECRETS_PAT }}
+        run: python refresh_ig_token.py
+      - name: telegram failure alert
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python notify.py --failure refresh-ig-token
