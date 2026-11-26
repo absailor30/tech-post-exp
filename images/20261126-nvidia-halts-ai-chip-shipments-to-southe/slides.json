@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "The AI chips Southeast Asia can no longer buy",
+      "kicker": "Chip Blockade",
+      "say": "The AI chips Southeast Asia can no longer buy"
+    },
+    {
+      "kind": "content",
+      "headline": "Shipments stopped this week",
+      "body": "NVIDIA blocked AI chip deliveries to Southeast Asian countries, per Engadget reporting.",
+      "say": "Shipments stopped this week. NVIDIA blocked AI chip deliveries to Southeast Asian countries, per Engadget reporting.",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "These chips run most AI",
+      "body": "NVIDIA GPUs are the standard for training and running AI models worldwide.",
+      "say": "These chips run most AI. NVIDIA GPUs are the standard for training and running AI models worldwide.",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Same week CEO returned",
+      "body": "The halt came as Jensen Huang resumed leadership after a brief removal.",
+      "say": "Same week CEO returned. The halt came as Jensen Huang resumed leadership after a brief removal.",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "AI projects may stall",
+      "body": "Without these chips, companies and researchers in the region cannot build new AI.",
+      "say": "AI projects may stall. Without these chips, companies and researchers in the region cannot build new AI.",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "Track the chip wars",
+      "body": "We explain how hardware moves shape the AI you use daily.",
+      "say": "Track the chip wars. We explain how hardware moves shape the AI you use daily."
+    }
+  ]
+}
