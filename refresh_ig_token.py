@@ -74,7 +74,7 @@ def update_github_secret(repo, pat, name, value):
 
 
 def main():
-    current = os.environ["INSTAGRAM_ACCESS_TOKEN"]
+    current = os.environ["INSTAGRAM_ACCESS_TOKEN"].strip()
     pat = os.environ["GH_SECRETS_PAT"]
     repo = os.environ["GITHUB_REPOSITORY"]
 

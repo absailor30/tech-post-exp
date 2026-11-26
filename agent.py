@@ -155,7 +155,11 @@ IG_API = "https://graph.instagram.com/v23.0"
 
 
 def ig_token():
-    return os.environ["INSTAGRAM_ACCESS_TOKEN"]
+    # A copy-pasted secret picking up a trailing space/newline is a real,
+    # recurring failure mode ("Cannot parse access token") that has nothing
+    # to do with the token itself being wrong -- strip it defensively so
+    # that class of mistake can never cause a false "token is broken" dead end.
+    return os.environ["INSTAGRAM_ACCESS_TOKEN"].strip()
 
 
 def cmd_publish(image_url, caption):
