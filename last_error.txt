@@ -1,1 +1,1 @@
-INSTAGRAM_TOKEN_EXPIRED: Error validating access token: Session has expired on Tuesday, 24-Nov-26 06:55:13 PST. The current time is Thursday, 26-Nov-26 09:00:09 PST.
+INSTAGRAM_TOKEN_EXPIRED: Invalid OAuth access token - Cannot parse access token
