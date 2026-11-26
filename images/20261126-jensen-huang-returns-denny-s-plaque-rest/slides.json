@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "A Denny's plaque explains the AI chaos",
+      "kicker": "AI Power Shift",
+      "say": "A Denny's plaque explains the AI chaos"
+    },
+    {
+      "kind": "content",
+      "headline": "Huang forced out, then brought back",
+      "body": "Resigned over affairs with alleged Chinese spy and executive; Trump publicly demanded his return",
+      "say": "Huang forced out, then brought back. Resigned over affairs with alleged Chinese spy and executive; Trump publicly demanded his return",
+      "idx": 2,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Stock gained $900bn, then lost 6%",
+      "body": "Monday surge erased Tuesday as investors realize investigations continue",
+      "say": "Stock gained $900bn, then lost 6%. Monday surge erased Tuesday as investors realize investigations continue",
+      "idx": 3,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "FBI probing Nvidia chip sales to China",
+      "body": "Alleged help for Chinese firms accessing top AI chips; Capitol Hill also investigating",
+      "say": "FBI probing Nvidia chip sales to China. Alleged help for Chinese firms accessing top AI chips; Capitol Hill also investigating",
+      "idx": 4,
+      "total": 6
+    },
+    {
+      "kind": "content",
+      "headline": "Denny's plaque restored in San Jose",
+      "body": "Booth marker honors where Huang reportedly co-founded Nvidia \u2014 now back on the wall",
+      "say": "Denny's plaque restored in San Jose. Booth marker honors where Huang reportedly co-founded Nvidia \u2014 now back on the wall",
+      "idx": 5,
+      "total": 6
+    },
+    {
+      "kind": "cta",
+      "headline": "AI power moves, explained",
+      "body": "Follow for what AI leaders do that affects your money and privacy",
+      "say": "AI power moves, explained. Follow for what AI leaders do that affects your money and privacy"
+    }
+  ]
+}
