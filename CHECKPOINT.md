@@ -8,16 +8,10 @@ Status doc for picking this project back up in a fresh chat. This is the
 
 - Posting twice daily (morning + evening IST slots), reels-only, AI-news-only,
   research-gated with dedup against post history.
-- Instagram token expired again on 2026-11-24 and took an extended debugging
-  session (2026-11-26) to fix — see "Instagram token: the Unified-login trap"
-  below before touching this again. Currently working, verified via a forced
-  run that published successfully (media id `18119317673021224`, topic
-  "Nvidia halts AI chip shipments to Southeast Asia").
-- A weekly self-refreshing token job (`refresh-ig-token.yml` +
-  `refresh_ig_token.py`) now renews the long-lived token automatically before
-  it can expire — requires a one-time `GH_SECRETS_PAT` secret (fine-grained
-  PAT, this repo's Actions-secrets read/write permission) to be set up; check
-  whether that's done before assuming auto-refresh is actually active.
+- Instagram token was regenerated on 2026-09-25 after two separate expiries
+  and is currently working — verified via a forced run that published
+  successfully (media id `17873164452593225`, topic "Gemini 3.8 speaks text
+  aloud").
 - Seed-comment feature (see below) is live and has a safety guard after an
   early bug shipped a bad comment to a real post.
 - `tech-myth-bust` (a separate, unrelated repo — an abandoned scraper
@@ -137,31 +131,5 @@ never guess" norm established over many rounds of debugging.
   that 404/are archived are skipped automatically.
 - **Posting cadence caveat**: scheduled runs fire 4-7h late, so the "morning" news
   runs land in the evening slot and real news output is ~1 post/day, not 2.
-
-## Instagram token: the Unified-login trap (2026-11-26)
-
-When the token next expires (or the weekly auto-refresh job above somehow
-fails and a human has to regenerate it), **do not use the app dashboard's
-"API setup with Unified login" page or its "Generate token" shortcut, and
-do not use the Graph API Explorer's default "Get Token" flow either** --
-both are tied to this app's "Unified login" Configuration
-(`4372995102833068`) and issue a System-User Access Token that the
-`graph.instagram.com` endpoints this pipeline calls (`/me/media`, `/me`,
-etc.) reject outright with `OAuthException code 190: "Cannot parse access
-token"`. Confirmed this is NOT a copy-paste/whitespace issue (tested
-Bearer-header vs query-param auth, `/me` vs the explicit IG account id
-`17841479725757732`, and even a freshly-pasted token straight off the
-Copy button -- all failed identically). The real smoking gun: Instagram's
-own OAuth authorize page threw `Invalid platform app` when the dashboard
-tried to actually run that login flow -- a platform/app-configuration
-rejection, not a credentials problem.
-
-**The fix that actually worked**: in Graph API Explorer
-(developers.facebook.com/tools/explorer), generate the token via
-**"API setup with Instagram login"** (not Unified login, not Facebook
-login -- Instagram login specifically). That produced a token that
-published a real post successfully (media id `18119317673021224`).
-Permissions needed: `instagram_basic`, `instagram_content_publish`,
-`instagram_manage_comments`, `instagram_manage_messages`.
 - **Git gotcha**: the Actions bot token cannot push commits that touch
   `.github/workflows/`. Never let a branch run push workflow-file history to main.
