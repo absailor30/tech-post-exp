@@ -847,6 +847,22 @@
       "category": "router",
       "note": "Free AI gateway routing coding agents to 231+ LLM providers with fallback",
       "quickstart": "curl http://localhost:20128/v1/chat/completions \\\n  -H \"Authorization: Bearer YOUR_OMNIROUTE_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\":\"auto\",\"messages\":[{\"role\":\"user\",\"content\":\"Hello!\"}]}'"
+    },
+    {
+      "repo": "n8n-io/n8n",
+      "day": 54,
+      "media_id": "18127147069929781",
+      "opening": "save_this",
+      "date": "2026-11-27",
+      "name": "n8n-io/n8n",
+      "url": "https://github.com/n8n-io/n8n",
+      "description": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.",
+      "stars": 212393,
+      "license": "NOASSERTION",
+      "language": "TypeScript",
+      "category": "lowcode",
+      "note": "",
+      "quickstart": "curl -fsSL https://get.n8n.io | sh"
     }
   ],
   "skipped": [
