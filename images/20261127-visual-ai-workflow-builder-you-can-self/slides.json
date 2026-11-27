@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "Build AI Workflows Visually, Run Anywhere",
+      "kicker": "Repo 54 of 100",
+      "say": "Save this one. It lets you build AI workflows visually and run them yourself."
+    },
+    {
+      "kind": "content",
+      "headline": "Connects 1500+ apps and any AI model",
+      "body": "Link your tools and choose OpenAI, Anthropic, or local models without changing setup.",
+      "say": "It connects over 1500 apps and lets you pick any AI model, open or closed.",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "212,393 GitHub stars",
+      "body": "Written in TypeScript \u00b7 Since June 2019",
+      "say": "It has over 210 thousand stars on GitHub.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Enterprise features need paid license",
+      "body": "Core platform is fair-code, but advanced security and support require a commercial license.",
+      "say": "The core is free, but enterprise features like SSO and audit logs need a paid license.",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 54 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
