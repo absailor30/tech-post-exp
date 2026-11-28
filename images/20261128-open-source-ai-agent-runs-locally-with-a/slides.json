@@ -1,0 +1,41 @@
+{
+  "theme": "light",
+  "slides": [
+    {
+      "kind": "hook",
+      "headline": "This AI agent actually does the work for you",
+      "kicker": "Repo 55 of 100",
+      "say": "Here's one worth knowing... an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with."
+    },
+    {
+      "kind": "content",
+      "headline": "Runs tasks, not just suggests code",
+      "body": "Installs, executes, edits, and tests using any language model you choose.",
+      "say": "Runs tasks, not just suggests code. Installs, executes, edits, and tests using any language model you choose",
+      "idx": 2,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "57,092 GitHub stars",
+      "body": "Apache-2.0 licence \u00b7 Written in Rust \u00b7 Since August 2024",
+      "say": "It has over 50 thousand stars on GitHub and uses the Apache-2.0 licence.",
+      "idx": 3,
+      "total": 5
+    },
+    {
+      "kind": "content",
+      "headline": "Core framework still in early alpha",
+      "body": "The underlying oi-kit is alpha; read the README and license first.",
+      "say": "Core framework still in early alpha. The underlying oi-kit is alpha; read the README and license first",
+      "idx": 4,
+      "total": 5
+    },
+    {
+      "kind": "cta",
+      "headline": "Save \u00b7 Share \u00b7 Follow",
+      "body": "Full list: link in bio",
+      "say": "That was Day 55 of 100. Save this, send it to a friend, and follow, or you might not see us again. The full list is in my bio."
+    }
+  ]
+}
