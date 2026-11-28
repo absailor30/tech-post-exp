@@ -863,6 +863,22 @@
       "category": "lowcode",
       "note": "",
       "quickstart": "curl -fsSL https://get.n8n.io | sh"
+    },
+    {
+      "repo": "block/goose",
+      "day": 55,
+      "media_id": "17924001489532802",
+      "opening": "quick_question",
+      "date": "2026-11-28",
+      "name": "aaif-goose/goose",
+      "url": "https://github.com/aaif-goose/goose",
+      "description": "an open source, extensible AI agent that goes beyond code suggestions - install, execute, edit, and test with any LLM",
+      "stars": 57092,
+      "license": "Apache-2.0",
+      "language": "Rust",
+      "category": "coding",
+      "note": "",
+      "quickstart": "curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash"
     }
   ],
   "skipped": [
